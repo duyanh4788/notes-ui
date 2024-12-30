@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
 import * as path from 'path';
 
 const aliases = [
@@ -11,7 +11,7 @@ const aliases = [
   { find: 'interface', replacement: 'src/interface' },
   { find: 'services', replacement: 'src/services' },
   { find: 'utils', replacement: 'src/utils' },
-  { find: 'webvitals', replacement: 'src/webvitals' },
+  { find: 'components', replacement: 'src/components' },
 ];
 
 export default defineConfig(() => {

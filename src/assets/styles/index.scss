@@ -1,3 +1,7 @@
+@use './variable/index.scss' as *;
+@use './auth/index.scss' as *;
+@use './loading/index.scss' as *;
+
 @font-face {
   font-family: 'Gotham Ultra';
   src: url('../../font/Gotham\ Ultra.otf') format('opentype');
@@ -5,6 +9,7 @@
 
 body {
   font-family: 'Gotham Ultra', sans-serif;
+  color: $color-01;
 }
 
 * {
@@ -53,7 +58,7 @@ body::-webkit-scrollbar-thumb,
   background: $background-body-1;
   border-radius: 6px;
   border: $border3;
-  box-shadow: $box-shadow;
+  box-shadow: $box-shadow-01;
 }
 
 .MuiMenuItem-root {
@@ -80,7 +85,7 @@ body::-webkit-scrollbar-thumb,
 }
 
 .css-1bjk3jo-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected {
-  color: $color-green !important;
+  color: $color-01 !important;
 }
 
 .css-1lymaxv-MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
@@ -102,99 +107,7 @@ body::-webkit-scrollbar-thumb,
   border-radius: 20px !important;
 }
 
-.swiper {
-  width: 100%;
-  height: 100%;
-}
-
-.mySwiper {
-  .swiper-slide {
-    text-align: center;
-    font-size: 18px;
-    background: #fff;
-
-    /* Center slide text vertically */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .swiper-slide img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .swiper-slide {
-    width: 60%;
-  }
-
-  .swiper-slide:nth-child(2n) {
-    width: 40%;
-  }
-
-  .swiper-slide:nth-child(3n) {
-    width: 20%;
-  }
-}
-
-.mySwiper2 {
-  height: 80%;
-  width: 100%;
-  .mySwiper3 {
-    height: 20%;
-    box-sizing: border-box;
-    padding: 10px 0;
-  }
-
-  .mySwiper3 .swiper-slide {
-    width: 25%;
-    height: 100%;
-    opacity: 0.4;
-  }
-
-  .mySwiper3 .swiper-slide-thumb-active {
-    opacity: 1;
-  }
-
-  .swiper-slide img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
-
 .MuiListItemText-root {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
-}
-
-.done_btn {
-  animation: blink-animation 2s infinite;
-  .MuiSvgIcon-root {
-    border-radius: 50% !important;
-    border: 1px solid $color-green-2 !important;
-  }
-}
-
-.cancel_btn {
-  animation: blink-animation 2s infinite;
-  .MuiSvgIcon-root {
-    border-radius: 50% !important;
-    border: 1px solid $color-green-slow !important;
-  }
-}
-
-@keyframes blink-animation {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
-  100% {
-    opacity: 1;
-  }
 }
