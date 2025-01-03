@@ -34,9 +34,9 @@ export const Advertising = () => {
 
   return (
     <Box textAlign="center" className="highlighted_box">
-      <Typography gutterBottom className="highlighted_text">
+      <div className="highlighted_text">
         <SlideInText text={texts[0]} delay={500} />
-      </Typography>
+      </div>
 
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
         {texts.slice(1).map((text, index) => (

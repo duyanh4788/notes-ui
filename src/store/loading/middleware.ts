@@ -8,14 +8,16 @@ function isActionWithType(action: unknown): action is Action<string> {
 
 export const loadingMiddleware: Middleware = store => next => (action: unknown) => {
   if (isActionWithType(action)) {
-    if (action.type.includes('pending')) {
+    if (action.type === 'loading/startLoading' || action.type === 'loading/stopLoading') {
+      return next(action);
+    }
+    if (action.type.includes('Success') || action.type.includes('Fail')) {
       store.dispatch(actions.startLoading());
     }
-    const result = next(action);
-    if (action.type.includes('fulfilled') || action.type.includes('rejected')) {
+    if (action.type.includes('Success') || action.type.includes('Fail')) {
       store.dispatch(actions.stopLoading());
     }
-    return result;
+    return next(action);
   }
   return next(action);
 };

@@ -1,17 +1,18 @@
 import { Users } from 'interface/users';
 import { httpRequest } from 'services/request';
 import { Api } from '../constants';
+import { TypeApi } from 'commom/contants';
 
 export class UserHttps {
   public signIn = (): Promise<void> => {
-    return httpRequest().post(Api.SIGN_IN);
+    return httpRequest(TypeApi.API_USERS).post(Api.SIGN_IN);
   };
 
   public signOut = (): Promise<void> => {
-    return httpRequest().post(Api.SIGN_OUT);
+    return httpRequest(TypeApi.API_USERS).post(Api.SIGN_OUT);
   };
 
   public getById = (): Promise<Users> => {
-    return httpRequest().get(Api.GET_BY_ID);
+    return httpRequest(TypeApi.API_USERS).get(Api.GET_BY_ID);
   };
 }

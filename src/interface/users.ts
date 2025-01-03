@@ -1,3 +1,5 @@
+import { StatusType } from 'commom/contants';
+
 export interface Users {
   id?: number;
   userName?: string;
@@ -15,12 +17,4 @@ export interface Users {
 export enum UserRole {
   ADMIN = 'admin',
   USER = 'user',
-}
-
-export enum StatusType {
-  ACTIVE = 'active',
-  PENDING = 'pending',
-  INACTIVE = 'inactive',
-  BANNED = 'banned',
-  DELETED = 'deleted',
 }

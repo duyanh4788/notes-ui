@@ -1,98 +1,155 @@
-import { useState } from 'react';
-import { Box, TextField, Button } from '@mui/material';
-import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
+import { useState, useRef, useEffect } from 'react';
+import { Box, TextField, IconButton } from '@mui/material';
+import { SimpleTreeView } from '@mui/x-tree-view';
+import { AddRounded, ExpandCircleDown } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import * as NoteSlice from 'store/notes/shared/slice';
+import * as NoteSelectors from 'store/notes/shared/selectors';
+import { Notes } from 'interface/notes';
+import { LIMIT } from 'commom/contants';
+import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, SortableContext } from '@dnd-kit/sortable';
+import { NoteItem } from 'components/sortableItem';
 
 export const TreesNotes = () => {
-  const [nodes, setNodes] = useState<any[]>([]);
-  const [newNodeName, setNewNodeName] = useState('');
-  const [parentNode, _] = useState<string | null>(null);
-  const [editingNodeId, setEditingNodeId] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const notes = useSelector(NoteSelectors.selectNotes);
+  const total = useSelector(NoteSelectors.selectTotal);
+  const isUpdate = useSelector(NoteSelectors.selectIsUpdate);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleAddNode = () => {
-    if (!newNodeName.trim()) return;
+  const [nodeNotes, setNodeNotes] = useState<Notes[]>([]);
+  const [newNodeName, setNewNodeName] = useState<string>('');
+  const [newNodeChildName, setNewNodeChildName] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [noteId, setNoteId] = useState<number>(0);
+  const [skip, setSkip] = useState<number>(0);
+  const [isAddingChild, setIsAddingChild] = useState<number | null>(null);
 
-    const newNode = {
-      id: Date.now().toString(),
-      name: newNodeName,
-      children: [],
-    };
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    }),
+  );
 
-    if (parentNode) {
-      const updatedNodes = nodes.map(node => {
-        if (node.id === parentNode) {
-          return { ...node, children: [...node.children, newNode] };
-        }
-        return node;
-      });
-      setNodes(updatedNodes);
-    } else {
-      setNodes([...nodes, newNode]);
-    }
+  useEffect(() => {
+    dispatch(NoteSlice.actions.getAll({ skip, limit: LIMIT }));
+  }, []);
 
-    setNewNodeName('');
-    setEditingNodeId(null);
-  };
-
-  const handleEditNode = (nodeId: string) => {
-    setEditingNodeId(nodeId);
-  };
-
-  const handleSaveNode = (nodeId: string, newName: string) => {
-    const updatedNodes = nodes.map(node => {
-      if (node.id === nodeId) {
-        return { ...node, name: newName };
+  useEffect(() => {
+    function initNotes(data: Notes[]) {
+      if (data && data.length === nodeNotes.length && !isUpdate) return;
+      setNodeNotes(data);
+      if (isUpdate) {
+        dispatch(NoteSlice.actions.setIsUpdate(!isUpdate));
       }
-      return node;
-    });
-    setNodes(updatedNodes);
-    setEditingNodeId(null);
+    }
+    initNotes(notes);
+  }, [notes]);
+
+  useEffect(() => {
+    if (noteId && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [noteId]);
+
+  const handleAdd = () => {
+    if (!newNodeName.trim()) return;
+    dispatch(NoteSlice.actions.created({ title: newNodeName }));
   };
 
-  const renderTree = (node: any) => {
+  const handleAddChild = (parentId: number) => {
+    if (!newNodeChildName.trim()) return;
+    dispatch(NoteSlice.actions.createdChild({ title: newNodeChildName, parentId }));
+    setNewNodeChildName('');
+    setIsAddingChild(null);
+  };
+
+  const handleDelete = (noteId: number) => {
+    dispatch(NoteSlice.actions.deleted(noteId));
+  };
+
+  const handleEdit = (noteId: number, title: string) => {
+    setNoteId(noteId);
+    setTitle(title);
+  };
+
+  const handleSave = (noteId: number) => {
+    if (!title.trim()) return;
+    dispatch(NoteSlice.actions.updated({ id: noteId, title }));
+    setNoteId(0);
+    setTitle('');
+  };
+
+  const handleGetMore = () => {
+    setSkip(skip + LIMIT);
+    dispatch(NoteSlice.actions.getAll({ skip: skip + LIMIT, limit: LIMIT }));
+  };
+
+  const renderNotes = (note: Notes) => {
     return (
-      <TreeItem
-        key={node.id}
-        itemId={node.id}
-        label={
-          editingNodeId === node.id ? (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <TextField
-                variant="outlined"
-                value={newNodeName}
-                onChange={e => setNewNodeName(e.target.value)}
-                onBlur={() => handleSaveNode(node.id, newNodeName)}
-                autoFocus
-                size="small"
-              />
-              <Button onClick={() => handleSaveNode(node.id, newNodeName)}>Save</Button>
-            </Box>
-          ) : (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <span>{node.name}</span>
-              <Button onClick={() => handleEditNode(node.id)}>Edit</Button>
-            </Box>
-          )
-        }
-      >
-        {node.children && node.children.length > 0 ? node.children.map(renderTree) : null}
-      </TreeItem>
+      <NoteItem
+        key={note.id}
+        note={note}
+        noteId={noteId}
+        inputRef={inputRef}
+        title={title}
+        setTitle={setTitle}
+        isAddingChild={isAddingChild}
+        onAddChild={setIsAddingChild}
+        newNodeChildName={newNodeChildName}
+        setNewNodeChildName={setNewNodeChildName}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onSave={handleSave}
+        handleAddChild={handleAddChild}
+      />
     );
   };
 
+  const handleDragEnd = ({ active, over }) => {
+    if (!over) return;
+
+    const activeIndex = nodeNotes.findIndex(item => item.id === Number(active.id));
+    const overIndex = nodeNotes.findIndex(item => item.id === Number(over.id));
+
+    if (activeIndex !== overIndex) {
+      const updatedNotes = arrayMove(nodeNotes, activeIndex, overIndex);
+      setNodeNotes(updatedNotes);
+    }
+  };
+
   return (
-    <Box sx={{ width: '300px', margin: 'auto' }}>
-      <SimpleTreeView>{nodes.map(renderTree)}</SimpleTreeView>
-      <Box sx={{ marginTop: 2 }}>
+    <Box className="trees_box">
+      <Box sx={{ marginTop: 2, display: 'flex', gap: 1 }}>
         <TextField
-          label="File Name"
+          className="trees_text_field"
           value={newNodeName}
           onChange={e => setNewNodeName(e.target.value)}
-          variant="outlined"
-          size="small"
+          placeholder="Enter node name"
         />
-        <Button onClick={handleAddNode} variant="contained" sx={{ marginLeft: 1 }}>
-          Add File
-        </Button>
+        <IconButton onClick={handleAdd}>
+          <AddRounded />
+        </IconButton>
+      </Box>
+      {nodeNotes.length ? (
+        <DndContext
+          sensors={sensors}
+          onDragStart={event => console.log('Dragging started', event)}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={nodeNotes.map(note => note.id.toString())}>
+            <SimpleTreeView>{nodeNotes.map(renderNotes)}</SimpleTreeView>
+          </SortableContext>
+        </DndContext>
+      ) : null}
+
+      <Box sx={{ textAlign: 'center' }} hidden={!notes.length}>
+        <IconButton disabled={!notes.length || total - skip < 10} onClick={handleGetMore}>
+          <ExpandCircleDown />
+        </IconButton>
       </Box>
     </Box>
   );

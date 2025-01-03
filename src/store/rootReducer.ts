@@ -1,10 +1,12 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { userReducer } from './users/shared/slice';
 import { loadingReducer } from './loading/slice';
+import { noteReducer } from './notes/shared/slice';
 
 const rootReducer = combineReducers({
-  users: userReducer,
   loading: loadingReducer,
+  users: userReducer,
+  notes: noteReducer,
 });
 
 export default rootReducer;
