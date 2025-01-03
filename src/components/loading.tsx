@@ -7,9 +7,8 @@ export const LoaderFallBack = () => ({
 });
 
 export const Loading = () => {
-  const Loading = useSelector(selectIsLoading);
-  console.log(Loading);
-  if (!Loading) return;
+  const loading = useSelector(selectIsLoading);
+  if (!loading) return;
 
   return (
     <div className="loading">

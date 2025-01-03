@@ -1,5 +1,6 @@
 @use './variable/index.scss' as *;
 @use './auth/index.scss' as *;
+@use './tree/index.scss' as *;
 @use './loading/index.scss' as *;
 
 @font-face {
@@ -80,10 +81,6 @@ body::-webkit-scrollbar-thumb,
   width: auto !important;
 }
 
-.MuiDrawer-paper {
-  background: linear-gradient($background-body-1, $background-body-2) !important;
-}
-
 .css-1bjk3jo-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected {
   color: $color-01 !important;
 }
@@ -110,4 +107,14 @@ body::-webkit-scrollbar-thumb,
 .MuiListItemText-root {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
+}
+
+.MuiSvgIcon-root,
+.MuiSwitch-switchBase {
+  color: $color-02 !important;
+}
+
+.MuiSwitch-track,
+.css-tj8d99-MuiSwitch-track {
+  background-color: $color-02 !important;
 }

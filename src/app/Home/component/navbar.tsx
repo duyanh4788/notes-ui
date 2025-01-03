@@ -47,7 +47,7 @@ export const Navbar: React.FC<Props> = ({ userInfor }) => {
         <AppBar component="nav">
           <Toolbar disableGutters style={{ cursor: 'pointer' }}>
             <ExitToAppRounded onClick={signOut} />
-            <HomeRounded color="success" onClick={() => navigate(PATH_PARAMS.HOME)} />
+            <HomeRounded onClick={() => navigate(PATH_PARAMS.HOME)} />
             <Tooltip title={userInfor?.userName}>
               <Avatar src={userInfor?.avatar} onClick={handleClick}>
                 {userInfor?.userName}

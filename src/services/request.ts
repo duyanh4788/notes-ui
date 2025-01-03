@@ -1,18 +1,25 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import { LocalStorageKey, LocalStorageService } from './localStorage';
 import { config } from 'utils/config';
+import { TypeApi } from 'commom/contants';
+class Requests {
+  static request: AxiosInstance;
+  static initRequest(typeUrl: TypeApi): AxiosInstance {
+    this.request = axios.create({
+      baseURL: config[typeUrl],
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Access-Control-Allow-Origin': '***',
+        Accept: '*/*',
+      },
+      timeout: 25000,
+    });
+    return this.request;
+  }
+}
 
-export const request: AxiosInstance = axios.create({
-  baseURL: config.API_URL,
-  headers: {
-    'Cache-Control': 'no-cache',
-    'Access-Control-Allow-Origin': '***',
-    Accept: '*/*',
-  },
-  timeout: 25000,
-});
-
-export const httpRequest = () => {
+export const httpRequest = (typeUrl: TypeApi) => {
+  const request = Requests.initRequest(typeUrl);
   const userToken: any = LocalStorageService.getItem(LocalStorageKey.userToken);
   const userId: any = LocalStorageService.getItem(LocalStorageKey.userId);
   if (userToken && userId) {
