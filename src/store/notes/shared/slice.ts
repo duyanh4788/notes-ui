@@ -70,6 +70,10 @@ const noteSlice = createSlice({
     setIsUpdate(state, action) {
       state.isUpdate = action.payload;
     },
+
+    addChildVitrual(_, __) {},
+    updateChildVitrual(_, __) {},
+    delChildVitrual(_, __) {},
   },
 });
 

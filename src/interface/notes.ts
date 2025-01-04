@@ -2,13 +2,14 @@ import { StatusType } from 'commom/contants';
 
 export interface Notes {
   id: number;
-  title: string;
+  label: string;
+  itemId: string;
   status: StatusType;
   parentId: number;
   createdAt: Date;
   updatedAt: Date;
   userId: number;
-  childrens?: Notes[];
+  children: Notes[];
   noteDetails?: NoteDetails[];
 }
 

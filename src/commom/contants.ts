@@ -27,3 +27,27 @@ export enum TypeSaga {
 }
 
 export const LIMIT = 5;
+
+export enum SECOND {
+  TWO = 200,
+  THREE = 400,
+  FOUR = 700,
+  SIX = 2000,
+  SEVEN = 2200,
+  HOLD = 10000,
+}
+
+export const TitleTech = [
+  'Build on NestJS',
+  '*Microservice with source turbo',
+  '*RabbitMQ, Redis, Elasticsearch, Postgres',
+  '*Github: https://github.com/duyanh4788',
+  '*Email: duyanh4788@gmail.com',
+];
+
+export const TitleProject = [
+  'Notes for Everything You Need',
+  '*Personal notes',
+  '*Code snippets',
+  '*Scheduling (e.g., send emails based on a time schedule)',
+];

@@ -115,6 +115,11 @@ body::-webkit-scrollbar-thumb,
 }
 
 .MuiSwitch-track,
-.css-tj8d99-MuiSwitch-track {
+.css-tj8d99-MuiSwitch-track,
+.css-p85nl6-MuiTreeItem2-content {
   background-color: $color-02 !important;
+}
+
+.css-p85nl6-MuiTreeItem2-content:focus {
+  background-color: $color-01 !important;
 }

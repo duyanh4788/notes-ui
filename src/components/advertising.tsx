@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
+import { SECOND } from 'commom/contants';
 
-export const Advertising = () => {
+interface Props {
+  texts: string[];
+}
+
+export const Advertising = (props: Props) => {
+  const { texts } = props;
   const [_, setVisibleTextIndex] = useState(0);
-  const texts = [
-    'Notes for Everything You Need',
-    '*Personal notes',
-    '*Code snippets',
-    '*Scheduling (e.g., send emails based on a time schedule)',
-  ];
 
-  const SlideInText = ({ text, delay = 100 }) => {
+  const SlideInText = ({ text, delay }) => {
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
@@ -28,20 +28,20 @@ export const Advertising = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setVisibleTextIndex(prevIndex => (prevIndex + 1) % texts.length);
-    }, 3000);
+    }, SECOND.HOLD);
     return () => clearInterval(interval);
   }, [texts.length]);
 
   return (
     <Box textAlign="center" className="highlighted_box">
       <div className="highlighted_text">
-        <SlideInText text={texts[0]} delay={500} />
+        <SlideInText text={texts[0]} delay={SECOND.SIX} />
       </div>
 
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
         {texts.slice(1).map((text, index) => (
           <li key={index}>
-            <SlideInText text={text} delay={700 + index * 200} />
+            <SlideInText text={text} delay={SECOND.SEVEN + index * SECOND.THREE} />
           </li>
         ))}
       </ul>
