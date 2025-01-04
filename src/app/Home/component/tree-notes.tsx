@@ -72,12 +72,7 @@ export const TreesNotes = () => {
                 children: props.children,
               });
               const note: Notes = publicAPI.getItem(props.itemId);
-              return (
-                <NoteItem
-                  {...props}
-                  note={note}
-                />
-              );
+              return <NoteItem {...props} note={note} />;
             },
           }}
         />
