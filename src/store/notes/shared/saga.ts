@@ -53,6 +53,7 @@ export function* getById(api, action) {
     const resPonse = yield call(api.getById, action.payload);
     const data = yield configResponse(resPonse);
     yield put(actions.getByIdSuccess(data));
+    yield configNotes(TypeSaga.UPDATED, data.data);
   } catch (error) {
     yield put(actions.getByIdFail(configResponseError(error)));
   }
@@ -68,6 +69,24 @@ export function* getAll(api, action) {
   }
 }
 
+export function* addChildVitrual(action) {
+  try {
+    yield configNotes(TypeSaga.CREATED_CHILD, action.payload);
+  } catch (error) {}
+}
+
+export function* updateChildVitrual(action) {
+  try {
+    yield configNotes(TypeSaga.UPDATED, action.payload);
+  } catch (error) {}
+}
+
+export function* delChildVitrual(action) {
+  try {
+    yield configNotes(TypeSaga.DELETED, action.payload);
+  } catch (error) {}
+}
+
 export function* NotesSaga() {
   yield all([
     yield takeLatest(actions.created.type, created, https),
@@ -76,6 +95,9 @@ export function* NotesSaga() {
     yield takeLatest(actions.deleted.type, deleted, https),
     yield takeLatest(actions.getById.type, getById, https),
     yield takeLatest(actions.getAll.type, getAll, https),
+    yield takeLatest(actions.addChildVitrual.type, addChildVitrual),
+    yield takeLatest(actions.updateChildVitrual.type, updateChildVitrual),
+    yield takeLatest(actions.delChildVitrual.type, delChildVitrual),
   ]);
 }
 
