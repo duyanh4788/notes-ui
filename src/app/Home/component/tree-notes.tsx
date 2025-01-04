@@ -19,7 +19,6 @@ export const TreesNotes = () => {
   const [notesList, setNoteLists] = useState<Notes[]>([]);
   const [label, setLabel] = useState<string>('');
   const [skip, setSkip] = useState<number>(0);
-  const [labelValue, setLabelValue] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(NoteSlice.actions.getAll({ skip, limit: LIMIT }));
@@ -77,8 +76,6 @@ export const TreesNotes = () => {
                 <NoteItem
                   {...props}
                   note={note}
-                  labelValue={labelValue}
-                  setLabelValue={setLabelValue}
                 />
               );
             },
