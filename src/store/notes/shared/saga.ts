@@ -72,19 +72,19 @@ export function* getAll(api, action) {
 export function* addChildVitrual(action) {
   try {
     yield configNotes(TypeSaga.CREATED_CHILD, action.payload);
-  } catch (error) {}
+  } catch (_) {}
 }
 
 export function* updateChildVitrual(action) {
   try {
     yield configNotes(TypeSaga.UPDATED, action.payload);
-  } catch (error) {}
+  } catch (_) {}
 }
 
 export function* delChildVitrual(action) {
   try {
     yield configNotes(TypeSaga.DELETED, action.payload);
-  } catch (error) {}
+  } catch (_) {}
 }
 
 export function* NotesSaga() {
