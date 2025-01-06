@@ -4,10 +4,11 @@ import '../src/assets/styles/index.scss';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { AppRouting } from 'router/AppRouting';
-import { Loading } from 'components/loading';
+import { Loading } from 'components/Loading';
 import { Provider } from 'react-redux';
 import { RootStore } from 'store/store';
 import { AuthContextProvider } from 'app/hoc/AuthContextApi';
+import { Toast } from 'components/Toast';
 
 const MOUNT_NODE = document.getElementById('root') as HTMLElement;
 
@@ -18,6 +19,7 @@ const ConnectedApp = () => (
         <Box component="section">
           <Box component="main">
             <Loading />
+            <Toast />
             <Routes>
               {AppRouting.map(item => {
                 const { key, path, Component, title } = item;

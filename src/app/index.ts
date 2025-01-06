@@ -1,4 +1,4 @@
-import { Home } from './Home/container/home';
-import { Signin } from './Auth/container/signin';
+import { Home } from './Home/container/Home';
+import { Signin } from './Auth/container/Signin';
 
 export { Home, Signin };

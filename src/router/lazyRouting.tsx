@@ -1,4 +1,4 @@
-import { LoaderFallBack } from '../components/loading';
+import { LoaderFallBack } from '../components/Loading';
 import { lazyLoad } from './loadable';
 
 export const Home = lazyLoad(

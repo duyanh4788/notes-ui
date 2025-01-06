@@ -22,4 +22,13 @@
       }
     }
   }
+  ul,
+  li {
+    div {
+      font-size: 14px;
+    }
+  }
+  .MuiTreeItem-iconContainer {
+    display: none !important;
+  }
 }
