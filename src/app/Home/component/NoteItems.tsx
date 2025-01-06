@@ -1,9 +1,11 @@
 import {
   AddRounded,
   CheckRounded,
+  ChevronRightRounded,
   CloseRounded,
   DeleteRounded,
   EditRounded,
+  ExpandMoreRounded,
 } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
 import {
@@ -23,24 +25,30 @@ import { Helper } from 'utils/helper';
 
 interface CustomLabelProps extends UseTreeItem2LabelSlotOwnProps {
   editable: boolean;
-  editing: boolean;
+  expanded: Set<number>;
+  noteId: number;
+  quantityChild: number;
   editItem: () => void;
   deleteItem: () => void;
-  getById: () => void;
+  onofExpand: (event: React.MouseEvent) => void;
   addChild: (event: React.MouseEvent) => void;
 }
 
 function CustomLabel({
   editable,
-  children,
+  expanded,
+  noteId,
+  quantityChild,
   editItem,
   deleteItem,
-  getById,
+  onofExpand,
   addChild,
+  children,
   ...other
 }: CustomLabelProps) {
   return (
     <TreeItem2Label
+      className="tree_items"
       {...other}
       editable={editable}
       sx={{
@@ -50,16 +58,33 @@ function CustomLabel({
         justifyContent: 'space-between',
       }}
     >
-      <Box onClick={getById}>{children}</Box>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        {expanded.has(noteId) && quantityChild ? (
+          <IconButton size="small" onClick={onofExpand}>
+            <ExpandMoreRounded fontSize="small" />
+          </IconButton>
+        ) : (
+          <IconButton size="small" onClick={onofExpand}>
+            <ChevronRightRounded fontSize="small" />
+          </IconButton>
+        )}
+        {children}
+      </Box>
       {editable && (
         <Box>
-          <IconButton size="small" onClick={editItem} sx={{ color: 'text.secondary' }}>
+          <IconButton size="small" onClick={editItem}>
             <EditRounded fontSize="small" />
           </IconButton>
           <IconButton size="small" onClick={deleteItem}>
             <DeleteRounded fontSize="small" />
           </IconButton>
-          <IconButton className="iconContainer" size="small" onClick={addChild}>
+          <IconButton size="small" onClick={addChild}>
             <AddRounded fontSize="small" />
           </IconButton>
         </Box>
@@ -95,14 +120,16 @@ function CustomLabelInput(props: Omit<CustomLabelInputProps, 'ref'>) {
   );
 }
 
-export const NoteItem = React.forwardRef(function NoteItem(
+export const NoteItems = React.forwardRef(function NoteItem(
   props: TreeItem2Props & {
     note: Notes;
+    expanded: Set<number>;
+    toggleExpand: (noteId: number) => void;
   },
   ref: React.Ref<HTMLLIElement>,
 ) {
   const dispatch = useDispatch();
-  const { note, ...rest } = props;
+  const { note, expanded, toggleExpand, ...rest } = props;
 
   const { interactions, status } = useTreeItem2Utils({
     itemId: props.itemId,
@@ -177,6 +204,9 @@ export const NoteItem = React.forwardRef(function NoteItem(
     if (!note.children || !note.children.length) {
       interactions.handleExpansion(event);
     }
+    if (!expanded.has(note.id)) {
+      toggleExpand(note.id);
+    }
     const newChild = {
       id: Helper.randomNum(1, 1000),
       label: 'New Child',
@@ -186,9 +216,13 @@ export const NoteItem = React.forwardRef(function NoteItem(
     dispatch(NoteSlice.actions.addChildVitrual(newChild));
   };
 
-  const getById = () => {
+  const onofExpand = (event: React.MouseEvent) => {
     if (note.parentId) {
       dispatch(NoteSlice.actions.getById(note.id));
+    }
+    toggleExpand(note.id);
+    if (note.children && note.children.length) {
+      interactions.handleExpansion(event);
     }
   };
 
@@ -196,15 +230,21 @@ export const NoteItem = React.forwardRef(function NoteItem(
     <TreeItem2
       {...rest}
       ref={ref}
-      slots={{ label: CustomLabel, labelInput: CustomLabelInput }}
+      aria-expanded={expanded.has(note.id)}
+      slots={{
+        label: CustomLabel,
+        labelInput: CustomLabelInput,
+      }}
       slotProps={{
         label: {
           onDoubleClick: handleContentDoubleClick,
           editable: status.editable,
-          editing: status.editing,
+          expanded: expanded,
+          noteId: note.id,
+          quantityChild: note?.children?.length || 0,
           editItem: editItem,
           deleteItem: deleteItem,
-          getById: getById,
+          onofExpand: onofExpand,
           addChild: addChild,
         } as unknown as CustomLabelProps,
         labelInput: {

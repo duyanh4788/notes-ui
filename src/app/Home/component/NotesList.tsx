@@ -6,11 +6,10 @@ import * as NoteSlice from 'store/notes/shared/slice';
 import * as NoteSelectors from 'store/notes/shared/selectors';
 import { Notes } from 'interface/notes';
 import { LIMIT } from 'commom/contants';
-/* eslint-disable react-hooks/rules-of-hooks */
 import { RichTreeView, TreeItem2Props, useTreeItem2Utils } from '@mui/x-tree-view';
-import { NoteItem } from 'components/note-items';
+import { NoteItems } from 'app/Home/component/NoteItems';
 
-export const TreesNotes = () => {
+export const NotesList = () => {
   const dispatch = useDispatch();
   const notes = useSelector(NoteSelectors.selectNotes);
   const total = useSelector(NoteSelectors.selectTotal);
@@ -19,6 +18,7 @@ export const TreesNotes = () => {
   const [notesList, setNoteLists] = useState<Notes[]>([]);
   const [label, setLabel] = useState<string>('');
   const [skip, setSkip] = useState<number>(0);
+  const [expanded, setExpanded] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     dispatch(NoteSlice.actions.getAll({ skip, limit: LIMIT }));
@@ -46,6 +46,33 @@ export const TreesNotes = () => {
     dispatch(NoteSlice.actions.getAll({ skip: skip + LIMIT, limit: LIMIT }));
   };
 
+  const toggleExpand = (noteId: number) => {
+    setExpanded(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(noteId)) {
+        newSet.delete(noteId);
+      } else {
+        newSet.add(noteId);
+      }
+      return newSet;
+    });
+  };
+
+  const NoteTreeItem = (props: TreeItem2Props) => {
+    const { publicAPI } = useTreeItem2Utils({
+      itemId: props.itemId,
+      children: props.children,
+    });
+
+    const note: Notes = publicAPI.getItem(props.itemId);
+    if (expanded.has(note.id) && note?.children?.length) {
+      const event = {} as React.SyntheticEvent;
+      publicAPI.setItemExpansion(event, props.itemId, true);
+    }
+
+    return <NoteItems {...props} note={note} expanded={expanded} toggleExpand={toggleExpand} />;
+  };
+
   return (
     <Box className="trees_box">
       <Box sx={{ marginTop: 2, display: 'flex', gap: 1 }}>
@@ -62,23 +89,25 @@ export const TreesNotes = () => {
       {notesList.length ? (
         <RichTreeView
           items={notesList}
-          experimentalFeatures={{ labelEditing: true }}
           isItemEditable
-          defaultExpandedItems={[]}
+          onDragStart={event => {
+            console.log('Drag started for item:', event);
+          }}
+          onDragEnd={event => {
+            console.log('Drag started for item:', event);
+          }}
+          experimentalFeatures={{
+            indentationAtItemLevel: true,
+            labelEditing: true,
+          }}
+          defaultExpandedItems={['grild']}
           slots={{
-            item: (props: TreeItem2Props) => {
-              const { publicAPI } = useTreeItem2Utils({
-                itemId: props.itemId,
-                children: props.children,
-              });
-              const note: Notes = publicAPI.getItem(props.itemId);
-              return <NoteItem {...props} note={note} />;
-            },
+            item: props => <NoteTreeItem {...props} />,
           }}
         />
       ) : null}
 
-      <Box sx={{ textAlign: 'center' }} hidden={!notes.length}>
+      <Box sx={{ textAlign: 'center', height: '30px' }} hidden={!notes.length}>
         <IconButton disabled={!notes.length || total - skip < LIMIT} onClick={handleGetMore}>
           <ExpandCircleDown />
         </IconButton>

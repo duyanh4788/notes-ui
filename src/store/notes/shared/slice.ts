@@ -6,6 +6,7 @@ interface NotesState {
   notes: Notes[];
   total: number;
   isUpdate: boolean;
+  isLoad: boolean;
   error: string | null;
 }
 
@@ -15,6 +16,7 @@ const initialState: NotesState = {
   error: null,
   total: 0,
   isUpdate: false,
+  isLoad: false,
 };
 
 const noteSlice = createSlice({
@@ -45,7 +47,9 @@ const noteSlice = createSlice({
       state.error = action.payload;
     },
 
-    getById: (_, __) => {},
+    getById: (state, __) => {
+      state.note = null;
+    },
     getByIdSuccess: (state, action) => {
       state.note = action.payload.data;
     },

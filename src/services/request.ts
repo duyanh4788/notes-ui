@@ -1,7 +1,9 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import { LocalStorageKey, LocalStorageService } from './localStorage';
 import { config } from 'utils/config';
-import { TypeApi } from 'commom/contants';
+import { PATH_PARAMS, TypeApi } from 'commom/contants';
+import { toast } from 'react-toastify';
+
 class Requests {
   static request: AxiosInstance;
   static initRequest(typeUrl: TypeApi): AxiosInstance {
@@ -33,23 +35,27 @@ export function configResponse(response: AxiosResponse<any>): any {
   if (!response.data) {
     return { message: 'server not found', code: 401 };
   }
-  const { data, code, message, success, status } = response.data;
-  if (code >= 400 && code <= 500) {
-    throw Object.assign(new Error(message), { code });
+  const { data, statusCode, message, success, status } = response.data;
+  if (statusCode >= 400 && statusCode <= 500) {
+    throw Object.assign(new Error(message), { statusCode });
   }
-  return { data, message, code, success, status };
+  return { data, message, statusCode, success, status };
 }
 
 export function configResponseError(errors: AxiosError | any): any {
   if (!errors || !errors.response || !errors.response.data) {
-    return { message: 'request server not found', code: 404 };
+    return { message: 'request server not found', statusCode: 404 };
   }
-  const { code, message, success, status } = errors.response.data;
-  if (!message && code) {
-    return { code, message: 'request server not found', status };
+  const { statusCode, message, success, status } = errors.response.data;
+  toast.error(message || 'request server not found');
+  if (statusCode && statusCode === 401) {
+    return (window.location.href = PATH_PARAMS.SIGNIN);
   }
-  if (message && !code) {
-    return { code: 404, message, status };
+  if (!message && statusCode) {
+    return { statusCode, message: 'request server not found', status };
   }
-  return { message, code, success, status };
+  if (message && !statusCode) {
+    return { statusCode: 404, message, status };
+  }
+  return { message, statusCode, success, status };
 }

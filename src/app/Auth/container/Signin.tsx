@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import * as UserSlice from 'store/users/shared/slice';
 import * as UserSelector from 'store/users/shared/selectors';
-import { Advertising } from 'components/advertising';
+import { Advertising } from 'components/Advertising';
 
 export const Signin = () => {
   const selectUrlGg = useSelector(UserSelector.selectUrlGg);
