@@ -13,6 +13,7 @@ export type LocalStorageItem = {
 export enum LocalStorageKey {
   userId = '_userId',
   userToken = '_userToken',
+  offAdd = '_off_add',
 }
 
 export class LocalStorageService {

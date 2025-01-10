@@ -1,10 +1,10 @@
 import { call, put, takeLatest, all, select } from 'redux-saga/effects';
 import { configResponse, configResponseError } from 'services/request';
 import { actions } from './slice';
-import { NotesHttps } from '../service/notesHttps';
 import { TypeSaga } from 'commom/contants';
 import { Notes } from 'interface/notes';
 import { Helper } from 'utils/helper';
+import { NotesHttps } from '../service/https';
 
 const https = new NotesHttps();
 

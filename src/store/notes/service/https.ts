@@ -1,14 +1,15 @@
 import { httpRequest } from 'services/request';
 import { Api } from '../constants';
 import { TypeApi } from 'commom/contants';
-import { Notes, ParamsGetNotes, ResNotes } from 'interface/notes';
+import { Notes, ResNotes } from 'interface/notes';
+import { Paging } from 'interface/paging';
 
 export class NotesHttps {
   public created = (payload: { title: string }): Promise<void> => {
     return httpRequest(TypeApi.API_NOTES).post(Api.NOTES, payload);
   };
 
-  public createdChild = (payload: { title: string; parrentId: number }): Promise<void> => {
+  public createdChild = (payload: { title: string; parrentId: string }): Promise<void> => {
     return httpRequest(TypeApi.API_NOTES).post(Api.NOTE_CHILD, payload);
   };
 
@@ -24,7 +25,7 @@ export class NotesHttps {
     return httpRequest(TypeApi.API_NOTES).get(`${Api.NOTES}/${id}`);
   };
 
-  public getAll = (params: ParamsGetNotes): Promise<ResNotes> => {
+  public getAll = (params: Paging): Promise<ResNotes> => {
     const { skip, limit } = params;
     const param = `?skip=${skip}&limit=${limit}`;
     return httpRequest(TypeApi.API_NOTES).get(`${Api.NOTES}${param}`);

@@ -4,14 +4,25 @@ export const PATH_PARAMS = {
   SIGNIN: '/signin',
 };
 
-export const NoteType = [];
-
 export enum StatusType {
   ACTIVE = 'active',
   PENDING = 'pending',
   INACTIVE = 'inactive',
   BANNED = 'banned',
   DELETED = 'deleted',
+}
+
+export enum NoteType {
+  DOC = 'doc',
+  FOLDER = 'folder',
+  PDF = 'pdf',
+  PINNED = 'pinned',
+}
+
+export enum NoteDetailType {
+  STRING = 'string',
+  CODE = 'code',
+  SCHEDULE = 'schedule',
 }
 
 export enum TypeApi {
