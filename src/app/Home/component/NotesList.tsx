@@ -8,6 +8,8 @@ import { Notes } from 'interface/notes';
 import { LIMIT } from 'commom/contants';
 import { RichTreeView, TreeItem2Props, useTreeItem2Utils } from '@mui/x-tree-view';
 import { NoteItems } from 'app/Home/component/NoteItems';
+import Grid from '@mui/material/Grid2';
+import { NoteDetail } from './NoteDetail';
 
 export const NotesList = () => {
   const dispatch = useDispatch();
@@ -18,7 +20,7 @@ export const NotesList = () => {
   const [notesList, setNoteLists] = useState<Notes[]>([]);
   const [label, setLabel] = useState<string>('');
   const [skip, setSkip] = useState<number>(0);
-  const [expanded, setExpanded] = useState<Set<number>>(new Set());
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     dispatch(NoteSlice.actions.getAll({ skip, limit: LIMIT }));
@@ -46,7 +48,7 @@ export const NotesList = () => {
     dispatch(NoteSlice.actions.getAll({ skip: skip + LIMIT, limit: LIMIT }));
   };
 
-  const toggleExpand = (noteId: number) => {
+  const toggleExpand = (noteId: string) => {
     setExpanded(prev => {
       const newSet = new Set(prev);
       if (newSet.has(noteId)) {
@@ -58,18 +60,19 @@ export const NotesList = () => {
     });
   };
 
-  const NoteTreeItem = (props: TreeItem2Props) => {
+  const NoteItem = (props: TreeItem2Props) => {
     const { publicAPI } = useTreeItem2Utils({
       itemId: props.itemId,
       children: props.children,
     });
 
     const note: Notes = publicAPI.getItem(props.itemId);
-    if (expanded.has(note.id) && note?.children?.length) {
-      const event = {} as React.SyntheticEvent;
-      publicAPI.setItemExpansion(event, props.itemId, true);
-    }
-
+    useEffect(() => {
+      if (expanded.has(note.id) && note?.children?.length) {
+        const event = {} as React.SyntheticEvent;
+        publicAPI.setItemExpansion(event, props.itemId, true);
+      }
+    }, [expanded, note?.children?.length, props.itemId]);
     return <NoteItems {...props} note={note} expanded={expanded} toggleExpand={toggleExpand} />;
   };
 
@@ -86,32 +89,31 @@ export const NotesList = () => {
           <AddRounded />
         </IconButton>
       </Box>
-      {notesList.length ? (
-        <RichTreeView
-          items={notesList}
-          isItemEditable
-          onDragStart={event => {
-            console.log('Drag started for item:', event);
-          }}
-          onDragEnd={event => {
-            console.log('Drag started for item:', event);
-          }}
-          experimentalFeatures={{
-            indentationAtItemLevel: true,
-            labelEditing: true,
-          }}
-          defaultExpandedItems={['grild']}
-          slots={{
-            item: props => <NoteTreeItem {...props} />,
-          }}
-        />
-      ) : null}
-
-      <Box sx={{ textAlign: 'center', height: '30px' }} hidden={!notes.length}>
-        <IconButton disabled={!notes.length || total - skip < LIMIT} onClick={handleGetMore}>
-          <ExpandCircleDown />
-        </IconButton>
-      </Box>
+      <Grid container spacing={1}>
+        <Grid size={5} className="tree_gird">
+          {notesList.length ? (
+            <RichTreeView
+              sx={{ height: 'fit-content', flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+              items={notesList}
+              isItemEditable
+              experimentalFeatures={{
+                indentationAtItemLevel: true,
+                labelEditing: true,
+              }}
+              defaultExpandedItems={['grild']}
+              slots={{
+                item: (props: TreeItem2Props) => <NoteItem {...props} />,
+              }}
+            />
+          ) : null}
+          <IconButton disabled={!notes.length || total - skip < LIMIT} onClick={handleGetMore}>
+            <ExpandCircleDown />
+          </IconButton>
+        </Grid>
+        <Grid size={7} className="tree_gird">
+          <NoteDetail />
+        </Grid>
+      </Grid>
     </Box>
   );
 };

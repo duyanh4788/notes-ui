@@ -47,7 +47,8 @@ export function configResponseError(errors: AxiosError | any): any {
     return { message: 'request server not found', statusCode: 404 };
   }
   const { statusCode, message, success, status } = errors.response.data;
-  toast.error(message || 'request server not found');
+  const newMsg = message && message.length ? message[0] : message;
+  toast.error(newMsg || 'request server not found');
   if (statusCode && statusCode === 401) {
     return (window.location.href = PATH_PARAMS.SIGNIN);
   }
@@ -55,7 +56,7 @@ export function configResponseError(errors: AxiosError | any): any {
     return { statusCode, message: 'request server not found', status };
   }
   if (message && !statusCode) {
-    return { statusCode: 404, message, status };
+    return { statusCode: 404, message: newMsg, status };
   }
-  return { message, statusCode, success, status };
+  return { message: newMsg, statusCode, success, status };
 }

@@ -3,10 +3,12 @@ import { Box, Switch, Tooltip, Typography } from '@mui/material';
 import { SECOND } from 'commom/contants';
 import { TitleProject, TitleTech } from 'commom/contants';
 import Grid from '@mui/material/Grid2';
+import { LocalStorageKey, LocalStorageService } from 'services/localStorage';
 
 export const Advertising = () => {
+  const offAdd: any = LocalStorageService.getItem(LocalStorageKey.offAdd);
   const [_, setVisibleTextIndex] = useState(0);
-  const [isAdd, setIsAdd] = useState<boolean>(true);
+  const [isAdd, setIsAdd] = useState<boolean>(offAdd ? true : false);
 
   const SlideInText = ({ text, delay }) => {
     const [visible, setVisible] = useState(false);
@@ -57,7 +59,14 @@ export const Advertising = () => {
           size="small"
           color="primary"
           checked={isAdd}
-          onChange={e => setIsAdd(e.target.checked)}
+          onChange={e => {
+            setIsAdd(e.target.checked);
+            if (offAdd) {
+              LocalStorageService.removeLocalStorageByKey(LocalStorageKey.offAdd);
+            } else {
+              LocalStorageService.setItem({ key: LocalStorageKey.offAdd, value: 'off' });
+            }
+          }}
         />
       </Tooltip>
       <Grid container spacing={2}>

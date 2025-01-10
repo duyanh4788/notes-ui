@@ -1,4 +1,5 @@
 @use '../extend/index.scss' as *;
+@use '../variable/index.scss' as *;
 
 .trees_box {
   .trees_text_field {
@@ -30,5 +31,11 @@
   }
   .MuiTreeItem-iconContainer {
     display: none !important;
+  }
+  .tree_gird {
+    text-align: center;
+    border: $border2;
+    border-radius: 10px;
+    padding: 5px;
   }
 }
