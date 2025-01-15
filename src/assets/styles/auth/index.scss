@@ -7,7 +7,7 @@
   padding: 12px 16px 12px 42px;
   border: none;
   border-radius: 3px;
-  box-shadow: $box-shadow-01;
+  box-shadow: $box-shadow;
   color: $color-03;
   font-size: 14px;
   font-weight: 500;
@@ -19,19 +19,19 @@
   background-position: 12px 11px;
   cursor: pointer;
   &:hover {
-    box-shadow: $box-shadow-02;
+    box-shadow: $box-shadow-hover;
   }
   &:active {
     background-color: $color-04;
   }
   &:focus {
     outline: none;
-    box-shadow: $box-shadow-03;
+    box-shadow: $box-shadow-hover;
   }
   &:disabled {
     filter: grayscale(100%);
     background-color: $color-05;
-    box-shadow: $box-shadow-04;
+    box-shadow: $box-shadow;
     cursor: not-allowed;
   }
 }

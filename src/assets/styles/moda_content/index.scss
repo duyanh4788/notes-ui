@@ -1,0 +1,16 @@
+@use '../extend/index.scss' as *;
+@use '../variable/index.scss' as *;
+
+.box_content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 800px;
+  transform: translate(-50%, -50%);
+  background-color: $background-body-1;
+  padding: 10px;
+  .monaco-editor {
+    min-height: 200px !important;
+    height: 800px !important;
+  }
+}

@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Box, TextField, IconButton } from '@mui/material';
+import { Box, TextField, IconButton, Tooltip } from '@mui/material';
 import { AddRounded, ExpandCircleDown } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import * as NoteSlice from 'store/notes/shared/slice';
 import * as NoteSelectors from 'store/notes/shared/selectors';
 import { Notes } from 'interface/notes';
-import { LIMIT } from 'commom/contants';
+import { LIMIT, TooltipTitle } from 'commom/contants';
 import { RichTreeView, TreeItem2Props, useTreeItem2Utils } from '@mui/x-tree-view';
 import { NoteItems } from 'app/Home/component/NoteItems';
 import Grid from '@mui/material/Grid2';
 import { NoteDetail } from './NoteDetail';
+import { Search } from 'components/Search';
 
 export const NotesList = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ export const NotesList = () => {
   const [label, setLabel] = useState<string>('');
   const [skip, setSkip] = useState<number>(0);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [limitDetail, setLimitDetail] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     dispatch(NoteSlice.actions.getAll({ skip, limit: LIMIT }));
@@ -60,6 +62,18 @@ export const NotesList = () => {
     });
   };
 
+  const toggleLimitDetail = (noteId: string) => {
+    setLimitDetail(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(noteId)) {
+        newSet.delete(noteId);
+      } else {
+        newSet.add(noteId);
+      }
+      return newSet;
+    });
+  };
+
   const NoteItem = (props: TreeItem2Props) => {
     const { publicAPI } = useTreeItem2Utils({
       itemId: props.itemId,
@@ -73,7 +87,16 @@ export const NotesList = () => {
         publicAPI.setItemExpansion(event, props.itemId, true);
       }
     }, [expanded, note?.children?.length, props.itemId]);
-    return <NoteItems {...props} note={note} expanded={expanded} toggleExpand={toggleExpand} />;
+    return (
+      <NoteItems
+        {...props}
+        note={note}
+        expanded={expanded}
+        toggleExpand={toggleExpand}
+        limitDetail={limitDetail}
+        toggleLimitDetail={toggleLimitDetail}
+      />
+    );
   };
 
   return (
@@ -85,12 +108,15 @@ export const NotesList = () => {
           onChange={e => setLabel(e.target.value)}
           placeholder="Enter node name"
         />
-        <IconButton onClick={handleAdd}>
-          <AddRounded />
-        </IconButton>
+        <Tooltip title={TooltipTitle.ADD}>
+          <IconButton onClick={handleAdd}>
+            <AddRounded />
+          </IconButton>
+        </Tooltip>
       </Box>
       <Grid container spacing={1}>
         <Grid size={5} className="tree_gird">
+          <Search />
           {notesList.length ? (
             <RichTreeView
               sx={{ height: 'fit-content', flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
@@ -106,7 +132,7 @@ export const NotesList = () => {
               }}
             />
           ) : null}
-          <IconButton disabled={!notes.length || total - skip < LIMIT} onClick={handleGetMore}>
+          <IconButton disabled={!notes.length || total - skip <= LIMIT} onClick={handleGetMore}>
             <ExpandCircleDown />
           </IconButton>
         </Grid>
