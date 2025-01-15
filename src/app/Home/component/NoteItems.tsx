@@ -24,11 +24,13 @@ export const NoteItems = React.forwardRef(function NoteItem(
     note: Notes;
     expanded: Set<string>;
     toggleExpand: (noteId: string) => void;
+    limitDetail: Set<string>;
+    toggleLimitDetail: (noteId: string) => void;
   },
   ref: React.Ref<HTMLLIElement>,
 ) {
   const dispatch = useDispatch();
-  const { note, expanded, toggleExpand, ...rest } = props;
+  const { note, expanded, toggleExpand, limitDetail, toggleLimitDetail, ...rest } = props;
 
   const { interactions, status } = useTreeItem2Utils({
     itemId: props.itemId,
@@ -41,12 +43,14 @@ export const NoteItems = React.forwardRef(function NoteItem(
   };
 
   const getDetails = () => {
+    if (limitDetail.has(note.id)) return;
+    toggleLimitDetail(note.id);
     const params = {
       noteId: note.id,
       skip: 0,
       limit: LIMIT,
     };
-    dispatch(NoteSlice.actions.getById(note.id));
+    dispatch(NoteSlice.actions.getByIdSuccess({ data: note }));
     dispatch(NoteDetailsSlice.actions.getAll(params));
   };
 

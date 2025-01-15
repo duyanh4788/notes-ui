@@ -62,3 +62,41 @@ export const TitleProject = [
   '*Code snippets',
   '*Scheduling (e.g., send emails based on a time schedule)',
 ];
+
+export const LangCodes = [
+  { label: 'JavaScript', value: 'javascript', shortName: 'JS' },
+  { label: 'TypeScript', value: 'typescript', shortName: 'TS' },
+  { label: 'CSS', value: 'css', shortName: 'CSS' },
+  { label: 'HTML', value: 'html', shortName: 'HTML' },
+  { label: 'JSON', value: 'json', shortName: 'JSON' },
+  { label: 'Markdown', value: 'markdown', shortName: 'MD' },
+  { label: 'XML', value: 'xml', shortName: 'XML' },
+  { label: 'YAML', value: 'yaml', shortName: 'YAML' },
+  { label: 'Python', value: 'python', shortName: 'PY' },
+  { label: 'Java', value: 'java', shortName: 'JAVA' },
+  { label: 'C++', value: 'cpp', shortName: 'C++' },
+  { label: 'C#', value: 'csharp', shortName: 'C#' },
+  { label: 'Go', value: 'go', shortName: 'GO' },
+  { label: 'PHP', value: 'php', shortName: 'PHP' },
+  { label: 'Ruby', value: 'ruby', shortName: 'RB' },
+  { label: 'Swift', value: 'swift', shortName: 'SW' },
+  { label: 'Rust', value: 'rust', shortName: 'RS' },
+  { label: 'Kotlin', value: 'kotlin', shortName: 'KT' },
+  { label: 'SQL', value: 'sql', shortName: 'SQL' },
+  { label: 'Shell/Bash', value: 'shell', shortName: 'SH' },
+];
+
+export enum TooltipTitle {
+  VIEW = 'View',
+  SAVE = 'Save',
+  ADD = 'Add',
+  DEL = 'Del',
+  EDT = 'Edit',
+  COPY = 'Copy',
+  SEL_TYPE = 'Select type',
+}
+
+export enum PageType {
+  MAIN = 'MAIN',
+  MODAL = 'MODAL',
+}

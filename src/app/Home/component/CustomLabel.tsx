@@ -11,9 +11,10 @@ import {
   EditRounded,
   ExpandMoreRounded,
 } from '@mui/icons-material';
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, Tooltip } from '@mui/material';
 import { TreeItem2Label, TreeItem2LabelInput } from '@mui/x-tree-view';
 import React from 'react';
+import { TooltipTitle } from 'commom/contants';
 
 export interface CustomLabelProps extends UseTreeItem2LabelSlotOwnProps {
   editable: boolean;
@@ -79,15 +80,21 @@ export function CustomLabel({
       </Box>
       {editable && (
         <Box>
-          <IconButton size="small" onClick={editItem}>
-            <EditRounded fontSize="small" />
-          </IconButton>
-          <IconButton size="small" onClick={deleteItem}>
-            <DeleteRounded fontSize="small" />
-          </IconButton>
-          <IconButton size="small" onClick={addChild}>
-            <AddRounded fontSize="small" />
-          </IconButton>
+          <Tooltip title={TooltipTitle.EDT}>
+            <IconButton size="small" onClick={editItem}>
+              <EditRounded fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={TooltipTitle.DEL}>
+            <IconButton size="small" onClick={deleteItem}>
+              <DeleteRounded fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={TooltipTitle.ADD}>
+            <IconButton size="small" onClick={addChild}>
+              <AddRounded fontSize="small" />
+            </IconButton>
+          </Tooltip>
         </Box>
       )}
     </TreeItem2Label>

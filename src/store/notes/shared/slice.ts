@@ -66,6 +66,10 @@ const noteSlice = createSlice({
       state.error = action.payload;
     },
 
+    addChildVitrual(_, __) {},
+    updateChildVitrual(_, __) {},
+    delChildVitrual(_, __) {},
+
     updateNotes(state, action) {
       state.notes = action.payload.notes;
       state.total = action.payload.total;
@@ -74,10 +78,6 @@ const noteSlice = createSlice({
     setIsUpdate(state, action) {
       state.isUpdate = action.payload;
     },
-
-    addChildVitrual(_, __) {},
-    updateChildVitrual(_, __) {},
-    delChildVitrual(_, __) {},
   },
 });
 

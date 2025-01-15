@@ -13,6 +13,7 @@ export type NoteDetails = {
   sorting?: number;
   scheduleTime?: Date;
   isVitrual?: boolean;
+  idVitrual?: string;
 };
 
 export interface ResNoteDetails {

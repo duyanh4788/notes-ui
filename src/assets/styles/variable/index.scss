@@ -5,26 +5,15 @@ $color-04: #eeeeee;
 $color-05: #ebebeb;
 $color-white: white;
 
-$background-body-1: #ffffff;
-$background-body-2: #f5f5f5;
+$background-body-1: #f0eded;
+$background-body-2: #cfcece;
+$background-scroll: #a3a3a3;
 $background-loading: #ffffff6b;
 
 $border1: 1px solid #ebebec;
 $border2: 1px solid $color-02;
 $border3: 1px solid #cdcdcd5c;
 $borderTable: 1px solid #ebebec;
-$box-shadow-01:
-  0 -1px 0 rgba(0, 0, 0, 0.04),
-  0 1px 1px rgba(0, 0, 0, 0.25);
-$box-shadow-02:
-  0 -1px 0 rgba(0, 0, 0, 0.04),
-  0 2px 4px rgba(0, 0, 0, 0.25);
 
-$box-shadow-03:
-  0 -1px 0 rgba(0, 0, 0, 0.04),
-  0 2px 4px rgba(0, 0, 0, 0.25),
-  0 0 0 3px #c8dafc;
-
-$box-shadow-04:
-  0 -1px 0 rgba(0, 0, 0, 0.04),
-  0 1px 1px rgba(0, 0, 0, 0.25);
+$box-shadow: 0px 1px 1px $color-01;
+$box-shadow-hover: 0px 1px 2px $color-02;

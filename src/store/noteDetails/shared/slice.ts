@@ -50,7 +50,10 @@ const noteDetailsSlice = createSlice({
 
     getAll(_, __) {},
     getAllSuccess(state, action) {
-      state.noteDetails = [...state.noteDetails, ...action.payload.data.noteDetails];
+      state.noteDetails =
+        !action.payload.data.noteDetails || !action.payload.data.noteDetails.length
+          ? []
+          : [...state.noteDetails, ...action.payload.data.noteDetails];
       state.total = action.payload.data.total;
     },
     getAllFail(state, action) {
@@ -59,10 +62,14 @@ const noteDetailsSlice = createSlice({
 
     addVitrual(_, __) {},
     delVitrual(_, __) {},
-    updateNotes(state, action) {
+    updateVitrual(_, __) {},
+    updateNoteDetails(state, action) {
       state.noteDetails = action.payload.noteDetails;
       state.total = action.payload.total;
       state.isUpdate = action.payload.isUpdate;
+    },
+    setIsUpdate(state, action) {
+      state.isUpdate = action.payload;
     },
   },
 });

@@ -1,7 +1,6 @@
 import { httpRequest } from 'services/request';
 import { Api } from '../constants';
 import { TypeApi } from 'commom/contants';
-import { Paging } from 'interface/paging';
 import {
   CNoteDetails,
   GetNoteDetails,
@@ -22,12 +21,12 @@ export class NoteDetailsHttps {
 
   public deleted = (param: ParamsNoteDetails): Promise<void> => {
     const { id, noteId } = param;
-    return httpRequest(TypeApi.API_NOTES).delete(`${Api.NOTE_DETAILS}/${id}?=noteId=${noteId}`);
+    return httpRequest(TypeApi.API_NOTES).delete(`${Api.NOTE_DETAILS}/${id}?noteId=${noteId}`);
   };
 
   public getById = (param: ParamsNoteDetails): Promise<NoteDetails> => {
     const { id, noteId } = param;
-    return httpRequest(TypeApi.API_NOTES).get(`${Api.NOTE_DETAILS}/${id}?=noteId=${noteId}`);
+    return httpRequest(TypeApi.API_NOTES).get(`${Api.NOTE_DETAILS}/${id}?noteId=${noteId}`);
   };
 
   public getAll = (params: GetNoteDetails): Promise<ResNoteDetails> => {
