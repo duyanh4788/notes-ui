@@ -5,6 +5,7 @@ interface NoteDetailsState {
   noteDetails: NoteDetails[];
   total: number;
   isUpdate: boolean;
+  noteId: string | null;
   error: string | null;
 }
 
@@ -13,6 +14,7 @@ const initialState: NoteDetailsState = {
   noteDetails: [],
   total: 0,
   isUpdate: false,
+  noteId: null,
   error: null,
 };
 
@@ -50,11 +52,9 @@ const noteDetailsSlice = createSlice({
 
     getAll(_, __) {},
     getAllSuccess(state, action) {
-      state.noteDetails =
-        !action.payload.data.noteDetails || !action.payload.data.noteDetails.length
-          ? []
-          : [...state.noteDetails, ...action.payload.data.noteDetails];
+      state.noteDetails = action.payload.data.noteDetails;
       state.total = action.payload.data.total;
+      state.noteId = action.payload.data.noteId;
     },
     getAllFail(state, action) {
       state.error = action.payload;
@@ -70,6 +70,10 @@ const noteDetailsSlice = createSlice({
     },
     setIsUpdate(state, action) {
       state.isUpdate = action.payload;
+    },
+    clearNoteDetails(state, action) {
+      state.noteDetails = action.payload;
+      state.total = 0;
     },
   },
 });

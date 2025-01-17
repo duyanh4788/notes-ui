@@ -1,4 +1,6 @@
+import { TimerType } from 'commom/contants';
 import { Notes } from 'interface/notes';
+import moment from 'moment';
 
 export class Helper {
   static createChild(notes: Notes[], data: Notes) {
@@ -113,5 +115,35 @@ export class Helper {
 
   static randomNum(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  static formatDateTime(date: Date | string | undefined) {
+    return moment(date || new Date()).format('DD/MM/YYYY HH:mm:ss');
+  }
+
+  static getCurrentTime() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    return { hours, minutes, seconds };
+  }
+
+  static changeTime(scheduleTime: string, unit: TimerType, value: number) {
+    const currentTime = new Date(scheduleTime);
+    switch (unit) {
+      case TimerType.HOURS:
+        currentTime.setHours(value);
+        break;
+      case TimerType.MINUTES:
+        currentTime.setMinutes(value);
+        break;
+      case TimerType.SECONDS:
+        currentTime.setSeconds(value);
+        break;
+      default:
+        break;
+    }
+    return currentTime.toISOString();
   }
 }

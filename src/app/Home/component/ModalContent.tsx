@@ -55,7 +55,7 @@ export const ModalContent = (props: Props) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box className="box_content">
+      <Box className="modal_content">
         <ButtonDetail
           noteDetail={noteDetail}
           title={title}

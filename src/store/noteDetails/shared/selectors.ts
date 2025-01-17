@@ -7,4 +7,5 @@ export const selectError = createSelector([selectorNoteDetails], state => state.
 export const selectNoteDetail = createSelector([selectorNoteDetails], state => state.noteDetail);
 export const selectNoteDetails = createSelector([selectorNoteDetails], state => state.noteDetails);
 export const selectTotal = createSelector([selectorNoteDetails], state => state.total);
+export const selectNoteId = createSelector([selectorNoteDetails], state => state.noteId);
 export const selectIsUpdate = createSelector([selectorNoteDetails], state => state.isUpdate);

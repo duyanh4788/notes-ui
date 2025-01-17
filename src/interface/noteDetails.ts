@@ -11,7 +11,7 @@ export type NoteDetails = {
   createdAt?: Date;
   updatedAt?: Date;
   sorting?: number;
-  scheduleTime?: Date;
+  scheduleTime?: string;
   isVitrual?: boolean;
   idVitrual?: string;
 };

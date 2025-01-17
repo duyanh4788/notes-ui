@@ -63,15 +63,8 @@ export const NotesList = () => {
   };
 
   const toggleLimitDetail = (noteId: string) => {
-    setLimitDetail(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(noteId)) {
-        newSet.delete(noteId);
-      } else {
-        newSet.add(noteId);
-      }
-      return newSet;
-    });
+    if (limitDetail.has(noteId)) return;
+    setLimitDetail(new Set([noteId]));
   };
 
   const NoteItem = (props: TreeItem2Props) => {
