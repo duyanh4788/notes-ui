@@ -1,6 +1,5 @@
 import { Textarea } from '@mui/joy';
 import { NoteDetails } from 'interface/noteDetails';
-
 interface Props {
   detail: NoteDetails;
   valContent: string;
@@ -12,7 +11,9 @@ export default function TexAreas(props: Props) {
   return (
     <Textarea
       minRows={2}
-      variant="solid"
+      color="success"
+      variant="soft"
+      size="sm"
       value={valContent}
       readOnly={!detail.isVitrual}
       onChange={e => changeContent(detail, e.target.value)}

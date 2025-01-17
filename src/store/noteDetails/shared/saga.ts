@@ -97,7 +97,7 @@ function* configData(type: string, data: NoteDetails) {
 
   switch (type) {
     case TypeSaga.CREATED:
-      result = [...noteDetails, { ...data }];
+      result = [{ ...data }, ...noteDetails];
       break;
     case TypeSaga.UPDATED:
       result = noteDetails.map(detail => (detail.id === data.id ? { ...data } : detail));

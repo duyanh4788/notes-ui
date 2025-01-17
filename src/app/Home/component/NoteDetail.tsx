@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Box, IconButton, styled, Paper, Tooltip } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,15 +28,33 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export const NoteDetail = () => {
   const dispatch = useDispatch();
-  const noteDetails = useSelector(NoteDetailsSelectors.selectNoteDetails);
+  const noteDetailsStore = useSelector(NoteDetailsSelectors.selectNoteDetails);
+  const noteId = useSelector(NoteDetailsSelectors.selectNoteId);
   const total = useSelector(NoteDetailsSelectors.selectTotal);
   const note = useSelector(Notes.selectNote);
 
+  const [noteDetails, setNoteDetailsStore] = useState<NoteDetails[]>([]);
   const [skip, setSkip] = useState<number>(0);
   const [title, setTitle] = useState<Map<number, string>>(new Map());
   const [content, setContent] = useState<Map<number, string>>(new Map());
   const [langCode, setLangCode] = useState<string>(LangCodes[0].value);
   const [view, setView] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    function initData(data: NoteDetails[]) {
+      if (!note || !data) return;
+      if (note.id === noteId && !data.length) return;
+      if (note.id !== noteId) {
+        setNoteDetailsStore(data);
+        setSkip(0);
+        return;
+      }
+      setNoteDetailsStore(prev => {
+        return [...prev, ...data];
+      });
+    }
+    initData(noteDetailsStore);
+  }, [noteDetailsStore, noteId]);
 
   const handleAddVitrual = () => {
     if (!note) return;
@@ -67,6 +85,7 @@ export const NoteDetail = () => {
   };
 
   const handleAdd = (detail: NoteDetails) => {
+    // eslint-disable-next-line
     const { id, isVitrual, idVitrual, ...restDetail } = detail;
     restDetail.title = title.get(id) || 'New Note';
     restDetail.content = content.get(id) || 'Content';
@@ -140,7 +159,7 @@ export const NoteDetail = () => {
     if (!noteDetails.length) return;
     return noteDetails.map(detail => (
       <Grid size={12} key={detail.id}>
-        <Item>
+        <Item className="item_detail">
           <ButtonDetail
             noteDetail={detail}
             title={title}
@@ -188,7 +207,7 @@ export const NoteDetail = () => {
   };
 
   return (
-    <Box>
+    <Box className="note_details">
       {note && (
         <Tooltip title={TooltipTitle.ADD}>
           <IconButton onClick={handleAddVitrual}>

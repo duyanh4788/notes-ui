@@ -1,12 +1,12 @@
 import { PATH_PARAMS } from 'commom/contants';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { LocalStorageKey, LocalStorageService } from 'services/localStorage';
 import * as UserSlice from 'store/users/shared/slice';
 import * as UserSelector from 'store/users/shared/selectors';
+import { AuthContext } from './AuthContex';
 
-export const AuthContext = React.createContext({});
 export const AuthContextProvider = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

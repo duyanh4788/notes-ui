@@ -1,0 +1,9 @@
+@use '../extend/index.scss' as *;
+@use '../variable/index.scss' as *;
+
+.note_details {
+  .item_detail {
+    max-height: 200px;
+    overflow: hidden;
+  }
+}

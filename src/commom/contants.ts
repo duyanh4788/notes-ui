@@ -35,6 +35,7 @@ export enum TypeSaga {
   CREATED_CHILD = 'CREATED_CHILD',
   UPDATED = 'UPDATED',
   DELETED = 'DELETED',
+  GET_ALL = 'GET_ALL',
 }
 
 export const LIMIT = 5;
@@ -99,4 +100,10 @@ export enum TooltipTitle {
 export enum PageType {
   MAIN = 'MAIN',
   MODAL = 'MODAL',
+}
+
+export enum TimerType {
+  HOUR = 'hour',
+  MINUTE = 'minute',
+  SECOND = 'second',
 }

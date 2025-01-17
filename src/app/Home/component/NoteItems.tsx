@@ -43,14 +43,15 @@ export const NoteItems = React.forwardRef(function NoteItem(
   };
 
   const getDetails = () => {
-    if (limitDetail.has(note.id)) return;
     toggleLimitDetail(note.id);
+    if (limitDetail.has(note.id)) return;
     const params = {
       noteId: note.id,
       skip: 0,
       limit: LIMIT,
     };
     dispatch(NoteSlice.actions.getByIdSuccess({ data: note }));
+    dispatch(NoteDetailsSlice.actions.clearNoteDetails([]));
     dispatch(NoteDetailsSlice.actions.getAll(params));
   };
 

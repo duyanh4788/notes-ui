@@ -1,0 +1,47 @@
+@use '../extend/index.scss' as *;
+@use '../variable/index.scss' as *;
+
+.schedule_header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $background-body-1;
+  padding: 5px;
+  .flip_time {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    .time_unit {
+      text-align: center;
+    }
+
+    .time_list {
+      cursor: pointer;
+      border: $border2;
+      border-radius: 5px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 40px;
+      height: 40px;
+      overflow-y: auto;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* Internet Explorer Edge */
+      scroll-snap-type: y mandatory;
+      color: $color-01;
+      li {
+        scroll-snap-align: start;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+    .time_list::-webkit-scrollbar {
+      display: none;
+    }
+    .time_list li:hover {
+      background-color: $background-body-2;
+    }
+  }
+}
