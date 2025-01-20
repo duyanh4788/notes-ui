@@ -16,7 +16,7 @@ export const Signin = () => {
   }, [selectUrlGg]);
 
   const handleLogin = () => {
-    dispatch(UserSlice.actions.signIn());
+    dispatch(UserSlice.actions.signInLoad());
   };
 
   return (

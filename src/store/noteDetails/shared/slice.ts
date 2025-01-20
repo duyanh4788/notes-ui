@@ -22,25 +22,25 @@ const noteDetailsSlice = createSlice({
   name: 'noteDetails',
   initialState,
   reducers: {
-    created(_, __) {},
+    createdLoad(_, __) {},
     createdSuccess(_, __) {},
     createdFail(state, action) {
       state.error = action.payload;
     },
 
-    updated(_, __) {},
+    updatedLoad(_, __) {},
     updatedSuccess(_, __) {},
     updatedFail(state, action) {
       state.error = action.payload;
     },
 
-    deleted(_, __) {},
+    deletedLoad(_, __) {},
     deletedSuccess(_, __) {},
     deletedFail(state, action) {
       state.error = action.payload;
     },
 
-    getById: (state, __) => {
+    getByIdLoad: (state, __) => {
       state.noteDetail = null;
     },
     getByIdSuccess: (state, action) => {
@@ -50,11 +50,11 @@ const noteDetailsSlice = createSlice({
       state.error = action.payload;
     },
 
-    getAll(_, __) {},
+    getAllLoad(_, __) {},
     getAllSuccess(state, action) {
-      state.noteDetails = action.payload.data.noteDetails;
-      state.total = action.payload.data.total;
-      state.noteId = action.payload.data.noteId;
+      state.noteDetails = action.payload.noteDetails;
+      state.total = action.payload.total;
+      state.noteId = action.payload.noteId;
     },
     getAllFail(state, action) {
       state.error = action.payload;
@@ -70,10 +70,6 @@ const noteDetailsSlice = createSlice({
     },
     setIsUpdate(state, action) {
       state.isUpdate = action.payload;
-    },
-    clearNoteDetails(state, action) {
-      state.noteDetails = action.payload;
-      state.total = 0;
     },
   },
 });

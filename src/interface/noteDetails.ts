@@ -18,6 +18,7 @@ export type NoteDetails = {
 
 export interface ResNoteDetails {
   noteDetails: NoteDetails[];
+  noteId: string;
   total: number;
 }
 

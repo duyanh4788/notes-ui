@@ -11,10 +11,9 @@ export const loadingMiddleware: Middleware = store => next => (action: unknown) 
     if (action.type === 'loading/startLoading' || action.type === 'loading/stopLoading') {
       return next(action);
     }
-    if (action.type.includes('Success') || action.type.includes('Fail')) {
+    if (action.type.includes('Load')) {
       store.dispatch(actions.startLoading());
-    }
-    if (action.type.includes('Success') || action.type.includes('Fail')) {
+    } else {
       store.dispatch(actions.stopLoading());
     }
     return next(action);

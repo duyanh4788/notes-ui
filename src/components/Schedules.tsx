@@ -19,7 +19,7 @@ interface Props {
   changeContent: (noteDetails: NoteDetails, content: string) => void;
 }
 
-export default function CardSchedule(props: Props) {
+export default function Schedules(props: Props) {
   const { noteDetails, valContent, changeContent } = props;
 
   const dispatch = useDispatch();
@@ -75,7 +75,11 @@ export default function CardSchedule(props: Props) {
     });
     const newDetail = { ...noteDetails };
     newDetail.scheduleTime = combinedDateTime.toISOString();
-    dispatch(NoteDetailsSlice.actions.updated(newDetail));
+    if (newDetail.isVitrual) {
+      dispatch(NoteDetailsSlice.actions.updateVitrual(newDetail));
+    } else {
+      dispatch(NoteDetailsSlice.actions.updatedLoad(newDetail));
+    }
     setIsEdit(false);
     handleClose();
   };

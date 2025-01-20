@@ -17,7 +17,7 @@ const userSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    signIn(state) {
+    signInLoad(state) {
       state.users = null;
       state.urlGoolge = null;
     },
@@ -28,7 +28,7 @@ const userSlice = createSlice({
       state.error = action.payload;
     },
 
-    getById: state => {
+    getByIdLoad: state => {
       state.error = null;
     },
     getByIdSuccess: (state, action) => {
@@ -38,7 +38,7 @@ const userSlice = createSlice({
       state.error = action.payload;
     },
 
-    signOut() {},
+    signOutLoad() {},
     signOutSuccess(state, _) {
       state.users = null;
       state.urlGoolge = null;

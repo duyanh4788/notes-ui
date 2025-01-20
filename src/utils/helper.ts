@@ -132,18 +132,23 @@ export class Helper {
   static changeTime(scheduleTime: string, unit: TimerType, value: number) {
     const currentTime = new Date(scheduleTime);
     switch (unit) {
-      case TimerType.HOURS:
+      case TimerType.HOUR:
         currentTime.setHours(value);
         break;
-      case TimerType.MINUTES:
+      case TimerType.MINUTE:
         currentTime.setMinutes(value);
         break;
-      case TimerType.SECONDS:
+      case TimerType.SECOND:
         currentTime.setSeconds(value);
         break;
       default:
         break;
     }
     return currentTime.toISOString();
+  }
+
+  static newDateToString() {
+    const newDate = new Date();
+    return newDate.toISOString();
   }
 }

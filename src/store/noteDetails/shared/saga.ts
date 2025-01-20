@@ -3,7 +3,7 @@ import { configResponse, configResponseError } from 'services/request';
 import { actions } from './slice';
 import { NoteDetailsHttps } from '../service/https';
 import { TypeSaga } from 'commom/contants';
-import { NoteDetails } from 'interface/noteDetails';
+import { NoteDetails, ResNoteDetails } from 'interface/noteDetails';
 
 const https = new NoteDetailsHttps();
 
@@ -52,7 +52,8 @@ export function* getAll(api, action) {
   try {
     const resPonse = yield call(api.getAll, action.payload);
     const data = yield configResponse(resPonse);
-    yield put(actions.getAllSuccess(data));
+    const newData = yield configGetAll(data.data);
+    yield put(actions.getAllSuccess(newData));
   } catch (error) {
     yield put(actions.getAllFail(configResponseError(error)));
   }
@@ -78,11 +79,11 @@ export function* delVitrual(action) {
 
 export function* NoteDetailsSaga() {
   yield all([
-    yield takeLatest(actions.created.type, created, https),
-    yield takeLatest(actions.updated.type, updated, https),
-    yield takeLatest(actions.deleted.type, deleted, https),
-    yield takeLatest(actions.getById.type, getById, https),
-    yield takeLatest(actions.getAll.type, getAll, https),
+    yield takeLatest(actions.createdLoad.type, created, https),
+    yield takeLatest(actions.updatedLoad.type, updated, https),
+    yield takeLatest(actions.deletedLoad.type, deleted, https),
+    yield takeLatest(actions.getByIdLoad.type, getById, https),
+    yield takeLatest(actions.getAllLoad.type, getAll, https),
     yield takeLatest(actions.addVitrual.type, addVitrual),
     yield takeLatest(actions.updateVitrual.type, updateVitrual),
     yield takeLatest(actions.delVitrual.type, delVitrual),
@@ -110,4 +111,14 @@ function* configData(type: string, data: NoteDetails) {
   }
   const isUpdate = type === TypeSaga.UPDATED || TypeSaga.CREATED_CHILD;
   yield put(actions.updateNoteDetails({ noteDetails: result, total: result.length, isUpdate }));
+}
+
+function* configGetAll(data: ResNoteDetails) {
+  const noteDetailsStore = yield select(state => state.noteDetails);
+  const { noteDetails = [], noteId } = noteDetailsStore;
+  if (!noteId || (noteId && noteId !== data.noteId)) {
+    return data;
+  }
+  data.noteDetails = [...noteDetails, ...data.noteDetails];
+  return data;
 }

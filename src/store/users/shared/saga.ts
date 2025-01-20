@@ -26,7 +26,9 @@ export function* getById(api, action) {
 
 export function* signOut(api, action) {
   try {
-    yield call(api.signOut, action.payload);
+    const resPonse = yield call(api.getById, action.payload);
+    const data = yield configResponse(resPonse);
+    yield put(actions.signOutSuccess(data));
   } catch (error) {
     yield put(actions.signOutFail(configResponseError(error)));
   }
@@ -34,8 +36,8 @@ export function* signOut(api, action) {
 
 export function* UserSaga() {
   yield all([
-    yield takeLatest(actions.signIn.type, signIn, https),
-    yield takeLatest(actions.getById.type, getById, https),
-    yield takeLatest(actions.signOut.type, signOut, https),
+    yield takeLatest(actions.signInLoad.type, signIn, https),
+    yield takeLatest(actions.getByIdLoad.type, getById, https),
+    yield takeLatest(actions.signOutLoad.type, signOut, https),
   ]);
 }
