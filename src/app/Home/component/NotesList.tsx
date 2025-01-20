@@ -25,7 +25,7 @@ export const NotesList = () => {
   const [limitDetail, setLimitDetail] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    dispatch(NoteSlice.actions.getAll({ skip, limit: LIMIT }));
+    dispatch(NoteSlice.actions.getAllLoad({ skip, limit: LIMIT }));
   }, []);
 
   useEffect(() => {
@@ -41,13 +41,13 @@ export const NotesList = () => {
 
   const handleAdd = () => {
     if (!label.trim()) return;
-    dispatch(NoteSlice.actions.created({ label }));
+    dispatch(NoteSlice.actions.createdLoad({ label }));
     setLabel('');
   };
 
   const handleGetMore = () => {
     setSkip(skip + LIMIT);
-    dispatch(NoteSlice.actions.getAll({ skip: skip + LIMIT, limit: LIMIT }));
+    dispatch(NoteSlice.actions.getAllLoad({ skip: skip + LIMIT, limit: LIMIT }));
   };
 
   const toggleExpand = (noteId: string) => {

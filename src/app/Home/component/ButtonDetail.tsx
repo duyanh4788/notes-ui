@@ -93,17 +93,17 @@ export const ButtonDetail = (props: Props) => {
             </IconButton>
           </Tooltip>
         )}
-        <Tooltip title={TooltipTitle.COPY}>
-          <IconButton onClick={() => handleCopy(noteDetail)}>
-            <ContentCopy fontSize="small" />
-          </IconButton>
-        </Tooltip>
         {pageType === PageType.MAIN && (
           <MenuTypes noteDetails={noteDetail} getType={handleUpdateType} />
         )}
         {noteDetail.type === NoteDetailType.CODE && (
           <MenuLangs langCode={langCode} setLangCode={setLangCode} />
         )}
+        <Tooltip title={TooltipTitle.COPY}>
+          <IconButton onClick={() => handleCopy(noteDetail)}>
+            <ContentCopy fontSize="small" />
+          </IconButton>
+        </Tooltip>
       </Box>
     </Box>
   );

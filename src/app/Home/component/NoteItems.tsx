@@ -51,8 +51,7 @@ export const NoteItems = React.forwardRef(function NoteItem(
       limit: LIMIT,
     };
     dispatch(NoteSlice.actions.getByIdSuccess({ data: note }));
-    dispatch(NoteDetailsSlice.actions.clearNoteDetails([]));
-    dispatch(NoteDetailsSlice.actions.getAll(params));
+    dispatch(NoteDetailsSlice.actions.getAllLoad(params));
   };
 
   const inputBlur: UseTreeItem2LabelInputSlotOwnProps['onBlur'] = event => {
@@ -69,10 +68,10 @@ export const NoteItems = React.forwardRef(function NoteItem(
       if (value && value !== note.label) {
         if (!note.createdAt) {
           const { id, parentId } = note;
-          dispatch(NoteSlice.actions.createdChild({ parentId, label: value }));
+          dispatch(NoteSlice.actions.createdChildLoad({ parentId, label: value }));
           dispatch(NoteSlice.actions.delChildVitrual({ id, parentId }));
         } else {
-          dispatch(NoteSlice.actions.updated({ id: note.id, label: value }));
+          dispatch(NoteSlice.actions.updatedLoad({ id: note.id, label: value }));
         }
       }
       interactions.toggleItemEditing();
@@ -88,11 +87,11 @@ export const NoteItems = React.forwardRef(function NoteItem(
     interactions.handleSaveItemLabel(event, newLabel);
     if (!note.createdAt) {
       const { id, parentId } = note;
-      dispatch(NoteSlice.actions.createdChild({ parentId, label: newLabel }));
+      dispatch(NoteSlice.actions.createdChildLoad({ parentId, label: newLabel }));
       dispatch(NoteSlice.actions.delChildVitrual({ id, parentId }));
     }
     if (note.createdAt) {
-      dispatch(NoteSlice.actions.updated({ id: note.id, label: newLabel }));
+      dispatch(NoteSlice.actions.updatedLoad({ id: note.id, label: newLabel }));
     }
     interactions.toggleItemEditing();
   };
@@ -110,7 +109,7 @@ export const NoteItems = React.forwardRef(function NoteItem(
       const { id, parentId } = note;
       dispatch(NoteSlice.actions.delChildVitrual({ id, parentId }));
     } else {
-      dispatch(NoteSlice.actions.deleted(note.id));
+      dispatch(NoteSlice.actions.deletedLoad(note.id));
     }
   };
 
@@ -132,7 +131,7 @@ export const NoteItems = React.forwardRef(function NoteItem(
 
   const onofExpand = (event: React.MouseEvent) => {
     if (note.parentId) {
-      dispatch(NoteSlice.actions.getById(note.id));
+      dispatch(NoteSlice.actions.getByIdLoad(note.id));
     }
     toggleExpand(note.id);
     if (note.children && note.children.length) {

@@ -2,7 +2,7 @@ import { NoteDetailType } from 'commom/contants';
 import { NoteDetails } from 'interface/noteDetails';
 import TexAreas from 'components/TexAreas';
 import Editors from 'components/Editors';
-import CardSchedule from 'components/CardSchedule';
+import Schedules from 'components/Schedules';
 
 interface Props {
   noteDetail: NoteDetails;
@@ -31,7 +31,7 @@ export const Content = (props: Props) => {
     }
     if (detail.type === NoteDetailType.SCHEDULE) {
       return (
-        <CardSchedule noteDetails={detail} valContent={valContent} changeContent={changeContent} />
+        <Schedules noteDetails={detail} valContent={valContent} changeContent={changeContent} />
       );
     }
   };

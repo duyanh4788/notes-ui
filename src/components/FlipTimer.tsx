@@ -70,15 +70,11 @@ export default function FlipTimer(props: Props) {
     }
     const items: React.ReactElement[] = [];
     for (let i = 0; i < max; i++) {
-      const re = Number(i.toString().padStart(2, '0'));
+      const parseTime = i.toString().padStart(2, '0');
+      const parseValue = selectedValue.toString().padStart(2, '0');
       items.push(
-        <li
-          key={i}
-          data-value={i}
-          className={i === selectedValue ? 'active' : ''}
-          defaultValue={selectedValue}
-        >
-          {re === selectedValue ? selectedValue : re}
+        <li key={i} data-value={i} className={parseTime === parseValue ? 'active' : ''}>
+          {parseValue}
         </li>,
       );
     }

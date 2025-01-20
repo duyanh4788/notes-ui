@@ -89,12 +89,12 @@ export function* delChildVitrual(action) {
 
 export function* NotesSaga() {
   yield all([
-    yield takeLatest(actions.created.type, created, https),
-    yield takeLatest(actions.createdChild.type, createdChild, https),
-    yield takeLatest(actions.updated.type, updated, https),
-    yield takeLatest(actions.deleted.type, deleted, https),
-    yield takeLatest(actions.getById.type, getById, https),
-    yield takeLatest(actions.getAll.type, getAll, https),
+    yield takeLatest(actions.createdLoad.type, created, https),
+    yield takeLatest(actions.createdChildLoad.type, createdChild, https),
+    yield takeLatest(actions.updatedLoad.type, updated, https),
+    yield takeLatest(actions.deletedLoad.type, deleted, https),
+    yield takeLatest(actions.getByIdLoad.type, getById, https),
+    yield takeLatest(actions.getAllLoad.type, getAll, https),
     yield takeLatest(actions.addChildVitrual.type, addChildVitrual),
     yield takeLatest(actions.updateChildVitrual.type, updateChildVitrual),
     yield takeLatest(actions.delChildVitrual.type, delChildVitrual),

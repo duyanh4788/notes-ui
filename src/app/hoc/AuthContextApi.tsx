@@ -17,7 +17,7 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     function handleUser(tokenStore: string | null) {
       if (tokenStore) {
-        return dispatch(UserSlice.actions.getById());
+        return dispatch(UserSlice.actions.getByIdLoad());
       }
       const urlParams = new URLSearchParams(window.location.search);
       const userId = urlParams.get('userId');
@@ -28,7 +28,7 @@ export const AuthContextProvider = ({ children }) => {
         LocalStorageService.setItem({ key: LocalStorageKey.userToken, value: token });
         const newUrl = window.location.pathname;
         window.history.replaceState({}, '', newUrl);
-        return dispatch(UserSlice.actions.getById());
+        return dispatch(UserSlice.actions.getByIdLoad());
       }
       return navigate(PATH_PARAMS.SIGNIN);
     }
