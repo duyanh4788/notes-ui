@@ -8,6 +8,7 @@ export class Helper {
       if (note.id === data.parentId) {
         const updatedNote = {
           ...note,
+          _count: { children: note._count.children + 1, noteDetails: note._count.noteDetails },
           children:
             note.children && note.children.length ? [...note.children, { ...data }] : [{ ...data }],
         };
@@ -30,6 +31,7 @@ export class Helper {
       if (child.id === data.parentId) {
         return {
           ...child,
+          _count: { children: child._count.children + 1, noteDetails: child._count.noteDetails },
           children:
             child.children && child.children.length
               ? [...child.children, { ...data }]
@@ -82,7 +84,11 @@ export class Helper {
     return notes.map(note => {
       if (note.id === data.parentId) {
         const updatedChildren = this.delChildInChild(note.children, data);
-        return { ...note, children: updatedChildren };
+        return {
+          ...note,
+          _count: { children: note._count.children - 1, noteDetails: note._count.noteDetails },
+          children: updatedChildren,
+        };
       }
 
       if (note.children) {

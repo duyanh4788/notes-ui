@@ -12,6 +12,7 @@ export interface Notes {
   userId: number;
   children: Notes[];
   noteDetails?: NoteDetails[];
+  _count: { noteDetails: number; children: number };
 }
 
 export interface ResNotes {
