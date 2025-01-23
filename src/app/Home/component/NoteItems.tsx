@@ -125,6 +125,7 @@ export const NoteItems = React.forwardRef(function NoteItem(
       label: 'New Child',
       parentId: note.id,
       children: [],
+      _count: { noteDetails: 0, children: 0 },
     };
     dispatch(NoteSlice.actions.addChildVitrual(newChild));
   };
@@ -155,7 +156,8 @@ export const NoteItems = React.forwardRef(function NoteItem(
           editable: status.editable,
           expanded: expanded,
           noteId: note.id,
-          quantityChild: note?.children?.length || 0,
+          quantityChild: note?._count?.children || 0,
+          quantityFile: note?._count?.noteDetails || 0,
           editItem: editItem,
           deleteItem: deleteItem,
           onofExpand: onofExpand,

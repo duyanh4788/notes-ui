@@ -21,6 +21,7 @@ export interface CustomLabelProps extends UseTreeItem2LabelSlotOwnProps {
   expanded: Set<string>;
   noteId: string;
   quantityChild: number;
+  quantityFile: number;
   editItem: () => void;
   deleteItem: () => void;
   onofExpand: (event: React.MouseEvent) => void;
@@ -39,6 +40,7 @@ export function CustomLabel({
   expanded,
   noteId,
   quantityChild,
+  quantityFile,
   editItem,
   deleteItem,
   onofExpand,
@@ -76,7 +78,9 @@ export function CustomLabel({
             <ChevronRightRounded fontSize="small" />
           </IconButton>
         )}
-        {children}
+        <Tooltip arrow placement="right-end" title={`📁: ${quantityChild} | 📝: ${quantityFile}`}>
+          <Box>{children}</Box>
+        </Tooltip>
       </Box>
       {editable && (
         <Box>

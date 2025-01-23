@@ -95,6 +95,8 @@ export enum TooltipTitle {
   EDT = 'Edit',
   COPY = 'Copy',
   SEL_TYPE = 'Select type',
+  HOME = 'Home',
+  SING_OUT = 'Sign out',
 }
 
 export enum PageType {

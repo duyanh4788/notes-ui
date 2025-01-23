@@ -26,7 +26,7 @@ export function* getById(api, action) {
 
 export function* signOut(api, action) {
   try {
-    const resPonse = yield call(api.getById, action.payload);
+    const resPonse = yield call(api.signOut, action.payload);
     const data = yield configResponse(resPonse);
     yield put(actions.signOutSuccess(data));
   } catch (error) {

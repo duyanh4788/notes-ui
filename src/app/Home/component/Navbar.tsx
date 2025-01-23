@@ -2,19 +2,24 @@ import { ExitToAppRounded, HomeRounded } from '@mui/icons-material';
 import {
   AppBar,
   Avatar,
+  Box,
   createTheme,
   CssBaseline,
   Stack,
   ThemeProvider,
   Toolbar,
   Tooltip,
+  Typography,
 } from '@mui/material';
-import { PATH_PARAMS } from 'commom/contants';
+import { PATH_PARAMS, TooltipTitle } from 'commom/contants';
 import { Users } from 'interface/users';
 import { useNavigate } from 'react-router-dom';
-import { LocalStorageService } from 'services/localStorage';
 import * as UserSlice from 'store/users/shared/slice';
 import { useDispatch } from 'react-redux';
+import { useContext, useEffect } from 'react';
+import { LocalStorageService } from 'services/localStorage';
+import { AuthContext } from 'app/hoc/AuthContex';
+import Grid from '@mui/material/Grid2';
 
 const darkTheme = createTheme({
   palette: {
@@ -24,20 +29,22 @@ const darkTheme = createTheme({
     },
   },
 });
-interface Props {
-  userInfor: Users;
-}
 
-export const Navbar: React.FC<Props> = ({ userInfor }) => {
+export const Navbar = () => {
+  const userInfor: Users = useContext(AuthContext);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleClick = () => {};
+  useEffect(() => {
+    if (!userInfor || !userInfor.id) {
+      LocalStorageService.clearLocalStorage();
+      navigate(PATH_PARAMS.SIGNIN);
+    }
+  }, [userInfor]);
 
   const signOut = () => {
-    dispatch(UserSlice.actions.signOut());
-    LocalStorageService.clearLocalStorage();
-    navigate(PATH_PARAMS.SIGNIN);
+    dispatch(UserSlice.actions.signOutLoad());
   };
 
   return (
@@ -45,14 +52,25 @@ export const Navbar: React.FC<Props> = ({ userInfor }) => {
       <CssBaseline />
       <ThemeProvider theme={darkTheme}>
         <AppBar component="nav">
-          <Toolbar disableGutters style={{ cursor: 'pointer' }}>
-            <ExitToAppRounded onClick={signOut} />
-            <HomeRounded onClick={() => navigate(PATH_PARAMS.HOME)} />
-            <Tooltip title={userInfor?.userName}>
-              <Avatar src={userInfor?.avatar} onClick={handleClick}>
-                {userInfor?.userName}
-              </Avatar>
-            </Tooltip>
+          <Toolbar disableGutters style={{ cursor: 'pointer', justifyContent: 'space-between' }}>
+            <Box sx={{ ml: 2 }}>
+              <Tooltip title={TooltipTitle.SING_OUT}>
+                <ExitToAppRounded onClick={signOut} />
+              </Tooltip>
+              <Tooltip title={TooltipTitle.HOME}>
+                <HomeRounded onClick={() => navigate(PATH_PARAMS.HOME)} />
+              </Tooltip>
+            </Box>
+            <Box sx={{ mr: 2 }}>
+              <Tooltip
+                arrow
+                open
+                placement="left-start"
+                title={`${userInfor?.userName} 📁: ${userInfor.notesCount} | 📝: ${userInfor.noteDetailsCount}`}
+              >
+                <Avatar src={userInfor?.avatar}>{userInfor?.userName}</Avatar>
+              </Tooltip>
+            </Box>
           </Toolbar>
         </AppBar>
       </ThemeProvider>

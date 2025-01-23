@@ -9,6 +9,7 @@ export interface Users {
   role?: UserRole;
   email?: string;
   notesCount?: number;
+  noteDetailsCount?: number;
   status?: StatusType;
   createdAt?: Date;
   updatedAt?: Date;
