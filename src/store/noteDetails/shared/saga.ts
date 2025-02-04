@@ -59,6 +59,16 @@ export function* getAll(api, action) {
   }
 }
 
+export function* search(api, action) {
+  try {
+    const resPonse = yield call(api.search, action.payload);
+    const data = yield configResponse(resPonse);
+    yield put(actions.searchSuccess(data));
+  } catch (error) {
+    yield put(actions.searchFail(configResponseError(error)));
+  }
+}
+
 export function* addVitrual(action) {
   try {
     yield configData(TypeSaga.CREATED, action.payload);
@@ -84,6 +94,7 @@ export function* NoteDetailsSaga() {
     yield takeLatest(actions.deletedLoad.type, deleted, https),
     yield takeLatest(actions.getByIdLoad.type, getById, https),
     yield takeLatest(actions.getAllLoad.type, getAll, https),
+    yield takeLatest(actions.searchLoad.type, search, https),
     yield takeLatest(actions.addVitrual.type, addVitrual),
     yield takeLatest(actions.updateVitrual.type, updateVitrual),
     yield takeLatest(actions.delVitrual.type, delVitrual),

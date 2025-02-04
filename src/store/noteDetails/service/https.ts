@@ -34,4 +34,8 @@ export class NoteDetailsHttps {
     const param = `?noteId=${noteId}&skip=${skip}&limit=${limit}`;
     return httpRequest(TypeApi.API_NOTES).get(`${Api.NOTE_DETAILS}${param}`);
   };
+
+  public search = (text: string): Promise<ResNoteDetails> => {
+    return httpRequest(TypeApi.API_NOTES).get(`${Api.SEARCH}?text=${text}`);
+  };
 }

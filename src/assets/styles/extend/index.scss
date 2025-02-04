@@ -16,7 +16,7 @@
   border-radius: 5px;
   overflow: hidden;
   backdrop-filter: blur(6px);
-  border: $border1;
+  border: $border-main;
   box-shadow: $box-shadow;
 }
 
@@ -25,7 +25,7 @@
   padding: 10px 15px;
   color: $color-black;
   background-color: $color-white;
-  border: $border1;
+  border: $border-main;
   border-radius: 5px;
   outline: none;
   cursor: pointer;
@@ -39,11 +39,11 @@
   border-radius: 10px;
   background-color: $color-white;
   outline: none;
-  border: $border3;
+  border: $borderthird;
 }
 
 @mixin placehoder_form {
-  color: $color-03;
+  color: $color-main;
   opacity: 0.5;
   text-align: right;
 }
@@ -55,7 +55,7 @@
   border-radius: 5px;
   outline: none;
   border: none;
-  color: $color-03;
+  color: $color-main;
   background-color: $color-white;
 }
 

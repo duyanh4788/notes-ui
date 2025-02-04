@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Box, TextField, IconButton, Tooltip } from '@mui/material';
+import { Box, IconButton, Tooltip } from '@mui/material';
 import { AddRounded, ExpandCircleDown } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import * as NoteSlice from 'store/notes/shared/slice';
 import * as NoteSelectors from 'store/notes/shared/selectors';
+import * as NoteDetailsSlice from 'store/noteDetails/shared/slice';
 import { Notes } from 'interface/notes';
 import { LIMIT, TooltipTitle } from 'commom/contants';
 import { RichTreeView, TreeItem2Props, useTreeItem2Utils } from '@mui/x-tree-view';
@@ -19,10 +20,10 @@ export const NotesList = () => {
   const isUpdate = useSelector(NoteSelectors.selectIsUpdate);
 
   const [notesList, setNoteLists] = useState<Notes[]>([]);
-  const [label, setLabel] = useState<string>('');
   const [skip, setSkip] = useState<number>(0);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [limitDetail, setLimitDetail] = useState<Set<string>>(new Set());
+  const [textSearch, setTextSearch] = useState<string | null>('');
 
   useEffect(() => {
     dispatch(NoteSlice.actions.getAllLoad({ skip, limit: LIMIT }));
@@ -39,10 +40,28 @@ export const NotesList = () => {
     initNotes(notes);
   }, [notes]);
 
+  useEffect(() => {
+    if (textSearch === '') return;
+    if (textSearch === null) {
+      if (notes[0]?.id) {
+        const params = {
+          noteId: notes[0].id,
+          skip: 0,
+          limit: LIMIT,
+        };
+        dispatch(NoteDetailsSlice.actions.getAllLoad(params));
+        setTextSearch('');
+      }
+      return;
+    }
+    const timeoutId = setTimeout(() => {
+      dispatch(NoteDetailsSlice.actions.searchLoad(textSearch));
+    }, 600);
+    return () => clearTimeout(timeoutId);
+  }, [textSearch, dispatch]);
+
   const handleAdd = () => {
-    if (!label.trim()) return;
-    dispatch(NoteSlice.actions.createdLoad({ label }));
-    setLabel('');
+    dispatch(NoteSlice.actions.createdLoad({ label: 'New Floder' }));
   };
 
   const handleGetMore = () => {
@@ -94,42 +113,36 @@ export const NotesList = () => {
 
   return (
     <Box className="trees_box">
-      <Box sx={{ marginTop: 2, display: 'flex', gap: 1 }}>
-        <TextField
-          className="trees_text_field"
-          value={label}
-          onChange={e => setLabel(e.target.value)}
-          placeholder="Enter node name"
-        />
-        <Tooltip title={TooltipTitle.ADD}>
-          <IconButton onClick={handleAdd}>
-            <AddRounded />
-          </IconButton>
-        </Tooltip>
-      </Box>
+      <Search textSearch={textSearch} setTextSearch={setTextSearch} />
       <Grid container spacing={1}>
-        <Grid size={5} className="tree_gird">
-          <Search />
-          {notesList.length ? (
-            <RichTreeView
-              sx={{ height: 'fit-content', flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-              items={notesList}
-              isItemEditable
-              experimentalFeatures={{
-                indentationAtItemLevel: true,
-                labelEditing: true,
-              }}
-              defaultExpandedItems={['grild']}
-              slots={{
-                item: (props: TreeItem2Props) => <NoteItem {...props} />,
-              }}
-            />
-          ) : null}
-          <IconButton disabled={!notes.length || total - skip <= LIMIT} onClick={handleGetMore}>
-            <ExpandCircleDown />
-          </IconButton>
-        </Grid>
-        <Grid size={7} className="tree_gird">
+        {!textSearch ? (
+          <Grid size={5} className="tree_gird">
+            <Tooltip title={TooltipTitle.ADD}>
+              <IconButton onClick={handleAdd}>
+                <AddRounded />
+              </IconButton>
+            </Tooltip>
+            {notesList.length ? (
+              <RichTreeView
+                sx={{ height: 'fit-content', flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+                items={notesList}
+                isItemEditable
+                experimentalFeatures={{
+                  indentationAtItemLevel: true,
+                  labelEditing: true,
+                }}
+                defaultExpandedItems={['grild']}
+                slots={{
+                  item: (props: TreeItem2Props) => <NoteItem {...props} />,
+                }}
+              />
+            ) : null}
+            <IconButton disabled={!notes.length || total - skip <= LIMIT} onClick={handleGetMore}>
+              <ExpandCircleDown />
+            </IconButton>
+          </Grid>
+        ) : null}
+        <Grid size={!textSearch ? 7 : 12} className="tree_gird">
           <NoteDetail />
         </Grid>
       </Grid>

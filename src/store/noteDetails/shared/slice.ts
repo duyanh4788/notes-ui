@@ -60,6 +60,16 @@ const noteDetailsSlice = createSlice({
       state.error = action.payload;
     },
 
+    searchLoad: (_, __) => {},
+    searchSuccess: (state, action) => {
+      state.noteDetails = action.payload.data.noteDetails;
+      state.total = action.payload.data.total;
+      state.noteId = null;
+    },
+    searchFail: (state, action) => {
+      state.error = action.payload;
+    },
+
     addVitrual(_, __) {},
     delVitrual(_, __) {},
     updateVitrual(_, __) {},

@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $background-body-1;
+  background-color: $background-main;
   padding: 5px;
   .flip_time {
     display: flex;
@@ -17,7 +17,7 @@
 
     .time_list {
       cursor: pointer;
-      border: $border2;
+      border: $borde-second;
       border-radius: 5px;
       list-style: none;
       padding: 0;
@@ -28,7 +28,7 @@
       scrollbar-width: none; /* Firefox */
       -ms-overflow-style: none; /* Internet Explorer Edge */
       scroll-snap-type: y mandatory;
-      color: $color-01;
+      color: $color-main;
       li {
         scroll-snap-align: start;
         height: 40px;
@@ -41,7 +41,7 @@
       display: none;
     }
     .time_list li:hover {
-      background-color: $background-body-2;
+      background-color: $background-second;
     }
   }
 }

@@ -7,3 +7,11 @@
     overflow: hidden;
   }
 }
+
+.note_details_empty::after {
+  content: 'Empty data';
+  position: absolute;
+  transform: translate(-50%);
+  font-size: 20px;
+  color: $color-second;
+}

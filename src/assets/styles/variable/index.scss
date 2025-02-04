@@ -1,20 +1,20 @@
-$color-01: #ff6a00dc;
-$color-02: #ff6a0057;
-$color-03: #757575;
-$color-04: #eeeeee;
-$color-05: #ebebeb;
+$color-main: #ff6a00dc;
+$color-second: #ff6a0057;
+$color-third: #ff6a0023;
+
+$color-hover: #eeeeee;
+$color-disable: #ebebeb;
 $color-white: white;
 
-$background-body-1: #f0eded;
-$background-body-2: #cfcece;
-$background-body-3: #eae4e42b;
+$background-main: #f0e7de;
+$background-second: #cfcece;
+$background-third: #eae4e42b;
+
 $background-scroll: #a3a3a3;
-$background-loading: #ffffff6b;
 
-$border1: 1px solid #ebebec;
-$border2: 1px solid $color-02;
-$border3: 1px solid #cdcdcd5c;
-$borderTable: 1px solid #ebebec;
+$border-main: 1px solid #ebebec;
+$borde-second: 1px solid $color-second;
+$borderthird: 1px solid #cdcdcd5c;
 
-$box-shadow: 0px 1px 1px $color-01;
-$box-shadow-hover: 0px 1px 2px $color-02;
+$box-shadow: 0px 1px 1px $color-main;
+$box-shadow-hover: 0px 1px 2px $color-second;

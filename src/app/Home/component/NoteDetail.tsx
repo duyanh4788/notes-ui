@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Box, IconButton, styled, Paper, Tooltip } from '@mui/material';
+import { Box, IconButton, styled, Paper, Tooltip, Badge, Chip } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useDispatch, useSelector } from 'react-redux';
 import * as NoteDetailsSlice from 'store/noteDetails/shared/slice';
@@ -149,7 +149,6 @@ export const NoteDetail = () => {
   };
 
   const renderDetails = () => {
-    if (!note) return;
     if (!noteDetails.length) return;
     return noteDetails.map(detail => (
       <Grid size={12} key={detail.id}>
@@ -201,7 +200,7 @@ export const NoteDetail = () => {
   };
 
   return (
-    <Box className="note_details">
+    <Box className={`note_details ${!noteDetails.length ? `note_details_empty` : ''}`}>
       {note && (
         <Tooltip title={TooltipTitle.ADD}>
           <IconButton onClick={handleAddVitrual}>
@@ -212,9 +211,11 @@ export const NoteDetail = () => {
       <Grid container spacing={2}>
         {renderDetails()}
       </Grid>
-      <IconButton disabled={!noteDetails.length || total - skip <= LIMIT} onClick={handleGetMore}>
-        <ExpandCircleDown />
-      </IconButton>
+      {noteDetails.length ? (
+        <IconButton disabled={total - skip <= LIMIT} onClick={handleGetMore}>
+          <ExpandCircleDown />
+        </IconButton>
+      ) : null}
     </Box>
   );
 };

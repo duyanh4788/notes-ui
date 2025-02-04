@@ -13,7 +13,7 @@
 
 body {
   font-family: 'Gotham Ultra', sans-serif;
-  color: $color-01;
+  color: $color-main;
 }
 
 * {
@@ -44,9 +44,9 @@ main {
 }
 
 body {
-  background: $background-body-1 !important;
-  background: -webkit-linear-gradient($background-body-1, $background-body-2);
-  background: linear-gradient($background-body-1, $background-body-2);
+  background: $background-main !important;
+  background: -webkit-linear-gradient($background-main, $background-second);
+  background: linear-gradient($background-main, $background-second);
 }
 
 body::-webkit-scrollbar,
@@ -61,9 +61,9 @@ body::-webkit-scrollbar-thumb,
 .MuiDialogContent-root::-webkit-scrollbar-thumb,
 .tree_gird::-webkit-scrollbar-thumb,
 .MuiGrid-root::-webkit-scrollbar-thumb {
-  background: $background-body-1;
+  background: $background-main;
   border-radius: 6px;
-  border: $border3;
+  border: $borderthird;
   box-shadow: $box-shadow;
 }
 
@@ -87,11 +87,11 @@ body::-webkit-scrollbar-thumb,
 }
 
 .css-1bjk3jo-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected {
-  color: $color-01 !important;
+  color: $color-main !important;
 }
 
 .MuiButtonBase-root {
-  background: $background-body-3 !important;
+  background: $background-third !important;
 }
 
 .css-1lymaxv-MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
@@ -121,17 +121,17 @@ body::-webkit-scrollbar-thumb,
 .MuiSvgIcon-root,
 .MuiAvatar-root,
 .MuiSwitch-switchBase {
-  color: $color-02 !important;
+  color: $color-second !important;
 }
 
 .MuiSwitch-track,
 .css-tj8d99-MuiSwitch-track,
 .css-p85nl6-MuiTreeItem2-content {
-  background-color: $color-02 !important;
+  background-color: $color-second !important;
 }
 
 .css-p85nl6-MuiTreeItem2-content:focus {
-  background-color: $color-01 !important;
+  background-color: $color-main !important;
 }
 
 .Toastify {
