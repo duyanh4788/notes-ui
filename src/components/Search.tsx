@@ -18,7 +18,7 @@ export const Search = (props: Props) => {
   };
 
   return (
-    <Paper className="paper_search">
+    <Paper className="paper_text_field">
       <InputBase
         sx={{ ml: 1, flex: 1 }}
         placeholder="Search"

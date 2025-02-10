@@ -4,7 +4,11 @@
 .note_details {
   .item_detail {
     max-height: 200px;
+    background: $color-third;
     overflow: hidden;
+    .MuiTextarea-root {
+      max-height: 140px;
+    }
   }
 }
 

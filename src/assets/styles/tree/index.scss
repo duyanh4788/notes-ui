@@ -20,7 +20,7 @@
     overflow-x: hidden;
     overflow-y: auto;
   }
-  .paper_search {
+  .paper_text_field {
     display: flex;
     align-items: center;
     width: 100%;
@@ -31,7 +31,7 @@
     margin: 10px 0;
     border-radius: 5px;
   }
-  .paper_search:hover {
+  .paper_text_field:hover {
     box-shadow: $box-shadow-hover;
   }
 }

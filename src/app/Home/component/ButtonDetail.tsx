@@ -7,7 +7,7 @@ import {
   EditRounded,
   VisibilityRounded,
 } from '@mui/icons-material';
-import { Box, Chip, IconButton, TextField, Tooltip } from '@mui/material';
+import { Box, Chip, IconButton, Paper, TextField, Tooltip } from '@mui/material';
 import { MenuTypes } from 'components/MenuTypes';
 import { MenuLangs } from 'components/MenuLangs';
 import { Dispatch, SetStateAction } from 'react';
@@ -51,15 +51,16 @@ export const ButtonDetail = (props: Props) => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
       {noteDetail.isVitrual && pageType === PageType.MAIN ? (
-        <TextField
-          className="trees_text_field"
-          value={title.get(noteDetail.id)}
-          onChange={e => {
-            if (!noteDetail.isVitrual) return;
-            mapStringById(noteDetail.id, e.target.value, setTitle);
-          }}
-          placeholder="Enter node name"
-        />
+        <Paper className="paper_text_field">
+          <TextField
+            value={title.get(noteDetail.id)}
+            onChange={e => {
+              if (!noteDetail.isVitrual) return;
+              mapStringById(noteDetail.id, e.target.value, setTitle);
+            }}
+            placeholder="Enter node name"
+          />
+        </Paper>
       ) : (
         <Box>
           <Chip label={noteDetail.title} />

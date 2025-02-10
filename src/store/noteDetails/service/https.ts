@@ -36,6 +36,6 @@ export class NoteDetailsHttps {
   };
 
   public search = (text: string): Promise<ResNoteDetails> => {
-    return httpRequest(TypeApi.API_NOTES).get(`${Api.SEARCH}?text=${text}`);
+    return httpRequest(TypeApi.API_NOTES).get(`${Api.SEARCH}?text=${text.toLocaleLowerCase()}`);
   };
 }

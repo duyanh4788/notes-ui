@@ -31,7 +31,10 @@ export class Helper {
       if (child.id === data.parentId) {
         return {
           ...child,
-          _count: { children: child._count.children + 1, noteDetails: child._count.noteDetails },
+          _count: {
+            children: (child?._count?.children || 0) + 1,
+            noteDetails: child?._count?.noteDetails || 0,
+          },
           children:
             child.children && child.children.length
               ? [...child.children, { ...data }]
