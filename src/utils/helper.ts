@@ -8,7 +8,10 @@ export class Helper {
       if (note.id === data.parentId) {
         const updatedNote = {
           ...note,
-          _count: { children: note._count.children + 1, noteDetails: note._count.noteDetails },
+          _count: {
+            children: (note?._count?.children || 0) + 1,
+            noteDetails: note?._count?.noteDetails || 0,
+          },
           children:
             note.children && note.children.length ? [...note.children, { ...data }] : [{ ...data }],
         };
