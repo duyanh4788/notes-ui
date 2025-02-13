@@ -47,8 +47,10 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/notes-ui-image:${GITHUB_REF#refs/tags/}
-            docker stop frontend-container || true
-            docker rm frontend-container || true
-            docker run -d --name frontend-container -p 3000:80 ${{ secrets.DOCKER_USERNAME }}/notes-ui-image:${GITHUB_REF#refs/tags/}
-            docker image prune -f
+            ssh -o KexAlgorithms=diffie-hellman-group14-sha256 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} -p ${{ secrets.SERVER_PORT }} << 'EOF'
+              docker pull ${{ secrets.DOCKER_USERNAME }}/notes-ui-image:${GITHUB_REF#refs/tags/}
+              docker stop notes-ui || true
+              docker rm notes-ui || true
+              docker run -d --name notes-ui --restart unless-stopped -p 3000:80 ${{ secrets.DOCKER_USERNAME }}/notes-ui-image:${GITHUB_REF#refs/tags/}
+              docker image prune -f
+            EOF
