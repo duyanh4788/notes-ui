@@ -1,0 +1,43 @@
+name: CI/CD for notes-ui (ReactJS)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Run tests
+        run: |
+          npm run test
+
+      - name: Build Frontend
+        run: |
+          npm run build
+
+      - name: Dockerize Frontend
+        run: |
+          docker build -t notes-ui-image .
+          docker tag notes-ui-image ${{ secrets.DOCKER_USERNAME }}/notes-ui-image:latest
+
+      - name: Push Docker image
+        run: |
+          echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
+          docker push ${{ secrets.DOCKER_USERNAME }}/notes-ui-image:latest
