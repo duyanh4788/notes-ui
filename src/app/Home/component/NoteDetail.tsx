@@ -50,7 +50,7 @@ export const NoteDetail = () => {
       title: 'New Note',
       content: 'Content',
       noteId: note.id,
-      type: NoteDetailType.STRING,
+      type: NoteDetailType.CODE,
       idVitrual: uuidv4(),
       isVitrual: true,
     };

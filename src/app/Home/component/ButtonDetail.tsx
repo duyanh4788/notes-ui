@@ -56,9 +56,11 @@ export const ButtonDetail = (props: Props) => {
             value={title.get(noteDetail.id)}
             onChange={e => {
               if (!noteDetail.isVitrual) return;
+              if (e.target.value.length >= 99) return;
               mapStringById(noteDetail.id, e.target.value, setTitle);
             }}
             placeholder="Enter node name"
+            sx={{ width: '100%' }}
           />
         </Paper>
       ) : (
