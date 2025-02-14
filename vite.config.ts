@@ -24,6 +24,7 @@ export default defineConfig(() => {
     },
     build: {
       outDir: 'build',
+      assetsDir: 'static-notes-ui',
     },
     server: {
       open: true,

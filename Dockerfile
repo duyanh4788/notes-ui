@@ -1,20 +1,29 @@
-FROM node:20 AS builder
+FROM node:20 as react_build_base
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm install
-
 COPY . .
-RUN npm run build
 
-FROM nginx:1.27
-WORKDIR /usr/share/nginx/html
+RUN npm install 
 
-COPY --from=builder /app/build /usr/share/nginx/html/notes-ui
+RUN npm run build 
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+FROM nginx:1.17.9-alpine
 
-EXPOSE 80
+WORKDIR /app
 
-CMD ["nginx", "-g", "daemon off;"]
+RUN apk --no-cache add gettext curl
+
+COPY --from=react_build_base /app/build /app/build
+
+COPY run.sh /app
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
+RUN chmod +x /app/run.sh && \
+    mkdir -p /etc/nginx/logs/ && \
+    touch /etc/nginx/logs/static.log
+
+RUN nginx -t
+
+CMD ["/bin/sh", "-c", "/app/run.sh"]
