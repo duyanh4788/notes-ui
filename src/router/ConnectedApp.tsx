@@ -7,9 +7,10 @@ import { Provider } from 'react-redux';
 import { RootStore } from 'store/store';
 import { AuthContextProvider } from 'app/hoc/AuthContextApi';
 import { Toast } from 'components/Toast';
+import { config } from 'utils/config';
 
 export const ConnectedApp = () => (
-  <BrowserRouter>
+  <BrowserRouter basename={config.BASE_URL}>
     <Provider store={RootStore}>
       <AuthContextProvider>
         <Box component="section">
