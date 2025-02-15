@@ -3,5 +3,5 @@ export const config = {
   API_USERS: import.meta.env.VITE_APP_API_USERS,
   API_NOTES: import.meta.env.VITE_APP_API_NOTES,
   PORT: import.meta.env.PORT,
-  BASE_URL: import.meta.env.BASE_URL,
+  BASE_URL: import.meta.env.VITE_BASE_URL,
 };

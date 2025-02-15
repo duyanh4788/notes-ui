@@ -16,7 +16,6 @@ const aliases = [
 
 export default defineConfig(() => {
   return {
-    base: '/notes-ui/',
     resolve: {
       alias: aliases.map(alias => ({
         ...alias,
