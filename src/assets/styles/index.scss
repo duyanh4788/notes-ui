@@ -6,11 +6,6 @@
 @use './note_detail/index.scss' as *;
 @use './flip_time/index.scss' as *;
 
-@font-face {
-  font-family: 'Gotham Ultra';
-  src: url('/public/font/GothamUltra.otf') format('opentype');
-}
-
 body {
   font-family: 'Gotham Ultra', sans-serif;
   color: $color-main;

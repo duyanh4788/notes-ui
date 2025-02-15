@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import * as path from 'path';
 
@@ -14,9 +14,10 @@ const aliases = [
   { find: 'components', replacement: 'src/components' },
 ];
 
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd());
   return {
-    base: '/static-notes-ui/',
+    base: env.VITE_NODE_ENV === 'production' ? env.VITE_BASE_URL : '',
     resolve: {
       alias: aliases.map(alias => ({
         ...alias,
@@ -37,7 +38,7 @@ export default defineConfig(() => {
     },
     server: {
       open: true,
-      port: Number(process.env.PORT) || 3000,
+      port: Number(env.VITE_PORT),
     },
     plugins: [react()],
   };

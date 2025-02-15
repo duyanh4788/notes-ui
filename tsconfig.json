@@ -28,7 +28,8 @@
     "incremental": false
   },
   "include": [
-    "src"
+    "src",
+    "config.js"
   ],
   "references": [
     {
