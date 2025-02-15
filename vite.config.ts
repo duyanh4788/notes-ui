@@ -16,7 +16,7 @@ const aliases = [
 
 export default defineConfig(() => {
   return {
-    base: '/notes-ui/',
+    base: '/static-notes-ui/',
     resolve: {
       alias: aliases.map(alias => ({
         ...alias,
@@ -25,7 +25,15 @@ export default defineConfig(() => {
     },
     build: {
       outDir: 'build',
-      assetsDir: 'static-notes-ui',
+      assetsDir: 'static',
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ['react', 'react-dom'],
+            vendor: ['axios', 'moment'],
+          },
+        },
+      },
     },
     server: {
       open: true,
