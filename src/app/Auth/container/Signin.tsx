@@ -27,7 +27,7 @@ export const Signin = () => {
       justifyContent="center"
       minHeight="100vh"
     >
-      <Advertising />
+      <Advertising isShowed={false} />
       <button className="btn_login_gg" onClick={handleLogin}>
         Sign in with Google
       </button>

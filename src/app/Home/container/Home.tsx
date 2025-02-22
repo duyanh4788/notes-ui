@@ -8,7 +8,7 @@ export const Home = () => {
     <Box>
       <Navbar />
       <Box sx={{ m: '20px' }}>
-        <Advertising />
+        <Advertising isShowed={true} />
         <NotesList />
       </Box>
     </Box>

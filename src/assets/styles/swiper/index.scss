@@ -6,7 +6,7 @@
   height: 100%;
   .swiper-slide {
     border: 1px solid $color-main;
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: $background-second;
   }
   .my_swiper {
@@ -19,7 +19,7 @@
     }
     img {
       width: 100%;
-      height: 320px;
+      height: 100%;
     }
   }
 }
@@ -38,7 +38,10 @@
     max-height: 95%;
     img {
       width: 100%;
-      height: 90%;
+      height: auto;
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
     }
   }
 }
