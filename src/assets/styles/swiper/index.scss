@@ -1,0 +1,44 @@
+@use '../extend/index.scss' as *;
+@use '../variable/index.scss' as *;
+
+.swiper {
+  width: 100%;
+  height: 100%;
+  .swiper-slide {
+    border: 1px solid $color-main;
+    border-radius: 5px;
+    background-color: $background-second;
+  }
+  .my_swiper {
+    position: relative;
+    .icon_preview {
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      transform: translate(-50%, -50%);
+    }
+    img {
+      width: 100%;
+      height: 320px;
+    }
+  }
+}
+
+.modal_swiper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .modal_box {
+    background-color: $color-white;
+    padding: 10px;
+    outline: none;
+    border-radius: 10px;
+    box-shadow: $box-shadow;
+    max-width: 90%;
+    max-height: 95%;
+    img {
+      width: 100%;
+      height: 90%;
+    }
+  }
+}

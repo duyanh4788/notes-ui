@@ -12,6 +12,7 @@ const aliases = [
   { find: 'services', replacement: 'src/services' },
   { find: 'utils', replacement: 'src/utils' },
   { find: 'components', replacement: 'src/components' },
+  { find: 'assets', replacement: 'src/assets' },
 ];
 
 export default defineConfig(({ mode }) => {

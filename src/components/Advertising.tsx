@@ -1,78 +1,49 @@
-import { useState, useEffect } from 'react';
-import { Box, Switch, Tooltip, Typography } from '@mui/material';
-import { SECOND } from 'commom/contants';
-import { TitleProject, TitleTech } from 'commom/contants';
-import Grid from '@mui/material/Grid2';
-import { LocalStorageKey, LocalStorageService } from 'services/localStorage';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, FreeMode, Navigation } from 'swiper/modules';
+import SwiperCore from 'swiper';
+import { IMG_LIST, TooltipTitle } from 'commom/contants';
+import { Box, IconButton, Modal, Tooltip } from '@mui/material';
+import { VisibilityRounded } from '@mui/icons-material';
+import { useState } from 'react';
 
 export const Advertising = () => {
-  const offAdd: any = LocalStorageService.getItem(LocalStorageKey.offAdd);
-  const [_, setVisibleTextIndex] = useState(0);
-  const [isAdd, setIsAdd] = useState<boolean>(offAdd ? true : false);
+  SwiperCore.use([Autoplay]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [selectedImg, setSelectedImg] = useState<string | null>(null);
 
-  const SlideInText = ({ text, delay }) => {
-    const [visible, setVisible] = useState(false);
-
-    useEffect(() => {
-      const timeout = setTimeout(() => setVisible(true), delay);
-      return () => clearTimeout(timeout);
-    }, [delay]);
-
-    return (
-      <Typography variant="body1" className={`slide_text ${visible ? 'visible' : ''}`}>
-        {text}
-      </Typography>
-    );
+  const handleOpen = (img: string) => {
+    setSelectedImg(img);
+    setOpen(true);
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setVisibleTextIndex(prevIndex => (prevIndex + 1) % TitleProject.length);
-    }, SECOND.HOLD);
-    return () => clearInterval(interval);
-  }, [TitleProject.length]);
-
-  const renderAd = (texts: string[]) => {
-    return (
-      isAdd && (
-        <Box textAlign="center" className="highlighted_box">
-          <div className="highlighted_text">
-            <SlideInText text={texts[0]} delay={SECOND.SIX} />
-          </div>
-
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-            {texts.slice(1).map((text, index) => (
-              <li key={index}>
-                <SlideInText text={text} delay={SECOND.SEVEN + index * SECOND.THREE} />
-              </li>
-            ))}
-          </ul>
-        </Box>
-      )
-    );
-  };
+  const handleClose = () => setOpen(false);
 
   return (
-    <Box sx={{ textAlign: 'left' }}>
-      <Tooltip title={`On/Off`}>
-        <Switch
-          size="small"
-          color="primary"
-          checked={isAdd}
-          onChange={e => {
-            setIsAdd(e.target.checked);
-            if (offAdd) {
-              LocalStorageService.removeLocalStorageByKey(LocalStorageKey.offAdd);
-            } else {
-              LocalStorageService.setItem({ key: LocalStorageKey.offAdd, value: 'off' });
-            }
-          }}
-        />
-      </Tooltip>
-      <Grid container spacing={2}>
-        <Grid size={6}>{renderAd(TitleProject)}</Grid>
-        <Grid size={6}>{renderAd(TitleTech)}</Grid>
-      </Grid>
-    </Box>
+    <>
+      <Swiper
+        slidesPerView={2}
+        spaceBetween={5}
+        freeMode={true}
+        modules={[Autoplay, FreeMode, Navigation]}
+      >
+        {IMG_LIST.map((row, idx) => (
+          <SwiperSlide key={idx}>
+            <Box style={{ position: 'relative' }} className="my_swiper">
+              <Tooltip title={TooltipTitle.VIEW}>
+                <IconButton className="icon_preview" onClick={() => handleOpen(row.img)}>
+                  <VisibilityRounded fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <img onClick={() => handleOpen(row.img)} src={row.img} alt={row.title} />
+            </Box>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      <Modal open={open} onClose={handleClose} className="modal_swiper">
+        <Box className="modal_box">
+          <img src={selectedImg as string} alt="Preview" />
+        </Box>
+      </Modal>
+    </>
   );
 };
