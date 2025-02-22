@@ -1,0 +1,24 @@
+@use '../extend/index.scss' as *;
+@use '../variable/index.scss' as *;
+
+.footer {
+  display: flex;
+  justify-content: space-around;
+  background-color: $background-main;
+  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.2);
+  height: 100px;
+  .infor {
+    p {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      margin: 5px 0;
+      color: $color-main;
+      a {
+        color: $color-main;
+        text-decoration: none;
+      }
+    }
+  }
+}

@@ -8,6 +8,7 @@ import { RootStore } from 'store/store';
 import { AuthContextProvider } from 'app/hoc/AuthContextApi';
 import { Toast } from 'components/Toast';
 import { baseProps } from 'utils/config';
+import { Footer } from 'app/Home/component/Footer';
 
 export const ConnectedApp = () => (
   <BrowserRouter {...baseProps}>
@@ -36,6 +37,7 @@ export const ConnectedApp = () => (
               })}
             </Routes>
           </Box>
+          <Footer />
         </Box>
       </AuthContextProvider>
     </Provider>

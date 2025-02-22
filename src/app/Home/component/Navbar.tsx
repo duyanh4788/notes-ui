@@ -9,7 +9,6 @@ import {
   ThemeProvider,
   Toolbar,
   Tooltip,
-  Typography,
 } from '@mui/material';
 import { PATH_PARAMS, TooltipTitle } from 'commom/contants';
 import { Users } from 'interface/users';
@@ -19,7 +18,6 @@ import { useDispatch } from 'react-redux';
 import { useContext, useEffect } from 'react';
 import { LocalStorageService } from 'services/localStorage';
 import { AuthContext } from 'app/hoc/AuthContex';
-import Grid from '@mui/material/Grid2';
 
 const darkTheme = createTheme({
   palette: {

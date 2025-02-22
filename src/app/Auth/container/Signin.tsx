@@ -25,7 +25,7 @@ export const Signin = () => {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      minHeight="100vh"
+      minHeight="80vh"
     >
       <Advertising isShowed={false} />
       <button className="btn_login_gg" onClick={handleLogin}>
