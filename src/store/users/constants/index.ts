@@ -3,6 +3,7 @@ const userPath = (path: string): string => `/users/${path}`;
 export const Api = {
   SIGN_IN: userPath('google'),
   SIGN_OUT: userPath('signout'),
+  BANNERS: userPath('banners'),
   GET_BY_ID: userPath(''),
 };
 

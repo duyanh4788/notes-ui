@@ -1,14 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Users } from 'interface/users';
+import { Banners, Users } from 'interface/users';
 
 interface UserState {
   users: Users | null;
+  banners: Banners[];
   urlGoolge: string | null;
   error: string | null;
 }
 
 const initialState: UserState = {
   users: null,
+  banners: [],
   urlGoolge: null,
   error: null,
 };
@@ -44,6 +46,16 @@ const userSlice = createSlice({
       state.urlGoolge = null;
     },
     signOutFail(state, action) {
+      state.error = action.payload;
+    },
+
+    getBannersLoad: state => {
+      state.error = null;
+    },
+    getBannersSuccess: (state, action) => {
+      state.banners = action.payload.data;
+    },
+    getBannersFail: (state, action) => {
       state.error = action.payload;
     },
   },

@@ -19,3 +19,9 @@ export enum UserRole {
   ADMIN = 'admin',
   USER = 'user',
 }
+
+export interface Banners {
+  id: number;
+  titlle: string;
+  url: string;
+}

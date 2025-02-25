@@ -109,13 +109,3 @@ export enum TimerType {
   MINUTE = 'minute',
   SECOND = 'second',
 }
-
-const URL_IMG = 'https://storage.googleapis.com/4p_backup_bucket/cms_content_media';
-
-export const IMG_LIST = [
-  { title: '01', img: `${URL_IMG}/flow01-1740221622187.png` },
-  { title: '02', img: `${URL_IMG}/flow02-1740224718567.png` },
-  { title: '03', img: `${URL_IMG}/flow03-1740221687100.png` },
-  { title: '04', img: `${URL_IMG}/flow04-1740221699025.png` },
-  { title: '05', img: `${URL_IMG}/flow05-1740221711512.png` },
-];

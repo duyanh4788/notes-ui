@@ -1,22 +1,32 @@
+import { useDispatch, useSelector } from 'react-redux';
+import * as UserSlice from 'store/users/shared/slice';
+import * as UserSelector from 'store/users/shared/selectors';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, FreeMode, Navigation } from 'swiper/modules';
 import SwiperCore from 'swiper';
-import { IMG_LIST, TooltipTitle } from 'commom/contants';
-import { Box, IconButton, Modal, Switch, Tooltip } from '@mui/material';
+import { TooltipTitle } from 'commom/contants';
+import { Box, IconButton, Modal, Skeleton, Switch, Tooltip } from '@mui/material';
 import { VisibilityRounded } from '@mui/icons-material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LocalStorageKey, LocalStorageService } from 'services/localStorage';
 
 interface Prop {
   isShowed: boolean;
 }
 export const Advertising = (prop: Prop) => {
+  const banners = useSelector(UserSelector.selectBanner);
+  const dispatch = useDispatch();
+
   const { isShowed } = prop;
   SwiperCore.use([Autoplay]);
   const [open, setOpen] = useState<boolean>(false);
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
   const offAdd: any = LocalStorageService.getItem(LocalStorageKey.offAdd);
   const [isAdd, setIsAdd] = useState<boolean>(offAdd ? true : false);
+
+  useEffect(() => {
+    dispatch(UserSlice.actions.getBannersLoad());
+  }, []);
 
   const handleOpen = (img: string) => {
     setSelectedImg(img);
@@ -53,18 +63,22 @@ export const Advertising = (prop: Prop) => {
           freeMode={true}
           modules={[Autoplay, FreeMode, Navigation]}
         >
-          {IMG_LIST.map((row, idx) => (
-            <SwiperSlide key={idx}>
-              <Box style={{ position: 'relative' }} className="my_swiper">
-                <Tooltip title={TooltipTitle.VIEW}>
-                  <IconButton className="icon_preview" onClick={() => handleOpen(row.img)}>
-                    <VisibilityRounded fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-                <img onClick={() => handleOpen(row.img)} src={row.img} alt={row.title} />
-              </Box>
-            </SwiperSlide>
-          ))}
+          {banners.length ? (
+            banners.map(row => (
+              <SwiperSlide key={row.id}>
+                <Box style={{ position: 'relative' }} className="my_swiper">
+                  <Tooltip title={TooltipTitle.VIEW}>
+                    <IconButton className="icon_preview" onClick={() => handleOpen(row.url)}>
+                      <VisibilityRounded fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <img onClick={() => handleOpen(row.url)} src={row.url} alt={row.titlle} />
+                </Box>
+              </SwiperSlide>
+            ))
+          ) : (
+            <Skeleton variant="rectangular" />
+          )}
         </Swiper>
       ) : null}
       <Modal open={open} onClose={handleClose} className="modal_swiper">

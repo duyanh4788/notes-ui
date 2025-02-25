@@ -34,10 +34,21 @@ export function* signOut(api, action) {
   }
 }
 
+export function* getBanners(api, action) {
+  try {
+    const resPonse = yield call(api.getBanner, action.payload);
+    const data = yield configResponse(resPonse);
+    yield put(actions.getBannersSuccess(data));
+  } catch (error) {
+    yield put(actions.getBannersFail(configResponseError(error)));
+  }
+}
+
 export function* UserSaga() {
   yield all([
     yield takeLatest(actions.signInLoad.type, signIn, https),
     yield takeLatest(actions.getByIdLoad.type, getById, https),
     yield takeLatest(actions.signOutLoad.type, signOut, https),
+    yield takeLatest(actions.getBannersLoad.type, getBanners, https),
   ]);
 }
