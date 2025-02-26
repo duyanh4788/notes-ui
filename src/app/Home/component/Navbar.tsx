@@ -64,7 +64,7 @@ export const Navbar = () => {
                 arrow
                 open
                 placement="left-start"
-                title={`${userInfor?.userName} 📁: ${userInfor.notesCount} | 📝: ${userInfor.noteDetailsCount}`}
+                title={`${userInfor?.userName} 📁: ${userInfor.notesCount || 0} | 📝: ${userInfor.noteDetailsCount || 0}`}
               >
                 <Avatar src={userInfor?.avatar}>{userInfor?.userName}</Avatar>
               </Tooltip>

@@ -8,3 +8,4 @@ export const selectNote = createSelector([selectorNotes], state => state.note);
 export const selectNotes = createSelector([selectorNotes], state => state.notes);
 export const selectTotal = createSelector([selectorNotes], state => state.total);
 export const selectIsUpdate = createSelector([selectorNotes], state => state.isUpdate);
+export const selectCounts = createSelector([selectorNotes], state => state.counts);

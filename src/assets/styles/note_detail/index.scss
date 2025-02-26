@@ -19,3 +19,20 @@
   font-size: 20px;
   color: $color-second;
 }
+
+.popover_page {
+  background-color: $background-main;
+  padding: 10px;
+  div {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 5px;
+  }
+  .popover_box {
+    text-align: right;
+    span {
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
+}

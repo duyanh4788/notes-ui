@@ -23,19 +23,19 @@ const noteDetailsSlice = createSlice({
   initialState,
   reducers: {
     createdLoad(_, __) {},
-    createdSuccess(_, __) {},
+    createdSuccess() {},
     createdFail(state, action) {
       state.error = action.payload;
     },
 
     updatedLoad(_, __) {},
-    updatedSuccess(_, __) {},
+    updatedSuccess() {},
     updatedFail(state, action) {
       state.error = action.payload;
     },
 
     deletedLoad(_, __) {},
-    deletedSuccess(_, __) {},
+    deletedSuccess() {},
     deletedFail(state, action) {
       state.error = action.payload;
     },

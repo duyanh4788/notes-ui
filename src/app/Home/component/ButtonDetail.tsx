@@ -11,6 +11,7 @@ import { Box, Chip, IconButton, Paper, TextField, Tooltip } from '@mui/material'
 import { MenuTypes } from 'components/MenuTypes';
 import { MenuLangs } from 'components/MenuLangs';
 import { Dispatch, SetStateAction } from 'react';
+import { Helper } from 'utils/helper';
 
 interface Props {
   noteDetail: NoteDetails;
@@ -65,7 +66,9 @@ export const ButtonDetail = (props: Props) => {
         </Paper>
       ) : (
         <Box>
-          <Chip label={noteDetail.title} />
+          <Tooltip title={noteDetail.title}>
+            <Chip label={Helper.truncateString(noteDetail.title, 40)} />
+          </Tooltip>
           {pageType === PageType.MAIN && (
             <Tooltip title={TooltipTitle.VIEW}>
               <IconButton onClick={() => toggleModlContent(noteDetail.id)}>

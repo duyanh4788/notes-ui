@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as NoteSlice from 'store/notes/shared/slice';
 import * as NoteSelectors from 'store/notes/shared/selectors';
 import * as NoteDetailsSlice from 'store/noteDetails/shared/slice';
-import * as UserSlice from 'store/users/shared/slice';
 import { Notes } from 'interface/notes';
 import { LIMIT, TooltipTitle } from 'commom/contants';
 import { RichTreeView, TreeItem2Props, useTreeItem2Utils } from '@mui/x-tree-view';
@@ -17,6 +16,7 @@ import { Search } from 'components/Search';
 export const NotesList = () => {
   const dispatch = useDispatch();
   const notes = useSelector(NoteSelectors.selectNotes);
+  const countNotes = useSelector(NoteSelectors.selectCounts);
   const total = useSelector(NoteSelectors.selectTotal);
   const isUpdate = useSelector(NoteSelectors.selectIsUpdate);
 
@@ -25,20 +25,10 @@ export const NotesList = () => {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [limitDetail, setLimitDetail] = useState<Set<string>>(new Set());
   const [textSearch, setTextSearch] = useState<string | null>('');
-  const [uniqueCall, setUniqueCall] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(NoteSlice.actions.getAllLoad({ skip, limit: LIMIT }));
   }, []);
-
-  useEffect(() => {
-    if (!uniqueCall) {
-      console.log(uniqueCall);
-      dispatch(UserSlice.actions.getByIdLoad());
-    } else {
-      setUniqueCall(true);
-    }
-  }, [notes]);
 
   useEffect(() => {
     function initNotes(data: Notes[]) {
@@ -114,6 +104,7 @@ export const NotesList = () => {
       <NoteItems
         {...props}
         note={note}
+        countNotes={countNotes}
         expanded={expanded}
         toggleExpand={toggleExpand}
         limitDetail={limitDetail}

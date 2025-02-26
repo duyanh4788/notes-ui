@@ -19,3 +19,9 @@ export interface ResNotes {
   notes: Notes[];
   total: number;
 }
+
+export interface CountRes {
+  totalNotes: number;
+  totalNoteDetails: number;
+  noteId: string;
+}

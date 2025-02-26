@@ -3,6 +3,7 @@ import createSagaMiddleware from 'redux-saga';
 import rootReducer from './rootReducer';
 import rootSaga from './rootSaga';
 import { loadingMiddleware } from './loading/middleware';
+import { userMiddleware } from './users/middleware';
 
 function configureAppstore() {
   const sagaMiddleware = createSagaMiddleware();
@@ -10,7 +11,10 @@ function configureAppstore() {
   const store = configureStore({
     reducer: rootReducer,
     middleware: getDefaultMiddleware =>
-      getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware).concat(loadingMiddleware),
+      getDefaultMiddleware({ thunk: false })
+        .concat(sagaMiddleware)
+        .concat(loadingMiddleware)
+        .concat(userMiddleware),
     devTools: process.env.NODE_ENV !== 'production',
   });
 

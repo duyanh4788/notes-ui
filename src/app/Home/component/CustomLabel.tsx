@@ -4,17 +4,20 @@ import {
 } from '@mui/x-tree-view';
 import {
   AddRounded,
+  CancelRounded,
   CheckRounded,
   ChevronRightRounded,
   CloseRounded,
   DeleteRounded,
+  DoneRounded,
   EditRounded,
   ExpandMoreRounded,
 } from '@mui/icons-material';
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { Box, Divider, IconButton, Paper, Tooltip } from '@mui/material';
 import { TreeItem2Label, TreeItem2LabelInput } from '@mui/x-tree-view';
 import React from 'react';
 import { TooltipTitle } from 'commom/contants';
+import { CountRes } from 'interface/notes';
 
 export interface CustomLabelProps extends UseTreeItem2LabelSlotOwnProps {
   editable: boolean;
@@ -22,8 +25,11 @@ export interface CustomLabelProps extends UseTreeItem2LabelSlotOwnProps {
   noteId: string;
   quantityChild: number;
   quantityFile: number;
+  countNotes: CountRes;
   editItem: () => void;
   deleteItem: () => void;
+  countByUserId: (noteId: string) => void;
+  clearCounts: () => void;
   onofExpand: (event: React.MouseEvent) => void;
   addChild: (event: React.MouseEvent) => void;
   getDetails: (event: React.MouseEvent) => void;
@@ -39,10 +45,13 @@ export function CustomLabel({
   editable,
   expanded,
   noteId,
+  countNotes,
   quantityChild,
   quantityFile,
   editItem,
   deleteItem,
+  countByUserId,
+  clearCounts,
   onofExpand,
   addChild,
   getDetails,
@@ -89,8 +98,38 @@ export function CustomLabel({
               <EditRounded fontSize="small" />
             </IconButton>
           </Tooltip>
-          <Tooltip title={TooltipTitle.DEL}>
-            <IconButton size="small" onClick={deleteItem}>
+          <Tooltip
+            disableFocusListener
+            disableHoverListener
+            disableTouchListener
+            title={
+              countNotes && Object.keys(countNotes).length && noteId === countNotes.noteId ? (
+                <Paper className="popover_page">
+                  <Box>
+                    You'll delete 📁: {countNotes?.totalNotes || 0} and 📝:{' '}
+                    {countNotes?.totalNoteDetails || 0}
+                  </Box>
+                  <Divider />
+                  <Box className="popover_box">
+                    <label>Are you sure: </label>
+                    <span onClick={() => clearCounts()}> ⛔ </span>
+                    <span onClick={deleteItem}> 👌</span>
+                  </Box>
+                </Paper>
+              ) : (
+                TooltipTitle.DEL
+              )
+            }
+            placement="right-start"
+            arrow
+            onClose={() => clearCounts()}
+            open={
+              countNotes && Object.keys(countNotes).length && noteId === countNotes.noteId
+                ? true
+                : false
+            }
+          >
+            <IconButton size="small" onClick={() => countByUserId(noteId)}>
               <DeleteRounded fontSize="small" />
             </IconButton>
           </Tooltip>

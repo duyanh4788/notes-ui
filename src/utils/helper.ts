@@ -163,4 +163,9 @@ export class Helper {
     const newDate = new Date();
     return newDate.toISOString();
   }
+
+  static truncateString(str: string, maxLength: number = 50) {
+    if (!str) return '...';
+    return str.length > maxLength ? str.slice(0, maxLength) + '...' : str;
+  }
 }

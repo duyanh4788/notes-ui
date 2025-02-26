@@ -69,6 +69,16 @@ export function* getAll(api, action) {
   }
 }
 
+export function* countByUserId(api, action) {
+  try {
+    const resPonse = yield call(api.countByUserId, action.payload);
+    const data = yield configResponse(resPonse);
+    yield put(actions.countByUserIdSuccess(data));
+  } catch (error) {
+    yield put(actions.countByUserIdFail(configResponseError(error)));
+  }
+}
+
 export function* addChildVitrual(action) {
   try {
     yield configNotes(TypeSaga.CREATED_CHILD, action.payload);
@@ -95,6 +105,7 @@ export function* NotesSaga() {
     yield takeLatest(actions.deletedLoad.type, deleted, https),
     yield takeLatest(actions.getByIdLoad.type, getById, https),
     yield takeLatest(actions.getAllLoad.type, getAll, https),
+    yield takeLatest(actions.countByUserIdLoad.type, countByUserId, https),
     yield takeLatest(actions.addChildVitrual.type, addChildVitrual),
     yield takeLatest(actions.updateChildVitrual.type, updateChildVitrual),
     yield takeLatest(actions.delChildVitrual.type, delChildVitrual),

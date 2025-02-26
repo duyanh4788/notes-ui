@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Notes } from 'interface/notes';
+import { CountRes, Notes } from 'interface/notes';
 
 interface NotesState {
   note: Notes | null;
@@ -8,10 +8,12 @@ interface NotesState {
   isUpdate: boolean;
   isLoad: boolean;
   error: string | null;
+  counts: CountRes | null;
 }
 
 const initialState: NotesState = {
   note: null,
+  counts: null,
   notes: [],
   error: null,
   total: 0,
@@ -24,25 +26,25 @@ const noteSlice = createSlice({
   initialState,
   reducers: {
     createdLoad(_, __) {},
-    createdSuccess(_, __) {},
+    createdSuccess() {},
     createdFail(state, action) {
       state.error = action.payload;
     },
 
     createdChildLoad(_, __) {},
-    createdChildSuccess(_, __) {},
+    createdChildSuccess() {},
     createdChildFail(state, action) {
       state.error = action.payload;
     },
 
     updatedLoad(_, __) {},
-    updatedSuccess(_, __) {},
+    updatedSuccess() {},
     updatedFail(state, action) {
       state.error = action.payload;
     },
 
     deletedLoad(_, __) {},
-    deletedSuccess(_, __) {},
+    deletedSuccess() {},
     deletedFail(state, action) {
       state.error = action.payload;
     },
@@ -64,6 +66,19 @@ const noteSlice = createSlice({
     },
     getAllFail(state, action) {
       state.error = action.payload;
+    },
+
+    countByUserIdLoad: (state, __) => {
+      state.counts = null;
+    },
+    countByUserIdSuccess: (state, action) => {
+      state.counts = action.payload.data;
+    },
+    countByUserIdFail: (state, action) => {
+      state.error = action.payload;
+    },
+    clearCounts: state => {
+      state.counts = null;
     },
 
     addChildVitrual(_, __) {},

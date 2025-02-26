@@ -1,7 +1,7 @@
 import { httpRequest } from 'services/request';
 import { Api } from '../constants';
 import { TypeApi } from 'commom/contants';
-import { Notes, ResNotes } from 'interface/notes';
+import { CountRes, Notes, ResNotes } from 'interface/notes';
 import { Paging } from 'interface/paging';
 
 export class NotesHttps {
@@ -29,5 +29,10 @@ export class NotesHttps {
     const { skip, limit } = params;
     const param = `?skip=${skip}&limit=${limit}`;
     return httpRequest(TypeApi.API_NOTES).get(`${Api.NOTES}${param}`);
+  };
+
+  public countByUserId = (id: string): Promise<CountRes> => {
+    const param = `?noteId=${id}`;
+    return httpRequest(TypeApi.API_NOTES).get(`${Api.COUNTS}/${param}`);
   };
 }

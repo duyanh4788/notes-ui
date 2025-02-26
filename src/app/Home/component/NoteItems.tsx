@@ -5,7 +5,7 @@ import {
   UseTreeItem2LabelSlotOwnProps,
   useTreeItem2Utils,
 } from '@mui/x-tree-view';
-import { Notes } from 'interface/notes';
+import { CountRes, Notes } from 'interface/notes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import * as NoteSlice from 'store/notes/shared/slice';
@@ -22,6 +22,7 @@ import { LIMIT } from 'commom/contants';
 export const NoteItems = React.forwardRef(function NoteItem(
   props: TreeItem2Props & {
     note: Notes;
+    countNotes: CountRes | null;
     expanded: Set<string>;
     toggleExpand: (noteId: string) => void;
     limitDetail: Set<string>;
@@ -30,7 +31,8 @@ export const NoteItems = React.forwardRef(function NoteItem(
   ref: React.Ref<HTMLLIElement>,
 ) {
   const dispatch = useDispatch();
-  const { note, expanded, toggleExpand, limitDetail, toggleLimitDetail, ...rest } = props;
+  const { note, expanded, toggleExpand, limitDetail, toggleLimitDetail, countNotes, ...rest } =
+    props;
 
   const { interactions, status } = useTreeItem2Utils({
     itemId: props.itemId,
@@ -113,6 +115,14 @@ export const NoteItems = React.forwardRef(function NoteItem(
     }
   };
 
+  const countByUserId = (noteId: string) => {
+    dispatch(NoteSlice.actions.countByUserIdLoad(noteId));
+  };
+
+  const clearCounts = () => {
+    dispatch(NoteSlice.actions.clearCounts());
+  };
+
   const addChild = (event: React.MouseEvent) => {
     if (!note.children || !note.children.length) {
       interactions.handleExpansion(event);
@@ -158,8 +168,11 @@ export const NoteItems = React.forwardRef(function NoteItem(
           noteId: note.id,
           quantityChild: note?._count?.children || 0,
           quantityFile: note?._count?.noteDetails || 0,
+          countNotes: countNotes,
           editItem: editItem,
           deleteItem: deleteItem,
+          countByUserId: countByUserId,
+          clearCounts: clearCounts,
           onofExpand: onofExpand,
           addChild: addChild,
           getDetails: getDetails,
