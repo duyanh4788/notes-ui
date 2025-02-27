@@ -8,10 +8,7 @@ import { KeyFromData } from 'commom/contants';
 const useStyles = makeStyles({
   root: {
     cursor: 'pointer',
-    display: 'flex',
-    justifyContent: 'center',
     color: '#ff6a0057',
-    padding: '5px',
     '&:hover p,&:hover svg,& img': {
       opacity: 1,
     },
@@ -110,15 +107,8 @@ export const UploadFile: React.FC<UploadFileProps> = ({
   };
 
   return (
-    <React.Fragment>
-      <input
-        onChange={handleChange}
-        accept={accept}
-        className={classes.hidden}
-        id={idInput}
-        type="file"
-        multiple
-      />
+    <Box>
+      <input onChange={handleChange} accept={accept} id={idInput} type="file" multiple hidden />
       <label
         htmlFor={idInput}
         {...dragEvents}
@@ -132,6 +122,6 @@ export const UploadFile: React.FC<UploadFileProps> = ({
           </Box>
         </Box>
       </label>
-    </React.Fragment>
+    </Box>
   );
 };
