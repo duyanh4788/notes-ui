@@ -17,6 +17,16 @@ export function* created(api, action) {
   }
 }
 
+export function* uploadFile(api, action) {
+  try {
+    const resPonse = yield call(api.uploadFile, action.payload);
+    const data = yield configResponse(resPonse);
+    yield configData(TypeSaga.CREATED, data.data);
+  } catch (error) {
+    yield put(actions.uploadFileFail(configResponseError(error)));
+  }
+}
+
 export function* updated(api, action) {
   try {
     const resPonse = yield call(api.updated, action.payload);
@@ -90,6 +100,7 @@ export function* delVitrual(action) {
 export function* NoteDetailsSaga() {
   yield all([
     yield takeLatest(actions.createdLoad.type, created, https),
+    yield takeLatest(actions.uploadFileLoad.type, uploadFile, https),
     yield takeLatest(actions.updatedLoad.type, updated, https),
     yield takeLatest(actions.deletedLoad.type, deleted, https),
     yield takeLatest(actions.getByIdLoad.type, getById, https),

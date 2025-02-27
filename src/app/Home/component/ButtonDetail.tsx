@@ -1,9 +1,10 @@
-import { NoteDetailType, PageType, TooltipTitle } from 'commom/contants';
+import { MsgToast, NoteDetailType, PageType, TooltipTitle } from 'commom/contants';
 import { NoteDetails } from 'interface/noteDetails';
 import {
   CheckRounded,
   ContentCopy,
   DeleteRounded,
+  DownloadRounded,
   EditRounded,
   VisibilityRounded,
 } from '@mui/icons-material';
@@ -12,6 +13,7 @@ import { MenuTypes } from 'components/MenuTypes';
 import { MenuLangs } from 'components/MenuLangs';
 import { Dispatch, SetStateAction } from 'react';
 import { Helper } from 'utils/helper';
+import { toast } from 'react-toastify';
 
 interface Props {
   noteDetail: NoteDetails;
@@ -49,6 +51,47 @@ export const ButtonDetail = (props: Props) => {
     handleCopy,
     pageType,
   } = props;
+
+  const handleDownload = async (url: string, fileName: string) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = fileName || 'downloaded-file';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      toast.error(MsgToast.DOWN_FILE);
+    }
+  };
+
+  if (noteDetail.type === NoteDetailType.UPLOAD_FILE) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Tooltip title={noteDetail.title}>
+          <Chip label={Helper.truncateString(noteDetail.title, 40)} />
+        </Tooltip>
+        <Box>
+          <Tooltip title={TooltipTitle.DOWNLOAD}>
+            <IconButton onClick={() => handleDownload(noteDetail.content, noteDetail.title)}>
+              <DownloadRounded fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={TooltipTitle.DEL}>
+            <IconButton onClick={() => handleDelete(noteDetail)}>
+              <DeleteRounded fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </Box>
+    );
+  }
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
       {noteDetail.isVitrual && pageType === PageType.MAIN ? (

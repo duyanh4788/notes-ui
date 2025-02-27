@@ -28,6 +28,12 @@ const noteDetailsSlice = createSlice({
       state.error = action.payload;
     },
 
+    uploadFileLoad(_, __) {},
+    uploadFileSuccess() {},
+    uploadFileFail(state, action) {
+      state.error = action.payload;
+    },
+
     updatedLoad(_, __) {},
     updatedSuccess() {},
     updatedFail(state, action) {

@@ -5,7 +5,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as NoteDetailsSlice from 'store/noteDetails/shared/slice';
 import * as NoteDetailsSelectors from 'store/noteDetails/shared/selectors';
 import * as Notes from 'store/notes/shared/selectors';
-import { LangCodes, LIMIT, NoteDetailType, PageType, TooltipTitle } from 'commom/contants';
+import {
+  ACCEPT_PROPS,
+  ALLOWED_TYPES,
+  KeyFromData,
+  LangCodes,
+  LIMIT,
+  MsgToast,
+  NoteDetailType,
+  PageType,
+  TooltipTitle,
+} from 'commom/contants';
 import { AddRounded, ExpandCircleDown } from '@mui/icons-material';
 import { NoteDetails } from 'interface/noteDetails';
 import { Helper } from 'utils/helper';
@@ -14,6 +24,7 @@ import { toast } from 'react-toastify';
 import { Content } from 'app/Home/component/Content';
 import { ModalContent } from './ModalContent';
 import { ButtonDetail } from './ButtonDetail';
+import { UploadFile, UploadFileProps } from 'components/UploadFile';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#fff',
@@ -105,7 +116,7 @@ export const NoteDetail = () => {
 
     if (textToCopy) {
       navigator.clipboard.writeText(textToCopy);
-      toast.success('Copied to clipboard!');
+      toast.success(MsgToast.COPY_FILE);
     }
   };
 
@@ -146,6 +157,39 @@ export const NoteDetail = () => {
       }
       return newSet;
     });
+  };
+
+  const fileUploadProp: UploadFileProps = {
+    accept: ACCEPT_PROPS,
+    idInput: note?.label,
+    onChange: (newFormData: FormData | null) => {
+      if (!newFormData || !note || !note.id) return;
+      newFormData.append(KeyFromData.NOTEID, note.id);
+      dispatch(NoteDetailsSlice.actions.uploadFileLoad(newFormData));
+    },
+    onDrop: (event: React.DragEvent<HTMLElement>) => {
+      if (!note || !note.id) return;
+      event.preventDefault();
+      const files = Array.from(event.dataTransfer.files);
+
+      if (files.length === 0) return;
+      if (files.length > 1) {
+        toast.error(MsgToast.UPLOAD_FILE);
+        return;
+      }
+
+      const file = files[0];
+
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        toast.error(MsgToast.INVALID_TYPE);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append(KeyFromData.UPLOAD, file);
+      formData.append(KeyFromData.NOTEID, note.id);
+      dispatch(NoteDetailsSlice.actions.uploadFileLoad(formData));
+    },
   };
 
   const renderDetails = () => {
@@ -202,11 +246,14 @@ export const NoteDetail = () => {
   return (
     <Box className={`note_details ${!noteDetails.length ? `note_details_empty` : ''}`}>
       {note && (
-        <Tooltip title={TooltipTitle.ADD}>
-          <IconButton onClick={handleAddVitrual}>
-            <AddRounded />
-          </IconButton>
-        </Tooltip>
+        <Box className="btn_add">
+          <Tooltip title={TooltipTitle.ADD}>
+            <IconButton onClick={handleAddVitrual}>
+              <AddRounded />
+            </IconButton>
+          </Tooltip>
+          <UploadFile {...fileUploadProp} />
+        </Box>
       )}
       <Grid container spacing={2}>
         {renderDetails()}

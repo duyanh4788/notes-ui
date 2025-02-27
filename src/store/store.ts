@@ -11,7 +11,13 @@ function configureAppstore() {
   const store = configureStore({
     reducer: rootReducer,
     middleware: getDefaultMiddleware =>
-      getDefaultMiddleware({ thunk: false })
+      getDefaultMiddleware({
+        thunk: false,
+        serializableCheck: {
+          ignoredActions: ['noteDetails/uploadFileLoad'],
+          ignoredPaths: ['noteDetails.somePathContainingFormData'],
+        },
+      })
         .concat(sagaMiddleware)
         .concat(loadingMiddleware)
         .concat(userMiddleware),

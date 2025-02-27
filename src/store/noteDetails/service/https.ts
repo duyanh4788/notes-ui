@@ -15,6 +15,10 @@ export class NoteDetailsHttps {
     return httpRequest(TypeApi.API_NOTES).post(Api.NOTE_DETAILS, payload);
   };
 
+  public uploadFile = (payload: FormData): Promise<void> => {
+    return httpRequest(TypeApi.API_NOTES).post(Api.UPLOAD_FILE, payload);
+  };
+
   public updated = (payload: UNoteDetails): Promise<void> => {
     return httpRequest(TypeApi.API_NOTES).put(Api.NOTE_DETAILS, payload);
   };

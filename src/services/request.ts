@@ -49,7 +49,7 @@ export function configResponseError(errors: AxiosError | any): any {
   const { statusCode, message, success, status } = errors.response.data;
   const newMsg = Array.isArray(message) && message.length ? message[0] : message;
   toast.error(newMsg || 'request server not found');
-  if (statusCode && statusCode === 401) {
+  if (config.NODE_ENV === 'production' && statusCode && statusCode === 401) {
     LocalStorageService.clearLocalStorage();
     return (window.location.href = PATH_PARAMS.SIGNIN);
   }

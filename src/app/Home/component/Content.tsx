@@ -3,6 +3,7 @@ import { NoteDetails } from 'interface/noteDetails';
 import TexAreas from 'components/TexAreas';
 import Editors from 'components/Editors';
 import Schedules from 'components/Schedules';
+import Files from 'components/Files';
 
 interface Props {
   noteDetail: NoteDetails;
@@ -33,6 +34,9 @@ export const Content = (props: Props) => {
       return (
         <Schedules noteDetails={detail} valContent={valContent} changeContent={changeContent} />
       );
+    }
+    if (detail.type === NoteDetailType.UPLOAD_FILE) {
+      return <Files noteDetails={detail} />;
     }
   };
 

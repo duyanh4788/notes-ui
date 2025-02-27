@@ -23,6 +23,7 @@ export enum NoteDetailType {
   STRING = 'string',
   CODE = 'code',
   SCHEDULE = 'schedule',
+  UPLOAD_FILE = 'uploadFile',
 }
 
 export enum TypeApi {
@@ -97,6 +98,8 @@ export enum TooltipTitle {
   SEL_TYPE = 'Select type',
   HOME = 'Home',
   SING_OUT = 'Sign out',
+  DOWNLOAD = 'Download',
+  UPLOAD = 'Upload',
 }
 
 export enum PageType {
@@ -108,4 +111,31 @@ export enum TimerType {
   HOUR = 'hour',
   MINUTE = 'minute',
   SECOND = 'second',
+}
+
+export enum MsgToast {
+  DOWN_FILE = 'download file error!!!',
+  UPLOAD_FILE = 'Please upload only 1 file!!!',
+  COPY_FILE = 'Copied to clipboard!!!',
+  INVALID_TYPE = 'Invalid file type!!!',
+}
+
+export const ALLOWED_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'image/webp',
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+];
+
+export const ACCEPT_PROPS =
+  'image/*, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
+export enum KeyFromData {
+  UPLOAD = 'upload',
+  NOTEID = 'noteId',
 }
