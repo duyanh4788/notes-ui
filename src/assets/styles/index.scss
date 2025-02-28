@@ -151,3 +151,11 @@ body::-webkit-scrollbar-thumb,
     height: 800px;
   }
 }
+
+iframe {
+  pointer-events: none;
+}
+
+.MuiRichTreeView-root {
+  max-width: 100% !important;
+}

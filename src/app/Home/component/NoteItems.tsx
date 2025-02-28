@@ -112,6 +112,7 @@ export const NoteItems = React.forwardRef(function NoteItem(
       dispatch(NoteSlice.actions.delChildVitrual({ id, parentId }));
     } else {
       dispatch(NoteSlice.actions.deletedLoad(note.id));
+      dispatch(NoteDetailsSlice.actions.clearNoteDetails());
     }
   };
 

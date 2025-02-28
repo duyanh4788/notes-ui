@@ -52,17 +52,19 @@ export const MenuTypes = (props: Props) => {
         open={open}
         TransitionComponent={Fade}
       >
-        {Object.values(NoteDetailType).map(type => {
-          return (
-            <MenuItem
-              key={type}
-              onClick={() => handleClose(type)}
-              selected={noteDetails.type === type}
-            >
-              {type}
-            </MenuItem>
-          );
-        })}
+        {Object.values(NoteDetailType)
+          .filter(x => x !== NoteDetailType.UPLOAD_FILE)
+          .map(type => {
+            return (
+              <MenuItem
+                key={type}
+                onClick={() => handleClose(type)}
+                selected={noteDetails.type === type}
+              >
+                {type}
+              </MenuItem>
+            );
+          })}
       </Menu>
     </Box>
   );

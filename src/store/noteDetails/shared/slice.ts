@@ -87,6 +87,11 @@ const noteDetailsSlice = createSlice({
     setIsUpdate(state, action) {
       state.isUpdate = action.payload;
     },
+
+    clearNoteDetails(state) {
+      state.noteDetails = [];
+      state.noteDetail = null;
+    },
   },
 });
 

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Box, IconButton, styled, Paper, Tooltip, Badge, Chip } from '@mui/material';
+import { Box, IconButton, styled, Paper, Tooltip } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useDispatch, useSelector } from 'react-redux';
 import * as NoteDetailsSlice from 'store/noteDetails/shared/slice';
@@ -16,7 +16,7 @@ import {
   PageType,
   TooltipTitle,
 } from 'commom/contants';
-import { AddRounded, ExpandCircleDown } from '@mui/icons-material';
+import { AddRounded, CloudUpload, ExpandCircleDown } from '@mui/icons-material';
 import { NoteDetails } from 'interface/noteDetails';
 import { Helper } from 'utils/helper';
 import { v4 as uuidv4 } from 'uuid';
@@ -24,7 +24,6 @@ import { toast } from 'react-toastify';
 import { Content } from 'app/Home/component/Content';
 import { ModalContent } from './ModalContent';
 import { ButtonDetail } from './ButtonDetail';
-import { UploadFile, UploadFileProps } from 'components/UploadFile';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#fff',
@@ -49,6 +48,7 @@ export const NoteDetail = () => {
   const [content, setContent] = useState<Map<number, string>>(new Map());
   const [langCode, setLangCode] = useState<string>(LangCodes[0].value);
   const [view, setView] = useState<Set<number>>(new Set());
+  const [isDragOver, setIsDragOver] = useState<boolean>(false);
 
   useEffect(() => {
     setSkip(0);
@@ -159,39 +159,6 @@ export const NoteDetail = () => {
     });
   };
 
-  const fileUploadProp: UploadFileProps = {
-    accept: ACCEPT_PROPS,
-    idInput: note?.label,
-    onChange: (newFormData: FormData | null) => {
-      if (!newFormData || !note || !note.id) return;
-      newFormData.append(KeyFromData.NOTEID, note.id);
-      dispatch(NoteDetailsSlice.actions.uploadFileLoad(newFormData));
-    },
-    onDrop: (event: React.DragEvent<HTMLElement>) => {
-      if (!note || !note.id) return;
-      event.preventDefault();
-      const files = Array.from(event.dataTransfer.files);
-
-      if (files.length === 0) return;
-      if (files.length > 1) {
-        toast.error(MsgToast.UPLOAD_FILE);
-        return;
-      }
-
-      const file = files[0];
-
-      if (!ALLOWED_TYPES.includes(file.type)) {
-        toast.error(MsgToast.INVALID_TYPE);
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append(KeyFromData.UPLOAD, file);
-      formData.append(KeyFromData.NOTEID, note.id);
-      dispatch(NoteDetailsSlice.actions.uploadFileLoad(formData));
-    },
-  };
-
   const renderDetails = () => {
     if (!noteDetails.length) return;
     return noteDetails.map(detail => (
@@ -243,8 +210,56 @@ export const NoteDetail = () => {
     ));
   };
 
+  const handleStopDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const dragEvents = {
+    onDragEnter: (e: React.DragEvent) => {
+      handleStopDrag(e);
+      setIsDragOver(true);
+    },
+    onDragOver: (e: React.DragEvent) => e.preventDefault(),
+    onDrop: (e: React.DragEvent<HTMLElement>) => {
+      handleStopDrag(e);
+      setIsDragOver(false);
+
+      if (!note?.id) return;
+      const file = e.dataTransfer.files[0];
+      if (!file) return toast.error(MsgToast.UPLOAD_FILE);
+      if (!ALLOWED_TYPES.includes(file.type)) return toast.error(MsgToast.INVALID_TYPE);
+
+      const formData = new FormData();
+      formData.append(KeyFromData.UPLOAD, file);
+      formData.append(KeyFromData.NOTEID, note.id);
+      dispatch(NoteDetailsSlice.actions.uploadFileLoad(formData));
+    },
+    onDragLeave: (e: React.DragEvent) => {
+      const elementUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
+      if (elementUnderCursor?.closest('.note_details, .animate_drag')) {
+        return;
+      }
+      handleStopDrag(e);
+      setIsDragOver(false);
+    },
+  };
+
+  const uploadChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append(KeyFromData.UPLOAD, file);
+    if (note?.id) formData.append(KeyFromData.NOTEID, note.id);
+    dispatch(NoteDetailsSlice.actions.uploadFileLoad(formData));
+  };
+
   return (
-    <Box className={`note_details ${!noteDetails.length ? `note_details_empty` : ''}`}>
+    <Box
+      className={`note_details ${!noteDetails.length ? 'note_details_empty' : ''}`}
+      {...dragEvents}
+    >
+      {isDragOver && <Box className="animate_drag">{MsgToast.DROP_LABEL}</Box>}
       {note && (
         <Box className="btn_add">
           <Tooltip title={TooltipTitle.ADD}>
@@ -252,17 +267,29 @@ export const NoteDetail = () => {
               <AddRounded />
             </IconButton>
           </Tooltip>
-          <UploadFile {...fileUploadProp} />
+          <Tooltip title={MsgToast.HOVER_LABEL} arrow open placement="right-start">
+            <label className="btn_upload" htmlFor={note?.label}>
+              <input
+                onChange={uploadChange}
+                accept={ACCEPT_PROPS}
+                id={note?.label}
+                type="file"
+                multiple
+                hidden
+              />
+              <CloudUpload fontSize="small" />
+            </label>
+          </Tooltip>
         </Box>
       )}
       <Grid container spacing={2}>
         {renderDetails()}
       </Grid>
-      {noteDetails.length ? (
+      {noteDetails.length > 0 && (
         <IconButton disabled={total - skip <= LIMIT} onClick={handleGetMore}>
           <ExpandCircleDown />
         </IconButton>
-      ) : null}
+      )}
     </Box>
   );
 };
