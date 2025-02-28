@@ -18,6 +18,7 @@ import { useDispatch } from 'react-redux';
 import { useContext, useEffect } from 'react';
 import { LocalStorageService } from 'services/localStorage';
 import { AuthContext } from 'app/hoc/AuthContex';
+import { config } from 'utils/config';
 
 const darkTheme = createTheme({
   palette: {
@@ -35,7 +36,7 @@ export const Navbar = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!userInfor || !userInfor.id) {
+    if ((config.NODE_ENV === 'production' && !userInfor) || !userInfor.id) {
       LocalStorageService.clearLocalStorage();
       navigate(PATH_PARAMS.SIGNIN);
     }

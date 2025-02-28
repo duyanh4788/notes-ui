@@ -118,6 +118,8 @@ export enum MsgToast {
   UPLOAD_FILE = 'Please upload only 1 file!!!',
   COPY_FILE = 'Copied to clipboard!!!',
   INVALID_TYPE = 'Invalid file type!!!',
+  HOVER_LABEL = 'Click or drag to upload file',
+  DROP_LABEL = 'Drop file here',
 }
 
 export const ALLOWED_TYPES = [

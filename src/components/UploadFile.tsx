@@ -1,97 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Tooltip } from '@mui/material';
 import { CloudUpload } from '@mui/icons-material';
-import { makeStyles } from '@mui/styles';
-import clsx from 'clsx';
-import { KeyFromData } from 'commom/contants';
-
-const useStyles = makeStyles({
-  root: {
-    cursor: 'pointer',
-    color: '#ff6a0057',
-    '&:hover p,&:hover svg,& img': {
-      opacity: 1,
-    },
-    '& p, svg': {
-      opacity: 0.4,
-    },
-    '&:hover img': {
-      opacity: 0.3,
-    },
-  },
-  iconText: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  hidden: {
-    display: 'none',
-  },
-  onDragOver: {
-    '& img': {
-      opacity: 0.3,
-    },
-    '& p, svg': {
-      opacity: 1,
-    },
-  },
-});
+import { KeyFromData, MsgToast } from 'commom/contants';
 
 export type UploadFileProps = {
-  accept?: string;
-  hoverLabel?: string;
-  dropLabel?: string;
-  width?: string;
-  height?: string;
-  backgroundColor?: string;
-  image?: {
-    url: string;
-    imageStyle?: {
-      width?: string;
-      height?: string;
-    };
-  };
+  accept: string;
   idInput?: string;
   onDrop: (event: React.DragEvent<HTMLElement>) => void;
   onChange: (newFormData: FormData | null) => void;
 };
 
-export const UploadFile: React.FC<UploadFileProps> = ({
-  accept,
-  hoverLabel = 'Click or drag to upload file',
-  dropLabel = 'Drop file here',
-  width = '60px',
-  height = '60px',
-  backgroundColor = 'none',
-  idInput,
-  onDrop,
-  onChange,
-}) => {
-  const classes = useStyles();
-  const [labelText, setLabelText] = React.useState<string>(hoverLabel);
+export const UploadFile: React.FC<UploadFileProps> = ({ accept, idInput, onDrop, onChange }) => {
+  const [labelText, setLabelText] = React.useState<string>(MsgToast.HOVER_LABEL);
   const [isDragOver, setIsDragOver] = React.useState<boolean>(false);
+
   const stopDefaults = (e: React.DragEvent) => {
     e.stopPropagation();
     e.preventDefault();
   };
+
   const dragEvents = {
     onDragEnter: (e: React.DragEvent) => {
+      e.preventDefault();
       stopDefaults(e);
       setIsDragOver(true);
-      setLabelText(dropLabel);
-    },
-    onDragLeave: (e: React.DragEvent) => {
-      stopDefaults(e);
-      setIsDragOver(false);
-      setLabelText(hoverLabel);
+      setLabelText(MsgToast.DROP_LABEL);
     },
     onDragOver: stopDefaults,
     onDrop: (e: React.DragEvent<HTMLElement>) => {
       stopDefaults(e);
-      setLabelText(hoverLabel);
+      setLabelText(MsgToast.HOVER_LABEL);
       setIsDragOver(false);
       onDrop(e);
+    },
+    onDragLeave: (e: React.DragEvent) => {
+      const elementUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
+      if (elementUnderCursor?.closest('.upload_label, .dragging')) {
+        return;
+      }
+      if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget as Node)) {
+        stopDefaults(e);
+        setIsDragOver(false);
+        setLabelText(MsgToast.HOVER_LABEL);
+      }
     },
   };
 
@@ -107,21 +58,18 @@ export const UploadFile: React.FC<UploadFileProps> = ({
   };
 
   return (
-    <Box>
-      <input onChange={handleChange} accept={accept} id={idInput} type="file" multiple hidden />
-      <label
-        htmlFor={idInput}
-        {...dragEvents}
-        className={clsx(classes.root, isDragOver && classes.onDragOver)}
-      >
-        <Box width={width} height={height} bgcolor={backgroundColor}>
-          <Box height={height} width={width} className={classes.iconText}>
-            <Tooltip title={labelText} arrow open placement="right-start">
-              <CloudUpload fontSize="small" />
-            </Tooltip>
-          </Box>
-        </Box>
-      </label>
-    </Box>
+    <Tooltip title={labelText} arrow open placement="right-start">
+      <Box>
+        <input onChange={handleChange} accept={accept} id={idInput} type="file" multiple hidden />
+        <label
+          htmlFor={idInput}
+          {...dragEvents}
+          className={isDragOver ? 'upload_label show' : 'upload_label'}
+        >
+          <CloudUpload fontSize="small" />
+          {isDragOver && <span className="dragging">{MsgToast.DROP_LABEL}</span>}
+        </label>
+      </Box>
+    </Tooltip>
   );
 };
