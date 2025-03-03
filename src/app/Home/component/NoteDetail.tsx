@@ -286,7 +286,7 @@ export const NoteDetail = () => {
         {renderDetails()}
       </Grid>
       {noteDetails.length > 0 && (
-        <IconButton disabled={total - skip <= LIMIT} onClick={handleGetMore}>
+        <IconButton disabled={total - skip < LIMIT} onClick={handleGetMore}>
           <ExpandCircleDown />
         </IconButton>
       )}

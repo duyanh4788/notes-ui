@@ -8,7 +8,7 @@ import { Helper } from 'utils/helper';
 import React, { useEffect, useState } from 'react';
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
 import moment from 'moment';
-import FlipTimer from './FlipTimer';
+import TimerField from './TimerField';
 import { TimerType, TooltipTitle } from 'commom/contants';
 import { useDispatch } from 'react-redux';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
@@ -59,12 +59,13 @@ export default function Schedules(props: Props) {
     }
   };
 
-  const changeTime = (unit: TimerType, value: number) => {
-    if (flipTime[unit] === value) return;
-    setFlipTime(prevFlipTime => ({
-      ...prevFlipTime,
-      [unit]: value,
-    }));
+  const changeTime = (date: moment.Moment | null) => {
+    if (!date) return;
+    setFlipTime({
+      [TimerType.HOUR]: date.hour(),
+      [TimerType.MINUTE]: date.minute(),
+      [TimerType.SECOND]: date.second(),
+    });
   };
 
   const handleSave = () => {
@@ -108,7 +109,7 @@ export default function Schedules(props: Props) {
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <Box className="schedule_header">
-                <FlipTimer scheduleTime={flipTime} changeTime={changeTime} isEdit={isEdit} />
+                <TimerField scheduleTime={flipTime} changeTime={changeTime} isEdit={isEdit} />
                 <Box>
                   {!isEdit && (
                     <Tooltip title={TooltipTitle.EDT}>

@@ -114,25 +114,29 @@ export function* NoteDetailsSaga() {
 
 function* configData(type: string, data: NoteDetails) {
   const noteDetailsStore = yield select(state => state.noteDetails);
+  const totalStore = yield select(state => state.total);
   const { noteDetails = [] } = noteDetailsStore;
 
   let result: NoteDetails[] = [];
-
+  let total = 0;
   switch (type) {
     case TypeSaga.CREATED:
       result = [{ ...data }, ...noteDetails];
+      total = totalStore + 1;
       break;
     case TypeSaga.UPDATED:
       result = noteDetails.map(detail => (detail.id === data.id ? { ...data } : detail));
+      total = totalStore;
       break;
     case TypeSaga.DELETED:
       result = noteDetails.filter(detail => detail.id !== data.id);
+      total = totalStore - 1;
       break;
     default:
       break;
   }
   const isUpdate = type === TypeSaga.UPDATED || TypeSaga.CREATED_CHILD;
-  yield put(actions.updateNoteDetails({ noteDetails: result, total: result.length, isUpdate }));
+  yield put(actions.updateNoteDetails({ noteDetails: result, total, isUpdate }));
 }
 
 function* configGetAll(data: ResNoteDetails) {

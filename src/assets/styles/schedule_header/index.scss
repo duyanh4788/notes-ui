@@ -1,0 +1,37 @@
+@use '../extend/index.scss' as *;
+@use '../variable/index.scss' as *;
+
+.schedule_header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  .flip_time {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px $color-third;
+  }
+
+  .flip_time input {
+    cursor: pointer;
+    color: $color-main;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-size: inherit;
+    font-weight: inherit;
+    width: 100%;
+    text-align: center;
+    outline: none;
+    text-shadow: 2px 2px 4px $color-second;
+  }
+
+  .flip_time:hover {
+    background-color: $background-main;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px $color-third;
+  }
+}
