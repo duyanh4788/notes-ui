@@ -74,9 +74,16 @@ export const ButtonDetail = (props: Props) => {
   if (noteDetail.type === NoteDetailType.UPLOAD_FILE) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Tooltip title={noteDetail.title}>
-          <Chip label={Helper.truncateString(noteDetail.title, 40)} />
-        </Tooltip>
+        <Box>
+          <Tooltip title={noteDetail.title}>
+            <Chip label={Helper.truncateString(noteDetail.title, 40)} />
+          </Tooltip>
+          <Tooltip title={TooltipTitle.VIEW}>
+            <IconButton onClick={() => toggleModlContent(noteDetail.id)}>
+              <VisibilityRounded fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </Box>
         <Box>
           <Tooltip title={TooltipTitle.DOWNLOAD}>
             <IconButton onClick={() => handleDownload(noteDetail.content, noteDetail.title)}>

@@ -56,27 +56,29 @@ export const ModalContent = (props: Props) => {
       aria-describedby="modal-modal-description"
     >
       <Box className="modal_content">
-        <ButtonDetail
-          noteDetail={noteDetail}
-          title={title}
-          setTitle={setTitle}
-          langCode={langCode}
-          setLangCode={setLangCode}
-          mapStringById={mapStringById}
-          toggleModlContent={toggleModlContent}
-          handleUpdateType={handleUpdateType}
-          handleAdd={handleAdd}
-          handleUpdate={handleUpdate}
-          handleDelete={handleDelete}
-          handleCopy={handleCopy}
-          pageType={pageType}
-        />
-        <Content
-          noteDetail={noteDetail}
-          contentId={contentId}
-          langCode={langCode}
-          changeContent={changeContent}
-        />
+        <Box className="modal_body">
+          <ButtonDetail
+            noteDetail={noteDetail}
+            title={title}
+            setTitle={setTitle}
+            langCode={langCode}
+            setLangCode={setLangCode}
+            mapStringById={mapStringById}
+            toggleModlContent={toggleModlContent}
+            handleUpdateType={handleUpdateType}
+            handleAdd={handleAdd}
+            handleUpdate={handleUpdate}
+            handleDelete={handleDelete}
+            handleCopy={handleCopy}
+            pageType={pageType}
+          />
+          <Content
+            noteDetail={noteDetail}
+            contentId={contentId}
+            langCode={langCode}
+            changeContent={changeContent}
+          />
+        </Box>
       </Box>
     </Modal>
   );
