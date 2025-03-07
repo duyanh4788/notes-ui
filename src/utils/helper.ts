@@ -3,6 +3,19 @@ import { Notes } from 'interface/notes';
 import moment from 'moment';
 
 export class Helper {
+  static deepFind(notes: Notes[], noteId: string): Notes | null {
+    for (const note of notes) {
+      if (note.id === noteId) {
+        return note;
+      }
+      if (note.children) {
+        const found = Helper.deepFind(note.children, noteId);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
+
   static createChild(notes: Notes[], data: Notes) {
     return notes.map(note => {
       if (note.id === data.parentId) {

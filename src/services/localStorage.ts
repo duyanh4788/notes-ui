@@ -29,7 +29,7 @@ export class LocalStorageService {
   }
 
   static clearLocalStorage() {
-    localStorage.clear();
+    // localStorage.clear();
   }
 
   static removeLocalStorageByKey(key: string) {

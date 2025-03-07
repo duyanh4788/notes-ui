@@ -5,13 +5,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as NoteSlice from 'store/notes/shared/slice';
 import * as NoteSelectors from 'store/notes/shared/selectors';
 import * as NoteDetailsSlice from 'store/noteDetails/shared/slice';
-import { Notes } from 'interface/notes';
+import { Notes, ParamsOrdering } from 'interface/notes';
 import { LIMIT, TooltipTitle } from 'commom/contants';
-import { RichTreeView, TreeItem2Props, useTreeItem2Utils } from '@mui/x-tree-view';
+import { TreeItem2Props, useTreeItem2Utils } from '@mui/x-tree-view';
 import { NoteItems } from 'app/Home/component/NoteItems';
 import Grid from '@mui/material/Grid2';
 import { NoteDetail } from './NoteDetail';
 import { Search } from 'components/Search';
+import { RichTreeViewPro } from '@mui/x-tree-view-pro/RichTreeViewPro';
+import { Helper } from 'utils/helper';
 
 export const NotesList = () => {
   const dispatch = useDispatch();
@@ -113,6 +115,12 @@ export const NotesList = () => {
     );
   };
 
+  const handleOrderRing = (params: ParamsOrdering) => {
+    const note = Helper.deepFind(notesList, params.itemId);
+    if (!note) return;
+    dispatch(NoteSlice.actions.updatedLoad({ id: note.id, parentId: params.newPosition.parentId }));
+  };
+
   return (
     <Box className="trees_box">
       <Search textSearch={textSearch} setTextSearch={setTextSearch} />
@@ -125,18 +133,34 @@ export const NotesList = () => {
               </IconButton>
             </Tooltip>
             {notesList.length ? (
-              <RichTreeView
+              // <RichTreeView
+              //   sx={{ height: 'fit-content', flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+              //   items={notesList}
+              //   isItemEditable
+              //   experimentalFeatures={{
+              //     indentationAtItemLevel: true,
+              //     labelEditing: true,
+              //   }}
+              //   defaultExpandedItems={['grild']}
+              //   slots={{
+              //     item: (props: TreeItem2Props) => <NoteItem {...props} />,
+              //   }}
+              // />
+              <RichTreeViewPro
                 sx={{ height: 'fit-content', flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
                 items={notesList}
+                itemsReordering
                 isItemEditable
+                defaultExpandedItems={['grid', 'pickers']}
                 experimentalFeatures={{
                   indentationAtItemLevel: true,
                   labelEditing: true,
+                  itemsReordering: true,
                 }}
-                defaultExpandedItems={['grild']}
                 slots={{
                   item: (props: TreeItem2Props) => <NoteItem {...props} />,
                 }}
+                onItemPositionChange={params => handleOrderRing(params)}
               />
             ) : null}
             <IconButton disabled={!notes.length || total - skip <= LIMIT} onClick={handleGetMore}>
