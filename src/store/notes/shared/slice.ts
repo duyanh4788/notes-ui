@@ -43,6 +43,12 @@ const noteSlice = createSlice({
       state.error = action.payload;
     },
 
+    updatedOrderRingLoad(_, __) {},
+    updatedOrderRingSuccess() {},
+    updatedOrderRingFail(state, action) {
+      state.error = action.payload;
+    },
+
     deletedLoad(_, __) {},
     deletedSuccess() {},
     deletedFail(state, action) {

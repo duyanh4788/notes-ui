@@ -3,13 +3,14 @@ import {
   UseTreeItem2LabelSlotOwnProps,
   TreeItem2Label,
   TreeItem2LabelInput,
-} from '@mui/x-tree-view';
+} from '@mui/x-tree-view-pro';
 import {
   AddRounded,
   CheckRounded,
   ChevronRightRounded,
   CloseRounded,
   DeleteRounded,
+  DragIndicatorRounded,
   EditRounded,
   ExpandMoreRounded,
 } from '@mui/icons-material';
@@ -77,6 +78,7 @@ export function CustomLabel({
           justifyContent: 'space-between',
         }}
       >
+        <DragIndicatorRounded sx={{ fontSize: '15px' }} />
         {expanded.has(noteId) && quantityChild ? (
           <IconButton size="small" onClick={onofExpand}>
             <ExpandMoreRounded fontSize="small" />
@@ -87,7 +89,7 @@ export function CustomLabel({
           </IconButton>
         )}
         <Tooltip arrow placement="right-end" title={`📁: ${quantityChild} | 📝: ${quantityFile}`}>
-          <Box>{children}</Box>
+          <Box> {children}</Box>
         </Tooltip>
       </Box>
       {editable && (

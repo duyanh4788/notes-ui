@@ -54,17 +54,16 @@ export const ButtonDetail = (props: Props) => {
 
   const handleDownload = async (url: string, fileName: string) => {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, { mode: 'no-cors' });
       const blob = await response.blob();
       const blobUrl = URL.createObjectURL(blob);
 
       const link = document.createElement('a');
       link.href = blobUrl;
-      link.download = fileName || 'downloaded-file';
+      link.download = fileName;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
       URL.revokeObjectURL(blobUrl);
     } catch (error) {
       toast.error(MsgToast.DOWN_FILE);

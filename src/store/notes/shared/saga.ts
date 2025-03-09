@@ -38,6 +38,16 @@ export function* updated(api, action) {
   }
 }
 
+export function* updatedOrderRing(api, action) {
+  try {
+    const resPonse = yield call(api.updated, action.payload);
+    const data = yield configResponse(resPonse);
+    yield configNotes(TypeSaga.UPDATED_ORDERING, data.data, action.payload);
+  } catch (error) {
+    yield put(actions.updatedOrderRingFail(configResponseError(error)));
+  }
+}
+
 export function* deleted(api, action) {
   try {
     const resPonse = yield call(api.deleted, action.payload);
@@ -102,6 +112,7 @@ export function* NotesSaga() {
     yield takeLatest(actions.createdLoad.type, created, https),
     yield takeLatest(actions.createdChildLoad.type, createdChild, https),
     yield takeLatest(actions.updatedLoad.type, updated, https),
+    yield takeLatest(actions.updatedOrderRingLoad.type, updatedOrderRing, https),
     yield takeLatest(actions.deletedLoad.type, deleted, https),
     yield takeLatest(actions.getByIdLoad.type, getById, https),
     yield takeLatest(actions.getAllLoad.type, getAll, https),
@@ -112,7 +123,7 @@ export function* NotesSaga() {
   ]);
 }
 
-function* configNotes(type: string, data: Notes) {
+function* configNotes(type: string, data: Notes, payload?: any) {
   const notesStore = yield select(state => state.notes);
   const { notes = [] } = notesStore;
 
@@ -132,6 +143,9 @@ function* configNotes(type: string, data: Notes) {
         result = notes.map(note => (note.id === data.id ? { ...data } : note));
       }
       break;
+    case TypeSaga.UPDATED_ORDERING:
+      result = Helper.updateOrderRing(notes, data, payload);
+      break;
     case TypeSaga.DELETED:
       if (data.parentId) {
         result = Helper.delChild(notes, data);
@@ -142,6 +156,7 @@ function* configNotes(type: string, data: Notes) {
     default:
       break;
   }
-  const isUpdate = type === TypeSaga.UPDATED || TypeSaga.CREATED_CHILD;
+  const isUpdate = type === TypeSaga.UPDATED || TypeSaga.UPDATED_ORDERING || TypeSaga.CREATED_CHILD;
+  console.log(result);
   yield put(actions.updateNotes({ notes: result, total: result.length, isUpdate }));
 }

@@ -12,6 +12,7 @@ export interface Notes {
   updatedAt: Date;
   isEdit: boolean;
   userId: number;
+  sorting: number;
   children: Notes[];
   noteDetails?: NoteDetails[];
   _count: { noteDetails: number; children: number };
@@ -32,4 +33,12 @@ export interface ParamsOrdering {
   itemId: string;
   oldPosition: TreeViewItemReorderPosition;
   newPosition: TreeViewItemReorderPosition;
+}
+
+export interface PayloadCreateNote {
+  id?: string;
+  label?: string;
+  status?: string;
+  parentId?: string;
+  sorting?: number;
 }

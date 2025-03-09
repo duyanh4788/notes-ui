@@ -119,6 +119,9 @@ body::-webkit-scrollbar-thumb,
 .MuiAvatar-root,
 .MuiSwitch-switchBase {
   color: $color-second !important;
+}
+
+.MuiSvgIcon-root {
   animation: pulse 1.5s infinite;
 }
 
@@ -157,7 +160,6 @@ iframe {
   pointer-events: none;
 }
 
-.MuiRichTreeView-root,
 .MuiRichTreeViewPro-root {
   max-width: 100% !important;
 }

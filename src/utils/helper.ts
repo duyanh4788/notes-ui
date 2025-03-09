@@ -1,6 +1,7 @@
-import { TimerType } from 'commom/contants';
-import { Notes } from 'interface/notes';
+import { MsgToast, TimerType } from 'commom/contants';
+import { Notes, PayloadCreateNote } from 'interface/notes';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 export class Helper {
   static deepFind(notes: Notes[], noteId: string): Notes | null {
@@ -17,108 +18,120 @@ export class Helper {
   }
 
   static createChild(notes: Notes[], data: Notes) {
-    return notes.map(note => {
-      if (note.id === data.parentId) {
-        const updatedNote = {
-          ...note,
-          _count: {
-            children: (note?._count?.children || 0) + 1,
-            noteDetails: note?._count?.noteDetails || 0,
-          },
-          children:
-            note.children && note.children.length ? [...note.children, { ...data }] : [{ ...data }],
-        };
-        return updatedNote;
-      }
+    return notes
+      .map(note => {
+        if (note.id === data.parentId) {
+          const updatedNote = {
+            ...note,
+            _count: {
+              children: (note?._count?.children || 0) + 1,
+              noteDetails: note?._count?.noteDetails || 0,
+            },
+            children:
+              note.children && note.children.length
+                ? [...note.children, { ...data }]
+                : [{ ...data }],
+          };
+          return updatedNote;
+        }
 
-      if (note.children) {
-        return {
-          ...note,
-          children: this.addChildToChild(note.children, data),
-        };
-      }
+        if (note.children) {
+          return {
+            ...note,
+            children: this.addChildToChild(note.children, data),
+          };
+        }
 
-      return note;
-    });
+        return note;
+      })
+      .sort((a, b) => a.sorting - b.sorting);
   }
 
   static addChildToChild(children: Notes[], data: Notes): Notes[] {
-    return children.map(child => {
-      if (child.id === data.parentId) {
-        return {
-          ...child,
-          _count: {
-            children: (child?._count?.children || 0) + 1,
-            noteDetails: child?._count?.noteDetails || 0,
-          },
-          children:
-            child.children && child.children.length
-              ? [...child.children, { ...data }]
-              : [{ ...data }],
-        };
-      } else if (child.children) {
-        return {
-          ...child,
-          children: this.addChildToChild(child.children, data),
-        };
-      }
-      return child;
-    });
+    return children
+      .map(child => {
+        if (child.id === data.parentId) {
+          return {
+            ...child,
+            _count: {
+              children: (child?._count?.children || 0) + 1,
+              noteDetails: child?._count?.noteDetails || 0,
+            },
+            children:
+              child.children && child.children.length
+                ? [...child.children, { ...data }]
+                : [{ ...data }],
+          };
+        } else if (child.children) {
+          return {
+            ...child,
+            children: this.addChildToChild(child.children, data),
+          };
+        }
+        return child;
+      })
+      .sort((a, b) => a.sorting - b.sorting);
   }
 
   static updateChild(notes: Notes[], data: Notes) {
-    return notes.map(note => {
-      if (note.id === data.parentId) {
-        const updatedChildren = this.updateChildInChild(note.children, data);
-        return { ...note, children: updatedChildren };
-      }
+    return notes
+      .map(note => {
+        if (note.id === data.parentId) {
+          const updatedChildren = this.updateChildInChild(note.children, data);
+          return { ...note, children: updatedChildren };
+        }
 
-      if (note.children) {
-        return {
-          ...note,
-          children: this.updateChildInChild(note.children, data),
-        };
-      }
+        if (note.children) {
+          return {
+            ...note,
+            children: this.updateChildInChild(note.children, data),
+          };
+        }
 
-      return note;
-    });
+        return note;
+      })
+      .sort((a, b) => a.sorting - b.sorting);
   }
 
   static updateChildInChild(children: Notes[], data: Notes): Notes[] {
-    return children.map(child => {
-      if (child.id === data.id) {
-        return { ...child, ...data };
-      } else if (child.children) {
-        return {
-          ...child,
-          children: this.updateChildInChild(child.children, data),
-        };
-      }
+    return children
+      .map(child => {
+        if (child.id === data.id) {
+          return { ...child, ...data };
+        } else if (child.children) {
+          return {
+            ...child,
+            children: this.updateChildInChild(child.children, data),
+          };
+        }
 
-      return child;
-    });
+        return child;
+      })
+      .sort((a, b) => a.sorting - b.sorting);
   }
 
   static delChild(notes: Notes[], data: Notes) {
-    return notes.map(note => {
-      if (note.id === data.parentId) {
-        const updatedChildren = this.delChildInChild(note.children, data);
-        return {
-          ...note,
-          _count: { children: note._count.children - 1, noteDetails: note._count.noteDetails },
-          children: updatedChildren,
-        };
-      }
+    return notes
+      .map(note => {
+        if (note.id === data.parentId) {
+          const updatedChildren = this.delChildInChild(note.children, data);
+          return {
+            ...note,
+            _count: { children: note._count.children - 1, noteDetails: note._count.noteDetails },
+            children: updatedChildren,
+          };
+        }
 
-      if (note.children) {
-        return {
-          ...note,
-          children: this.delChildInChild(note.children, data),
-        };
-      }
+        if (note.children) {
+          return {
+            ...note,
+            children: this.delChildInChild(note.children, data),
+          };
+        }
 
-      return note;
-    });
+        return note;
+      })
+      .sort((a, b) => a.sorting - b.sorting);
   }
 
   static delChildInChild(children: Notes[], data: Notes): Notes[] {
@@ -135,7 +148,108 @@ export class Helper {
 
         return child;
       })
-      .filter((child): child is Notes => child !== null && child !== undefined);
+      .filter((child): child is Notes => child !== null && child !== undefined)
+      .sort((a, b) => a.sorting - b.sorting);
+  }
+
+  static updateOrderRing(notes: Notes[], data: Notes, payload: any): Notes[] {
+    try {
+      let newNotes = structuredClone(notes);
+      const oldSorting = payload.oldPosition;
+      const newSorting = data.sorting;
+
+      const targetNode = newNotes.find(note => note.id === data.id && !data.parentId);
+      if (targetNode) {
+        targetNode.sorting = newSorting;
+
+        newNotes.forEach(note => {
+          if (note.id !== data.id) {
+            if (
+              oldSorting < newSorting &&
+              note.sorting > oldSorting &&
+              note.sorting <= newSorting
+            ) {
+              note.sorting -= 1;
+            } else if (
+              oldSorting > newSorting &&
+              note.sorting >= newSorting &&
+              note.sorting < oldSorting
+            ) {
+              note.sorting += 1;
+            }
+          }
+        });
+
+        return newNotes.sort((a, b) => a.sorting - b.sorting);
+      } else if (!targetNode && !data.parentId) {
+        const { newTree, movedNode } = Helper.removeNode(newNotes, data.id);
+        newNotes = newTree;
+        if (movedNode) {
+          newNotes.push(movedNode);
+        }
+        return newNotes.sort((a, b) => a.sorting - b.sorting);
+      } else if (data.parentId) {
+        const { newTree, movedNode } = Helper.removeNode(newNotes, data.id);
+        newNotes = newTree;
+        if (movedNode) {
+          movedNode.sorting = data.sorting;
+          movedNode.parentId = data.parentId;
+
+          function insertIntoParent(tree: Notes[], parentId: string): boolean {
+            for (const node of tree) {
+              if (node.id === parentId) {
+                const children = [...(node.children || [])];
+
+                children.forEach(child => {
+                  if (child.sorting >= newSorting) {
+                    child.sorting += 1;
+                  }
+                });
+
+                if (movedNode) {
+                  children.push(movedNode);
+                }
+                node.children = children.sort((a, b) => a.sorting - b.sorting);
+                return true;
+              }
+              if (node.children && insertIntoParent(node.children, parentId)) return true;
+            }
+            return false;
+          }
+
+          insertIntoParent(newNotes, data.parentId);
+        }
+      }
+
+      return newNotes;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error(MsgToast.ORDERING_FAILD);
+      }
+      return notes;
+    }
+  }
+
+  static removeNode(tree: Notes[], nodeId: string): { newTree: Notes[]; movedNode: Notes | null } {
+    let movedNode: Notes | null = null;
+    function recursiveRemove(nodes: Notes[]): Notes[] {
+      return nodes
+        .filter(node => {
+          if (node.id === nodeId) {
+            movedNode = { ...node };
+            return false;
+          }
+          if (node.children) {
+            node.children = recursiveRemove(node.children);
+          }
+          return true;
+        })
+        .sort((a, b) => a.sorting - b.sorting);
+    }
+
+    return { newTree: recursiveRemove(tree), movedNode };
   }
 
   static randomNum(min: number, max: number): number {
@@ -180,5 +294,25 @@ export class Helper {
   static truncateString(str: string, maxLength: number = 50) {
     if (!str) return '...';
     return str.length > maxLength ? str.slice(0, maxLength) + '...' : str;
+  }
+
+  static payloadUpdateNote(payload: PayloadCreateNote) {
+    const newPayload: Record<string, any> = {
+      id: payload.id,
+    };
+    if (payload.label) {
+      newPayload.label = payload.label;
+    }
+    if (payload.status) {
+      newPayload.status = payload.status;
+    }
+    if (payload.parentId || payload.parentId === null) {
+      newPayload.parentId = payload.parentId;
+    }
+    if (payload.sorting) {
+      newPayload.sorting = payload.sorting;
+    }
+
+    return newPayload;
   }
 }

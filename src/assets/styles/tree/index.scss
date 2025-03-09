@@ -19,6 +19,12 @@
     max-height: 550px;
     overflow-x: hidden;
     overflow-y: auto;
+    .richtree_view {
+      height: fit-content;
+      flex-grow: 1;
+      max-width: 400;
+      overflow-y: auto;
+    }
   }
   .paper_text_field {
     display: flex;

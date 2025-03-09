@@ -1,8 +1,9 @@
 import { httpRequest } from 'services/request';
 import { Api } from '../constants';
 import { TypeApi } from 'commom/contants';
-import { CountRes, Notes, ResNotes } from 'interface/notes';
+import { CountRes, Notes, PayloadCreateNote, ResNotes } from 'interface/notes';
 import { Paging } from 'interface/paging';
+import { Helper } from 'utils/helper';
 
 export class NotesHttps {
   public created = (payload: { title: string }): Promise<void> => {
@@ -13,8 +14,9 @@ export class NotesHttps {
     return httpRequest(TypeApi.API_NOTES).post(Api.NOTE_CHILD, payload);
   };
 
-  public updated = (payload: { title: string }): Promise<void> => {
-    return httpRequest(TypeApi.API_NOTES).put(Api.NOTES, payload);
+  public updated = (payload: PayloadCreateNote): Promise<void> => {
+    const newPayload = Helper.payloadUpdateNote(payload);
+    return httpRequest(TypeApi.API_NOTES).put(Api.NOTES, newPayload);
   };
 
   public deleted = (id: number): Promise<void> => {

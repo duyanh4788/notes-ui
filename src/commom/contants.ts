@@ -35,6 +35,7 @@ export enum TypeSaga {
   CREATED = 'CREATED',
   CREATED_CHILD = 'CREATED_CHILD',
   UPDATED = 'UPDATED',
+  UPDATED_ORDERING = 'UPDATED_ORDERING',
   DELETED = 'DELETED',
   GET_ALL = 'GET_ALL',
 }
@@ -120,6 +121,7 @@ export enum MsgToast {
   INVALID_TYPE = 'Invalid file type!!!',
   HOVER_LABEL = 'Click or drag to upload file',
   DROP_LABEL = 'Drop file here',
+  ORDERING_FAILD = 'Error for code of feature ordering!!!',
 }
 
 export const ALLOWED_TYPES = [

@@ -36,7 +36,7 @@ export const Navbar = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if ((config.NODE_ENV === 'production' && !userInfor) || !userInfor.id) {
+    if (!userInfor || !userInfor.id) {
       LocalStorageService.clearLocalStorage();
       navigate(PATH_PARAMS.SIGNIN);
     }

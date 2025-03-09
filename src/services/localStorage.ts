@@ -1,3 +1,5 @@
+import { config } from 'utils/config';
+
 export enum TypeLocal {
   GET = 'GET',
   SET = 'SET',
@@ -29,7 +31,9 @@ export class LocalStorageService {
   }
 
   static clearLocalStorage() {
-    // localStorage.clear();
+    if (config.NODE_ENV === 'production') {
+      localStorage.clear();
+    }
   }
 
   static removeLocalStorageByKey(key: string) {

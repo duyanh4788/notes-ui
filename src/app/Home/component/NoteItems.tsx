@@ -4,7 +4,7 @@ import {
   UseTreeItem2LabelInputSlotOwnProps,
   UseTreeItem2LabelSlotOwnProps,
   useTreeItem2Utils,
-} from '@mui/x-tree-view';
+} from '@mui/x-tree-view-pro';
 import { CountRes, Notes } from 'interface/notes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
