@@ -126,7 +126,6 @@ export function* NotesSaga() {
 function* configNotes(type: string, data: Notes, payload?: any) {
   const notesStore = yield select(state => state.notes);
   const { notes = [] } = notesStore;
-
   let result: Notes[] = [];
 
   switch (type) {
@@ -140,7 +139,7 @@ function* configNotes(type: string, data: Notes, payload?: any) {
       if (data.parentId) {
         result = Helper.updateChild(notes, data);
       } else {
-        result = notes.map(note => (note.id === data.id ? { ...data } : note));
+        result = notes.map(note => (note.id === data.id ? { ...note, ...data } : note));
       }
       break;
     case TypeSaga.UPDATED_ORDERING:
