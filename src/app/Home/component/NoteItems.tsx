@@ -139,6 +139,15 @@ export const NoteItems = React.forwardRef(function NoteItem(
       _count: { noteDetails: 0, children: 0 },
     };
     dispatch(NoteSlice.actions.addChildVitrual(newChild));
+    if (note.children && note.children.length) {
+      const child = note.children.find(x => !x.createdAt);
+      if (child) {
+        dispatch(
+          NoteSlice.actions.createdChildLoad({ parentId: child.parentId, label: child.label }),
+        );
+        dispatch(NoteSlice.actions.delChildVitrual({ id: child.id, parentId: child.parentId }));
+      }
+    }
   };
 
   const onofExpand = (event: React.MouseEvent) => {

@@ -90,7 +90,7 @@ export const NotesList = () => {
   };
 
   const NoteItem = (props: TreeItem2Props) => {
-    const { publicAPI } = useTreeItem2Utils({
+    const { publicAPI, interactions } = useTreeItem2Utils({
       itemId: props.itemId,
       children: props.children,
     });
@@ -100,6 +100,9 @@ export const NotesList = () => {
       if (expanded.has(note.id) && note?.children?.length) {
         const event = {} as React.SyntheticEvent;
         publicAPI.setItemExpansion(event, props.itemId, true);
+      }
+      if (!note.createdAt) {
+        interactions.toggleItemEditing();
       }
     }, [expanded, note?.children?.length, props.itemId]);
     return (
