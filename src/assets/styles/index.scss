@@ -182,3 +182,7 @@ iframe {
 .MuiRichTreeViewPro-root > div {
   display: none !important;
 }
+
+.MuiPopper-root {
+  z-index: 999 !important;
+}

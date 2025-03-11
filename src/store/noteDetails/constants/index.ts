@@ -4,4 +4,5 @@ export const Api = {
   NOTE_DETAILS: userPath(''),
   SEARCH: userPath('search'),
   UPLOAD_FILE: userPath('upload-file'),
+  FILE: userPath('file'),
 };
