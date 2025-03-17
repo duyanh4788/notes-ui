@@ -1,8 +1,9 @@
-import { MsgToast, TimerType } from 'commom/contants';
+import { MsgToast, NoteDetailType, TimerType } from 'commom/contants';
 import { Notes, PayloadCreateNote } from 'interface/notes';
 import moment from 'moment';
 import { toast } from 'react-toastify';
-
+import { faker } from '@faker-js/faker';
+import { FakeNoteDetails } from 'interface/noteDetails';
 export class Helper {
   static deepFind(notes: Notes[], noteId: string): Notes | null {
     for (const note of notes) {
@@ -314,5 +315,35 @@ export class Helper {
     }
 
     return newPayload;
+  }
+
+  static fakeNoteDetails(noteId: string) {
+    const type = faker.helpers.arrayElement(['string', 'code', 'schedule']) as NoteDetailType;
+
+    const faKe: FakeNoteDetails = {
+      title: faker.lorem.sentence(),
+      noteId,
+      type,
+      content: '',
+    };
+
+    switch (type) {
+      case NoteDetailType.SCHEDULE:
+        faKe.scheduleTime = moment()
+          .add(faker.number.int({ min: 1, max: 30 }), 'days')
+          .toISOString();
+        faKe.content = faker.lorem.paragraph();
+        break;
+
+      case NoteDetailType.CODE:
+        faKe.content = faker.hacker.phrase();
+        break;
+
+      case NoteDetailType.STRING:
+        faKe.content = faker.lorem.paragraph();
+        break;
+    }
+
+    return faKe;
   }
 }

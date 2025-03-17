@@ -16,6 +16,14 @@ export type NoteDetails = {
   idVitrual?: string;
 };
 
+export type FakeNoteDetails = {
+  noteId: string;
+  title: string;
+  content: string;
+  type: NoteDetailType;
+  scheduleTime?: string;
+};
+
 export interface ResNoteDetails {
   noteDetails: NoteDetails[];
   noteId: string;

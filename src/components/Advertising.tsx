@@ -83,7 +83,22 @@ export const Advertising = (prop: Prop) => {
       ) : null}
       <Modal open={open} onClose={handleClose} className="modal_swiper">
         <Box className="modal_box">
-          <img src={selectedImg as string} alt="Preview" />
+          <Swiper
+            slidesPerView={1}
+            initialSlide={banners.findIndex(row => row.url === selectedImg)}
+          >
+            {banners.length ? (
+              banners.map(row => (
+                <SwiperSlide key={row.id}>
+                  <Box className="my_swiper">
+                    <img src={row.url} alt={row.titlle} />
+                  </Box>
+                </SwiperSlide>
+              ))
+            ) : (
+              <Skeleton variant="rectangular" />
+            )}
+          </Swiper>
         </Box>
       </Modal>
     </React.Fragment>

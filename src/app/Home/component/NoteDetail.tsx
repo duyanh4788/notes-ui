@@ -16,7 +16,7 @@ import {
   PageType,
   TooltipTitle,
 } from 'commom/contants';
-import { AddRounded, CloudUpload, ExpandCircleDown } from '@mui/icons-material';
+import { AddRounded, AutoAwesomeRounded, CloudUpload, ExpandCircleDown } from '@mui/icons-material';
 import { NoteDetails } from 'interface/noteDetails';
 import { Helper } from 'utils/helper';
 import { v4 as uuidv4 } from 'uuid';
@@ -68,6 +68,14 @@ export const NoteDetail = () => {
     dispatch(NoteDetailsSlice.actions.addVitrual(newVitrual));
     mapStringById(newVitrual.id, newVitrual.title, setTitle);
     mapStringById(newVitrual.id, newVitrual.content, setContent);
+  };
+
+  const handleAuto = () => {
+    if (!note) return;
+    Array.from({ length: 50 }, () => {
+      const newNote = Helper.fakeNoteDetails(note.id);
+      dispatch(NoteDetailsSlice.actions.createdLoad(newNote));
+    });
   };
 
   const mapStringById = (
@@ -262,6 +270,11 @@ export const NoteDetail = () => {
       {isDragOver && <Box className="animate_drag">{MsgToast.DROP_LABEL}</Box>}
       {note && (
         <Box className="btn_add">
+          <Tooltip title={TooltipTitle.AUTO}>
+            <IconButton onClick={handleAuto}>
+              <AutoAwesomeRounded />
+            </IconButton>
+          </Tooltip>
           <Tooltip title={TooltipTitle.ADD}>
             <IconButton onClick={handleAddVitrual}>
               <AddRounded />
