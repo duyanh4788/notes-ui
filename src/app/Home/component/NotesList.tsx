@@ -54,6 +54,7 @@ export const NotesList = () => {
         };
         dispatch(NoteDetailsSlice.actions.getAllLoad(params));
         setTextSearch('');
+        setLimitDetail(new Set([notes[0].id]));
       }
       return;
     }

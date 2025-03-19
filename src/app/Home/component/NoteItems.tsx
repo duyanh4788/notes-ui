@@ -53,6 +53,7 @@ export const NoteItems = React.forwardRef(function NoteItem(
       limit: LIMIT,
     };
     dispatch(NoteSlice.actions.getByIdSuccess({ data: note }));
+    dispatch(NoteDetailsSlice.actions.clearNoteDetails());
     dispatch(NoteDetailsSlice.actions.getAllLoad(params));
   };
 

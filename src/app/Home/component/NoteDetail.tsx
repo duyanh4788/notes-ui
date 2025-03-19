@@ -76,6 +76,13 @@ export const NoteDetail = () => {
       const newNote = Helper.fakeNoteDetails(note.id);
       dispatch(NoteDetailsSlice.actions.createdLoad(newNote));
     });
+    setSkip(0);
+    const params = {
+      noteId: note.id,
+      skip: 0 + LIMIT,
+      limit: LIMIT,
+    };
+    dispatch(NoteDetailsSlice.actions.getAllLoad(params));
   };
 
   const mapStringById = (
