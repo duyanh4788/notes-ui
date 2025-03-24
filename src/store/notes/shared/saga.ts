@@ -156,5 +156,8 @@ function* configNotes(type: string, data: Notes, payload?: any) {
       break;
   }
   const isUpdate = type === TypeSaga.UPDATED || TypeSaga.UPDATED_ORDERING || TypeSaga.CREATED_CHILD;
+  if (type === TypeSaga.DELETED) {
+    yield put(actions.clearNote());
+  }
   yield put(actions.updateNotes({ notes: result, total: result.length, isUpdate }));
 }

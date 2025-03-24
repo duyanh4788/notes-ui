@@ -86,7 +86,9 @@ const noteSlice = createSlice({
     clearCounts: state => {
       state.counts = null;
     },
-
+    clearNote: state => {
+      state.note = null;
+    },
     addChildVitrual(_, __) {},
     updateChildVitrual(_, __) {},
     delChildVitrual(_, __) {},
