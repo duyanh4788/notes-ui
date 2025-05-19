@@ -144,3 +144,5 @@ export enum KeyFromData {
   UPLOAD = 'upload',
   NOTEID = 'noteId',
 }
+
+export const LIST_NUMBERS = [50, 100, 200, 500, 1000];

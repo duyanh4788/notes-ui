@@ -1,5 +1,15 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Box, IconButton, styled, Paper, Tooltip } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  styled,
+  Paper,
+  Tooltip,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+} from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useDispatch, useSelector } from 'react-redux';
 import * as NoteDetailsSlice from 'store/noteDetails/shared/slice';
@@ -11,6 +21,7 @@ import {
   KeyFromData,
   LangCodes,
   LIMIT,
+  LIST_NUMBERS,
   MsgToast,
   NoteDetailType,
   PageType,
@@ -44,6 +55,7 @@ export const NoteDetail = () => {
   const note = useSelector(Notes.selectNote);
 
   const [skip, setSkip] = useState<number>(0);
+  const [sizeAuto, setSizeAuto] = useState<number>(50);
   const [title, setTitle] = useState<Map<number, string>>(new Map());
   const [content, setContent] = useState<Map<number, string>>(new Map());
   const [langCode, setLangCode] = useState<string>(LangCodes[0].value);
@@ -70,9 +82,9 @@ export const NoteDetail = () => {
     mapStringById(newVitrual.id, newVitrual.content, setContent);
   };
 
-  const handleAuto = () => {
+  const handleAuto = (numberLength: number) => {
     if (!note) return;
-    Array.from({ length: 50 }, () => {
+    Array.from({ length: numberLength }, () => {
       const newNote = Helper.fakeNoteDetails(note.id);
       dispatch(NoteDetailsSlice.actions.createdLoad(newNote));
     });
@@ -98,7 +110,6 @@ export const NoteDetail = () => {
   };
 
   const handleAdd = (detail: NoteDetails) => {
-    // eslint-disable-next-line
     const { id, isVitrual, idVitrual, ...restDetail } = detail;
     restDetail.title = title.get(id) || 'New Note';
     restDetail.content = content.get(id) || 'Content';
@@ -275,31 +286,46 @@ export const NoteDetail = () => {
       {...dragEvents}
     >
       {isDragOver && <Box className="animate_drag">{MsgToast.DROP_LABEL}</Box>}
-      {note && (
-        <Box className="btn_add">
-          <Tooltip title={TooltipTitle.AUTO}>
-            <IconButton onClick={handleAuto}>
-              <AutoAwesomeRounded />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={TooltipTitle.ADD}>
-            <IconButton onClick={handleAddVitrual}>
-              <AddRounded />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={MsgToast.HOVER_LABEL} arrow open placement="right-start">
-            <label className="btn_upload" htmlFor={note?.label}>
-              <input
-                onChange={uploadChange}
-                accept={ACCEPT_PROPS}
-                id={note?.label}
-                type="file"
-                multiple
-                hidden
-              />
-              <CloudUpload fontSize="small" />
-            </label>
-          </Tooltip>
+      {noteId && (
+        <Box className="btn_container">
+          <Box className="btn_auto">
+            <Tooltip title={TooltipTitle.AUTO}>
+              <FormControl size="small">
+                <Select
+                  onChange={e => {
+                    handleAuto(Number(e.target.value));
+                  }}
+                  startAdornment={<AutoAwesomeRounded fontSize="small" />}
+                  displayEmpty
+                  notched
+                >
+                  {LIST_NUMBERS.map(x => (
+                    <MenuItem value={x}>{x}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Tooltip>
+          </Box>
+          <Box className="btn_add">
+            <Tooltip title={TooltipTitle.ADD}>
+              <IconButton onClick={handleAddVitrual}>
+                <AddRounded />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title={MsgToast.HOVER_LABEL} arrow open placement="right-start">
+              <label className="btn_upload" htmlFor={note?.label}>
+                <input
+                  onChange={uploadChange}
+                  accept={ACCEPT_PROPS}
+                  id={note?.label}
+                  type="file"
+                  multiple
+                  hidden
+                />
+                <CloudUpload fontSize="small" />
+              </label>
+            </Tooltip>
+          </Box>
         </Box>
       )}
       <Grid container spacing={2}>

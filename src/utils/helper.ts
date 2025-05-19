@@ -318,7 +318,7 @@ export class Helper {
   }
 
   static fakeNoteDetails(noteId: string) {
-    const type = faker.helpers.arrayElement(['string', 'code', 'schedule']) as NoteDetailType;
+    const type = faker.helpers.arrayElement(['string', 'code']) as NoteDetailType;
 
     const faKe: FakeNoteDetails = {
       title: faker.lorem.sentence(),

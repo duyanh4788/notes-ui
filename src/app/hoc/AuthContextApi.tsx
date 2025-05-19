@@ -17,7 +17,11 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     function handleUser(tokenStore: string | null) {
       if (tokenStore) {
-        return dispatch(UserSlice.actions.getByIdLoad());
+        dispatch(UserSlice.actions.getByIdLoad());
+        if (window.location.pathname === PATH_PARAMS.SIGNIN) {
+          return navigate(PATH_PARAMS.HOME);
+        }
+        return;
       }
       const urlParams = new URLSearchParams(window.location.search);
       const userId = urlParams.get('userId');

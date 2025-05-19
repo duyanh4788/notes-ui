@@ -2,11 +2,22 @@
 @use '../variable/index.scss' as *;
 
 .note_details {
-  .btn_add {
+  .btn_container {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center; /* Center the .btn_add */
+    position: relative;
+    .btn_auto {
+      position: absolute;
+      left: 0; /* or right: 0 for right side */
+    }
+    .btn_add {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
+
   .btn_upload {
     cursor: pointer;
     display: flex;
