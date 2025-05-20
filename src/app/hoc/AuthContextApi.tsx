@@ -6,6 +6,7 @@ import { LocalStorageKey, LocalStorageService } from 'services/localStorage';
 import * as UserSlice from 'store/users/shared/slice';
 import * as UserSelector from 'store/users/shared/selectors';
 import { AuthContext } from './AuthContex';
+import { baseProps } from 'utils/config';
 
 export const AuthContextProvider = ({ children }) => {
   const dispatch = useDispatch();
@@ -18,7 +19,10 @@ export const AuthContextProvider = ({ children }) => {
     function handleUser(tokenStore: string | null) {
       if (tokenStore) {
         dispatch(UserSlice.actions.getByIdLoad());
-        if (window.location.pathname === PATH_PARAMS.SIGNIN) {
+        const baseUrl = baseProps?.basename
+          ? baseProps.basename + PATH_PARAMS.SIGNIN
+          : PATH_PARAMS.SIGNIN;
+        if (window.location.pathname === baseUrl) {
           return navigate(PATH_PARAMS.HOME);
         }
         return;
