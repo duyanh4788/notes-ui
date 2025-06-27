@@ -55,7 +55,7 @@ export const NoteDetail = () => {
   const note = useSelector(Notes.selectNote);
 
   const [skip, setSkip] = useState<number>(0);
-  const [sizeAuto, setSizeAuto] = useState<number>(50);
+  const [sizeAuto, setSizeAuto] = useState<number>(0);
   const [title, setTitle] = useState<Map<number, string>>(new Map());
   const [content, setContent] = useState<Map<number, string>>(new Map());
   const [langCode, setLangCode] = useState<string>(LangCodes[0].value);
@@ -97,6 +97,7 @@ export const NoteDetail = () => {
       limit: LIMIT,
     };
     toast.success(`You were created with ${counts} notes !!!`);
+    setSizeAuto(0);
     dispatch(NoteDetailsSlice.actions.getAllLoad(params));
   };
 
@@ -295,15 +296,20 @@ export const NoteDetail = () => {
             <Tooltip title={TooltipTitle.AUTO}>
               <FormControl size="small">
                 <Select
+                  value={sizeAuto}
                   onChange={e => {
-                    handleAuto(Number(e.target.value));
+                    const value = Number(e.target.value);
+                    handleAuto(value);
+                    setSizeAuto(value);
                   }}
                   startAdornment={<AutoAwesomeRounded fontSize="small" />}
                   displayEmpty
                   notched
                 >
-                  {LIST_NUMBERS.map(x => (
-                    <MenuItem value={x}>{x}</MenuItem>
+                  {LIST_NUMBERS.map((x, idx) => (
+                    <MenuItem value={x} key={idx}>
+                      {x}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
