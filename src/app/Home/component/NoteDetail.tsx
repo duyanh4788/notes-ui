@@ -84,9 +84,11 @@ export const NoteDetail = () => {
 
   const handleAuto = (numberLength: number) => {
     if (!note) return;
+    let counts = 0;
     Array.from({ length: numberLength }, () => {
       const newNote = Helper.fakeNoteDetails(note.id);
       dispatch(NoteDetailsSlice.actions.createdLoad(newNote));
+      counts += 1;
     });
     setSkip(0);
     const params = {
@@ -94,6 +96,7 @@ export const NoteDetail = () => {
       skip: 0 + LIMIT,
       limit: LIMIT,
     };
+    toast.success(`You were created with ${counts} notes !!!`);
     dispatch(NoteDetailsSlice.actions.getAllLoad(params));
   };
 

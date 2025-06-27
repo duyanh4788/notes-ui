@@ -93,7 +93,7 @@ export enum TooltipTitle {
   VIEW = 'View',
   SAVE = 'Save',
   ADD = 'Add',
-  AUTO = 'Auto Genarations (50)',
+  AUTO = 'Auto Genarations for test perfromance',
   DEL = 'Del',
   EDT = 'Edit',
   COPY = 'Copy',
